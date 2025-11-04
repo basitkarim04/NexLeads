@@ -1,0 +1,81 @@
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
+const features = [
+  {
+    title: "AI-Powered Lead Search",
+    description:
+      "Search social platforms using keywords to instantly find people looking for your services.",
+    image: "/feature1.png",
+    tag: "Searching",
+  },
+  {
+    title: "Built-in Email Outreach",
+    description:
+      "Send bulk / personalized emails directly from your dashboard and track responses in real-time.",
+    image: "/feature2.png",
+    tag: "Emailing",
+  },
+  {
+    title: "Follow Up Tracking",
+    description:
+      "Stay organized with automatic reminders and status updates for every lead you contact.",
+    image: "/feature3.png",
+    tag: "Follow - Ups",
+  },
+];
+
+export default function Features() {
+  const { ref, inView } = useInView({
+    triggerOnce: false, // 👈 run every time visible
+    threshold: 0.2,
+  });
+
+  return (
+    <section id="features" className="features" ref={ref}>
+      <div className="features__container">
+        {/* Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: -30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="features__title"
+        >
+          Features
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: -20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          className="features__subtitle"
+        >
+          Everything You Need for Smart Lead Generation
+        </motion.p>
+
+        {/* Grid */}
+        <div className="features__grid">
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: -40 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -40 }}
+              transition={{
+                duration: 0.6,
+                ease: "easeOut",
+                delay: index * 0.2,
+              }}
+              className="feature__card"
+            >
+              <div className="feature__image">
+                <img src={feature.image} alt={feature.title} />
+              </div>
+              <h3 className="feature__title">{feature.title}</h3>
+              <p className="feature__desc">{feature.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
