@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useActiveSection } from "./useActiveSection";
-import nexLeadlogo from "../../assets/Images/nexLeadlogo.png";
+import nexLeadlogo from "../../assets/Images/nexLeadLogo.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
