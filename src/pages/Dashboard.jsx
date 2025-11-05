@@ -30,7 +30,7 @@ const Dashboard = () => {
   return (
     <Layout>
       <ContentWrapper>
-        <Sidebar />
+        {/* <Sidebar /> */}
         {/* <MainContent> */}
         <div className="iUNkpW">
           <DashboardRoutes />
