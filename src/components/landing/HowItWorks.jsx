@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import HIW from "../../assets/Images/HIW.png";
+
 
 const steps = [
   {
@@ -83,7 +85,7 @@ const HowItWorks = () => {
         animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 60 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
       >
-        <img src="/HIW.png" alt="VR person" />
+        <img src={HIW} alt="VR person" />
       </motion.div>
     </div>
   );

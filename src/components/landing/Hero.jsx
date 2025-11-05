@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
+import hero_img from "../../assets/Images/hero_img.png";
 
 export default function Hero() {
   const { ref, inView } = useInView({
@@ -63,7 +64,7 @@ export default function Hero() {
       {/* Image */}
       <div className="hero__art">
         <motion.img
-          src="/hero_img.png"
+          src={hero_img}
           alt="Lead magnet illustration"
           // up = 0deg (normal), down = -90deg (rotate left)
           animate={{ rotate: scrollDir === "down" ? -90 : 0 }}

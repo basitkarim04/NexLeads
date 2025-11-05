@@ -1,26 +1,29 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import feature1 from "../../assets/Images/feature1.png";
+import feature2 from "../../assets/Images/feature2.png";
+import feature3 from "../../assets/Images/feature3.png";
 
 const features = [
   {
     title: "AI-Powered Lead Search",
     description:
       "Search social platforms using keywords to instantly find people looking for your services.",
-    image: "/feature1.png",
+    image: feature1,
     tag: "Searching",
   },
   {
     title: "Built-in Email Outreach",
     description:
       "Send bulk / personalized emails directly from your dashboard and track responses in real-time.",
-    image: "/feature2.png",
+    image: feature2,
     tag: "Emailing",
   },
   {
     title: "Follow Up Tracking",
     description:
       "Stay organized with automatic reminders and status updates for every lead you contact.",
-    image: "/feature3.png",
+    image: feature3,
     tag: "Follow - Ups",
   },
 ];

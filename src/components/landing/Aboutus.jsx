@@ -1,28 +1,34 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import mohsin from "../../assets/Images/mohsin.jpg";
+import anas from "../../assets/Images/anas.jpg";
+import basit from "../../assets/Images/basitPic.png";
+import sohaib from "../../assets/Images/sohaib.jpg";
+import linkedin from "../../assets/Images/linkedin.png";
+import github from "../../assets/Images/github.png";
 
 const team = [
   {
     name: "Mohsin Salman",
-    img: "mohsin.jpg",
+    img: mohsin,
     linkedin: "#",
     github: "#",
   },
   {
     name: "Syed Anas Rehan",
-    img: "anas.jpg",
+    img: anas,
     linkedin: "#",
     github: "#",
   },
   {
-    name: "Abdul Basit Karim",
-    img: "basit.jpg",
+    name: "Basit Karim",
+    img: basit,
     linkedin: "#",
     github: "#",
   },
   {
     name: "M. Sohaib Kamran",
-    img: "sohaib.jpg",
+    img: sohaib,
     linkedin: "#",
     github: "#",
   },
@@ -108,10 +114,10 @@ const AboutUs = () => {
               <p>{member.name}</p>
               <div className="icons">
                 <a href={member.linkedin}>
-                  <img src="/linkedin.png" alt="LinkedIn" />
+                  <img src={linkedin} alt="LinkedIn" />
                 </a>
                 <a href={member.github}>
-                  <img src="/github.png" alt="GitHub" />
+                  <img src={github} alt="GitHub" />
                 </a>
               </div>
             </div>

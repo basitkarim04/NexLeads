@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useActiveSection } from "./useActiveSection";
+import nexLeadlogo from "../../assets/Images/nexLeadlogo.png";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function Navbar() {
     <header className="nav">
       {/* Brand */}
       <div className="nav__brand">
-        <img src="/nexLeadlogo.png" alt="NexLeads Logo" width="120" />
+        <img src={nexLeadlogo} alt="NexLeads Logo" width="120" />
       </div>
 
       {/* Links - Desktop */}
