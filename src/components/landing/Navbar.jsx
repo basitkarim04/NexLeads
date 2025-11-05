@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useActiveSection } from "./useActiveSection";
 import nexLeadlogo from "../../assets/Images/nexLeadLogo.png";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +23,9 @@ export default function Navbar() {
     <header className="nav">
       {/* Brand */}
       <div className="nav__brand">
-        <img src={nexLeadlogo} alt="NexLeads Logo" width="120" />
+        <Link to="/dashboard">
+          <img src={nexLeadlogo} alt="NexLeads Logo" width="120" />
+        </Link>
       </div>
 
       {/* Links - Desktop */}
