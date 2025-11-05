@@ -20,7 +20,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-gray-100 overflow-hidden w-full">
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div 

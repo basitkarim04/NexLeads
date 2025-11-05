@@ -32,9 +32,9 @@ const Dashboard = () => {
       <ContentWrapper>
         {/* <Sidebar /> */}
         {/* <MainContent> */}
-        <div className="iUNkpW">
+        {/* <div className="iUNkpW"> */}
           <DashboardRoutes />
-        </div>
+        {/* </div> */}
         {/* </MainContent> */}
       </ContentWrapper>
     </Layout>

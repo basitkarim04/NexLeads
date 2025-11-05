@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import handshake from "../../assets/Images/handshake.png";
 
 export default function Contact() {
   const { ref, inView } = useInView({
@@ -21,7 +22,7 @@ export default function Contact() {
             Let’s scale your <br /> journey together
           </h2>
           <motion.img
-            src="/handshake.png"
+            src={handshake}
             alt="Handshake"
             className="handshake"
             initial={{ opacity: 0, scale: 0.9 }}

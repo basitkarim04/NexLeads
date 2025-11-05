@@ -1,3 +1,6 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 /* src/styles.css */
 :root{
   --bg: #071a3d;        /* deep night blue */
@@ -17,8 +20,8 @@ body{
   margin:0;
   padding: 0;
   font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
-  color: #F2FAFF;
-  background: url("./assets/star.png") repeat center center,
+  /* color: #F2FAFF; */
+  background: url("./assets//Images/star.png") repeat center center,
     linear-gradient(90deg, #020d1d 0%, #052659 100%);
   background-size: auto, auto, auto, cover;
   
@@ -60,7 +63,8 @@ body::before{
   width: 100%;
   height: 100px;
   display:flex; align-items:center; justify-content:space-around;
-  padding: 0px 0px; margin-top: 6px;
+  padding: 0px 0px;
+  margin-top: 6px;
   border-radius: 999px;
   position: fixed;
   z-index: 100000;
@@ -114,6 +118,7 @@ body::before{
 .hero__content h1{
   font-size: clamp(20px, 5vw, 50px);
   line-height:1.08; margin:80px 0 16px;
+  color: #F2FAFF;
 
 }
 .hero__content .accent{ color:#F2FAFF;}
