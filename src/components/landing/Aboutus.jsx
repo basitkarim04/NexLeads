@@ -21,14 +21,14 @@ const team = [
     github: "#",
   },
   {
-    name: "Basit Karim",
-    img: basit,
+    name: "M. Sohaib Kamran",
+    img: sohaib,
     linkedin: "#",
     github: "#",
   },
   {
-    name: "M. Sohaib Kamran",
-    img: sohaib,
+    name: "Basit Karim",
+    img: basit,
     linkedin: "#",
     github: "#",
   },
