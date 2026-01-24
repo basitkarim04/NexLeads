@@ -156,6 +156,10 @@ const getPrice = (monthlyPrice) => {
 
 const [isEditOpen, setIsEditOpen] = useState(false);
 
+const [selectedCard, setSelectedCard] = useState(null);
+
+
+
 
   const renderPage = () => {
     switch (activePage) {
@@ -624,6 +628,15 @@ onClick={() => {
               // handle mark as ongoing here
             }}
           >
+            Mark as Discussion
+          </button>
+                    <button
+            className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+            onClick={() => {
+              setOpen(false);
+              // handle mark as ongoing here
+            }}
+          >
             Mark as Ongoing
           </button>
         </div>
@@ -775,7 +788,7 @@ onClick={() => {
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
+          <div className="relative bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
             <div className="flex justify-end gap-2 mb-4">
               <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
                 <i className="ri-reply-line"></i> Reply
@@ -786,6 +799,33 @@ onClick={() => {
               <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
                 <i className="ri-delete-bin-line"></i> Delete
               </button>
+               <button
+    onClick={() => setOpen(!open)}
+    className="bg-[#C1E8FF] px-2 py-1 rounded text-xs"
+  >
+    <i className="ri-more-2-fill text-base"></i>
+  </button>
+
+  {open && (
+    <div className="absolute right-0 mt-9 mr-9 w-40 bg-white border border-gray-200 rounded shadow-md z-50">
+      <button
+        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+        onClick={() => {
+          setOpen(false);
+        }}
+      >
+        Mark as Discussion
+      </button>
+      <button
+        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+        onClick={() => {
+          setOpen(false);
+        }}
+      >
+        Mark as Ongoing
+      </button>
+      </div>
+  )}
             </div>
 
             <div className="text-sm space-y-2 border-y py-4">
@@ -808,6 +848,11 @@ onClick={() => {
       case "tasks":
         return (
       <div className="bg-white rounded-3xl p-5 md:p-8">
+
+
+       
+{!selectedCard ? (
+<div>
 
         {/* Header */}
         <div className="mb-6">
@@ -845,96 +890,114 @@ onClick={() => {
           </button>
         </div>
           <hr className="mb-6 border-t border-[#C3C3C3]" />
+  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    
+    {[
+      "Website Developer",
+      "Graphic Designing",
+      "SEO",
+      "3d Animation",
+      "Social Media Marketing",
+      "Ecommerce",
+    ].map((title, i) => (
+      <div
+        key={i}
+        className="bg-[#EEF8FF] rounded-2xl p-5 cursor-pointer hover:shadow-md transition"
+        onClick={() => setSelectedCard(title)} // set selected card
+      >
+        <p className="text-sm text-gray-400 mb-2">08-01-2026 [{title}]</p>
 
-       
-
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-          {[
-            "Website Developer",
-            "Graphic Designing",
-            "SEO",
-            "3d Animation",
-            "Social Media Marketing",
-            "Ecommerce",
-          ].map((title, i) => (
-            <div key={i} className="bg-[#EEF8FF] rounded-2xl p-5">
-
-              <p className="text-sm text-gray-400 mb-2">
-                08-01-2026 [{title}]
-              </p>
-
-              {/* Platforms */}
-              <div className="flex gap-2 mb-4">
-                <span
-                  className="px-3 py-1 text-xs rounded-full border"
-                  style={{
-                    backgroundColor: "#D2F5FF",
-                    borderColor: "#029FCA",
-                    color: "#029FCA",
-                  }}
-                >
-                  Twitter
-                </span>
-
-                <span
-                  className="px-3 py-1 text-xs rounded-full border"
-                  style={{
-                    backgroundColor: "#FFD9D5",
-                    borderColor: "#EA4335",
-                    color: "#EA4335",
-                  }}
-                >
-                  Google
-                </span>
-              </div>
-
-              {/* Stats Header */}
-              <div className="bg-white rounded-xl px-4 py-3 mb-4 flex justify-between items-center">
-                <div>
-                  <p className="text-xs text-gray-400">Total Leads</p>
-                  <p className="text-3xl font-semibold text-[#0A2A55]">45</p>
-                </div>
-
-                <div className="text-right">
-                  <p className="text-xs text-gray-400">Follow-Up Sent</p>
-                  <p className="text-3xl font-semibold text-[#0A2A55]">02</p>
-                </div>
-              </div>
-
-
-              {/* Detailed Stats */}
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <div className="border rounded-xl py-3 text-center" style={{ borderColor: "#7DA0CA" }}>
-                <i className="ri-eye-line text-[#0A2A55]"></i>
-                <p className="font-semibold text-[#0A2A55]">20</p>
-                <p className="text-xs text-gray-400">Opened</p>
-              </div>
-
-              <div className="border rounded-xl py-3 text-center" style={{ borderColor: "#7DA0CA" }}>
-                <i className="ri-reply-line text-[#0A2A55]"></i>
-                <p className="font-semibold text-[#0A2A55]">25</p>
-                <p className="text-xs text-gray-400">Replied</p>
-              </div>
-
-              <div className="border rounded-xl py-3 text-center" style={{ borderColor: "#7DA0CA" }}>
-                <i className="ri-close-circle-line text-[#0A2A55]"></i>
-                <p className="font-semibold text-[#0A2A55]">0</p>
-                <p className="text-xs text-gray-400">Bounced</p>
-              </div>
-            </div>
-
-
-              {/* Button */}
-              <button className="w-full bg-[#7DA0CA] hover:bg-[#7AA4CE] text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
-                <i className="ri-send-plane-line"></i>
-                Send Follow-Up
-              </button>
-
-            </div>
-          ))}
+        {/* Platforms */}
+        <div className="flex gap-2 mb-4">
+          <span
+            className="px-3 py-1 text-xs rounded-full border"
+            style={{ backgroundColor: "#D2F5FF", borderColor: "#029FCA", color: "#029FCA" }}
+          >
+            Twitter
+          </span>
+          <span
+            className="px-3 py-1 text-xs rounded-full border"
+            style={{ backgroundColor: "#FFD9D5", borderColor: "#EA4335", color: "#EA4335" }}
+          >
+            Google
+          </span>
         </div>
+
+        {/* Stats */}
+        <div className="bg-white rounded-xl px-4 py-3 mb-4 flex justify-between items-center">
+          <div>
+            <p className="text-xs text-gray-400">Total Leads</p>
+            <p className="text-3xl font-semibold text-[#0A2A55]">45</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-gray-400">Follow-Up Sent</p>
+            <p className="text-3xl font-semibold text-[#0A2A55]">02</p>
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <button className="w-full bg-[#7DA0CA] hover:bg-[#7AA4CE] text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
+          <i className="ri-send-plane-line"></i>
+          Send Follow-Up
+        </button>
+      </div>
+    ))}
+  </div>
+  </div>
+) : (
+  // DETAIL VIEW
+  <div className="w-full flex flex-col lg:flex-row gap-6 mt-6">
+
+    {/* LEFT CONTENT — JOB BOARD */}
+    <div className="flex-1 bg-white rounded-3xl p-6 shadow-sm border space-y-6">
+      <div className=" justify-between items-center">
+                <button
+          className="text-sm text-black font-bold hover:underline mb-5"
+          onClick={() => setSelectedCard(null)} // back button
+        >
+          ← Back
+        </button>
+        <h1 className="text-3xl font-medium text-[#000000]">{selectedCard} Board</h1>
+      </div>
+      <p className="text-gray-900 mt-1">Date: 08-01-2026</p>
+
+      {/* Jobs Table */}
+      <div className="overflow-auto">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b">
+              <th className="py-3 px-2 font-medium text-[#000000]">Name</th>
+              <th className="py-3 px-2 font-medium text-[#000000]">Description</th>
+              <th className="py-3 px-2 font-medium text-[#000000]">Email</th>
+              <th className="py-3 px-2 font-medium text-[#000000]">Platform</th>
+              <th className="py-3 px-2 font-medium text-[#000000]">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["Syed Anas", "Looking for a website dev…", "anas@gmail.com", "Facebook", "9/10/25"],
+              ["Mohsin", "Need UI Designer", "Mohsin@gmail.com", "Thread", "9/10/25"],
+              ["Sohaib", "Need Shopify store dev…", "Sohaib@gmail.com", "LinkedIn", "9/10/25"],
+              ["Basit Karim", "Backend Dev - for deploy…", "basit@gmail.com", "Twitter", "7/10/25"],
+              ["Syed Anas", "Looking for figma expert…", "anas.r@gmail.com", "Facebook", "23/09/25"],
+              ["Sohaib", "Logo Designer required…", "Sohaib@gmail.com", "Upwork", "20/09/25"],
+            ].map((item, i) => (
+              <tr key={i} className="border-b text-gray-700">
+                <td className="py-3 px-2">{item[0]}</td>
+                <td className="py-3 px-2">{item[1]}</td>
+                <td className="py-3 px-2">{item[2]}</td>
+                <td className="py-3 px-2">{item[3]}</td>
+                <td className="py-3 px-2">{item[4]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+)}
+
+
       </div>
     
   );
