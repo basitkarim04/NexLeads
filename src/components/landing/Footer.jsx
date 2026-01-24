@@ -1,21 +1,3 @@
-// const Footer = () => {
-//   return (
-//     <footer className="footer">
-//       <div className="footer-links">
-//         <a href="#">Privacy Policy</a>
-//         <a href="#">Terms & Conditions</a>
-//       </div>
-//       <div className="footer-copy">
-//         © 2026 Nexleads – All Rights Reserved
-//       </div>
-//     </footer>
-//   );
-// };
-
-// export default Footer;
-
-
-
 import { useState } from "react";
 
 const Footer = () => {
