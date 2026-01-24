@@ -933,15 +933,13 @@ onClick={() => {
 
           <div className="space-y-4 p-4">
             {[
-              { title: "Website Redesign", company: "Acme Inc.", date: "10 January 2025" },
-              { title: "App Dev", company: "Brand Revamp.", date: "10 January 2025" },
-              { title: "SEO Optimization", company: "Wanderluster co.", date: "10 January 2025" },
+              { title: "Website Redesign", company: "Acme Inc.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv" },
+              { title: "App Dev", company: "Brand Revamp.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv"},
+              { title: "SEO Optimization", company: "Wanderluster co.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv" },
             ].map((item, i) => (
               <div
-  key={i}
-  onClick={() => setSelectedItem(item)}
-  className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition"
->
+              key={i}
+              onClick={() => setSelectedItem(item)}className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold">{item.title}</h3>
                   <span className="text-xs bg-red-100 text-red-500 px-3 py-1 rounded-full">
@@ -957,6 +955,7 @@ onClick={() => {
                 </div>
               </div>
             ))}
+            
             {selectedItem && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
     
@@ -1008,30 +1007,9 @@ onClick={() => {
       <div className="p-4 space-y-4">
         <div>
           <h3 className="font-semibold mb-1">Details</h3>
-          <p className="text-sm text-gray-600">
-            Seeking a skilled professional to design and implement a comprehensive
-            sales automation system for our organization. The solution should
-            streamline sales processes, including lead management, follow-ups,
-            and client communications.
-          </p>
+          <p className="text-sm text-gray-600">{selectedItem.details}</p>
         </div>
-
-        <div>
-          <h3 className="font-semibold mb-1">Objectives:</h3>
-          <ul className="list-decimal pl-5 text-sm text-gray-600 space-y-1">
-            <li>Automate lead capturing and assignment to reduce manual effort.</li>
-            <li>Improve follow-up efficiency through automated reminders.</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="font-semibold mb-1">Deliverables:</h3>
-          <ul className="list-disc pl-5 text-sm text-gray-600 space-y-1">
-            <li>Fully functional sales automation workflow</li>
-            <li>Email or CRM integration (if applicable)</li>
-          </ul>
-        </div>
-      </div>
+</div>
 
       {/* FOOTER */}
       <div className="p-4 border-t flex justify-end">
@@ -1056,12 +1034,14 @@ onClick={() => {
 
           <div className="space-y-4 p-4">
             {[
-              { title: "Sales Automation", company: "BizTech LLC.", date: "15 January 2025" },
-              { title: "Social Media Man...", company: "Connect Media.", date: "15 January 2025" },
-              { title: "CRM Implement...", company: "Vertex Solutions.", date: "15 January 2025" },
-              { title: "Content Writing", company: "BizTech LLC.", date: "15 January 2025" },
+              { title: "Sales Automation", company: "BizTech LLC.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB" },
+              { title: "Social Media Man...", company: "Connect Media.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB"  },
+              { title: "CRM Implement...", company: "Vertex Solutions.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB"  },
+              { title: "Content Writing", company: "BizTech LLC.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB"  },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 shadow-sm">
+                <div
+              key={i}
+              onClick={() => setSelectedItem(item)}className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold">{item.title}</h3>
                   <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
@@ -1077,6 +1057,71 @@ onClick={() => {
                 </div>
               </div>
             ))}
+            {selectedItem && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    
+    <div className="w-full max-w-xl bg-white rounded-2xl overflow-hidden">
+      
+{/* HEADER */}
+<div className="flex items-center justify-between p-4 border-b">
+  <div>
+    <h2 className="font-semibold text-lg">{selectedItem.title}</h2>
+    <p className="text-sm text-gray-500">{selectedItem.company}</p>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
+      Ongoing
+    </span>
+
+    {/* CLOSE BUTTON */}
+    <button
+      onClick={() => setSelectedItem(null)}
+      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+    >
+      <i className="ri-close-line text-xl text-gray-600"></i>
+    </button>
+  </div>
+</div>
+
+      {/* INFO BAR */}
+      <div className="bg-[#C1E8FF] px-4 py-3 flex flex-wrap gap-4 text-sm">
+        <div className="flex items-center gap-2">
+          <i className="ri-calendar-line"></i>
+          <span>Start: 15 January 2026</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+           <span>|</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <i className="ri-time-line"></i>
+          <span>Status:</span>
+          <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs">
+            Discussion
+          </span>
+        </div>
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-4 space-y-4">
+        <div>
+          <h3 className="font-semibold mb-1">Details</h3>
+          <p className="text-sm text-gray-600">{selectedItem.details}</p>
+        </div>
+</div>
+
+      {/* FOOTER */}
+      <div className="p-4 border-t flex justify-end">
+        <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm">
+          Mark as Completed
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
           </div>
         </div>
 
@@ -1089,10 +1134,12 @@ onClick={() => {
 
           <div className="bg-[#EEF8FF] space-y-4 p-4">
             {[
-              { title: "Web App Dev...", company: "Inno Soft Tech.", date: "8 January 2025" },
-              { title: "Content Writing Ca...", company: "Blumesoft.", date: "15 January 2025" },
+              { title: "Web App Dev...", company: "Inno Soft Tech.", date: "8 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB"  },
+              { title: "Content Writing Ca...", company: "Blumesoft.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB"  },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-xl p-4 shadow-sm">
+                <div
+              key={i}
+              onClick={() => setSelectedItem(item)}className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold">{item.title}</h3>
                   <span className="text-xs bg-green-600 text-white px-3 py-1 rounded-full">
@@ -1108,6 +1155,72 @@ onClick={() => {
                 </div>
               </div>
             ))}
+            {selectedItem && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    
+    <div className="w-full max-w-xl bg-white rounded-2xl overflow-hidden">
+      
+{/* HEADER */}
+<div className="flex items-center justify-between p-4 border-b">
+  <div>
+    <h2 className="font-semibold text-lg">{selectedItem.title}</h2>
+    <p className="text-sm text-gray-500">{selectedItem.company}</p>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
+      Completed
+    </span>
+
+    {/* CLOSE BUTTON */}
+    <button
+      onClick={() => setSelectedItem(null)}
+      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+    >
+      <i className="ri-close-line text-xl text-gray-600"></i>
+    </button>
+  </div>
+</div>
+
+      {/* INFO BAR */}
+      <div className="bg-[#C1E8FF] px-4 py-3 flex flex-wrap gap-4 text-sm">
+        <div className="flex items-center gap-2">
+          <i className="ri-calendar-line"></i>
+          <span>Start: 15 January 2026</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+           <span>|</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <i className="ri-time-line"></i>
+          <span>Status:</span>
+          <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs">
+            Completed
+          </span>
+        </div>
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-4 space-y-4">
+        <div>
+          <h3 className="font-semibold mb-1">Details</h3>
+          <p className="text-sm text-gray-600">{selectedItem.details}</p>
+        </div>
+</div>
+
+      {/* FOOTER */}
+      <div className="p-4 border-t flex justify-end">
+        <button className="bg-green-500 text-white px-5 py-2 rounded-lg text-sm">
+          Completed
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
+
           </div>
         </div>
 
