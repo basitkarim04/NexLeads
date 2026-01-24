@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Mail, Clock, Folder, Moon, LogOut, Settings, Bell, Grid, ArrowUpRight, User, Menu } from 'lucide-react';
 import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
+import profileImage from "../assets/Images/basit.jpg";
 
 const Dashboard = () => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -1097,6 +1098,101 @@ onClick={() => {
     </div>
   );
 
+  
+  case "settings":
+  return (
+    <div className="bg-[#F3FAFF] min-h-screen">
+      <div className="w-full mx-auto bg-white rounded-3xl shadow-sm overflow-hidden">
+
+        {/* HEADER */}
+        <div className="px-8 py-6 border-b">
+          <h1 className="text-2xl font-semibold text-gray-900">
+            Setting
+          </h1>
+        </div>
+
+        {/* TABS */}
+        <div className="px-8 py-6 flex gap-3">
+          <button className="bg-[#062D5E] text-white px-6 py-2 rounded-full text-sm font-medium">
+            Profile Management
+          </button>
+          <button className="bg-[#BFE4FF] text-[#062D5E] px-6 py-2 rounded-full text-sm font-medium">
+            Plan & Billing
+          </button>
+          <button className="bg-[#BFE4FF] text-[#062D5E] px-6 py-2 rounded-full text-sm font-medium">
+            Security
+          </button>
+        </div>
+
+        {/* PROFILE IMAGE */}
+        <div className="px-8 pb-8 flex items-center gap-6 border-b">
+<div className="w-50 h-50 rounded-full overflow-hidden">
+  <img
+    src={profileImage}
+    alt="avatar"
+    className="w-full h-full object-cover"
+  />
+</div>
+
+          <div>
+            <button className="border border-gray-300 rounded-full px-6 py-2 text-sm font-medium">
+              Upload new photo
+            </button>
+            <p className="text-xs text-gray-400 mt-2">
+              At least 800 × 800 px recommended. <br /> JPG or PNG is Allowed
+            </p>
+          </div>
+        </div>
+
+        {/* CONTENT */}
+        <div className="px-8 py-8 space-y-6">
+
+          {/* PERSONAL INFO */}
+          <div className="border rounded-2xl p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="font-semibold text-lg">Personal Info</h2>
+              <button className="flex items-center gap-2 border rounded-full px-4 py-1 text-sm">
+                <i className="ri-edit-line"></i>
+                Edit
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <p className="text-sm text-gray-400">Full Name</p>
+                <p className="font-semibold">Mohsin Salman</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-400">Email</p>
+                <p className="font-semibold">mohsin@nexleads.com</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-400">Phone</p>
+                <p className="font-semibold">+92 300 3244414</p>
+              </div>
+              
+            </div>
+             <div className="flex justify-between items-center mb-4 mt-6">
+              <h2 className="font-semibold text-lg">Bio</h2>
+            </div>
+
+            <p className="text-gray-700 leading-relaxed text-sm">
+              <strong>Hi, I’m Mohsin Salman. 👋</strong>
+              <br />
+              I’m a passionate designer and developer focused on creating clean,
+              functional, and user-friendly digital experiences. 🎨💻
+              <br />
+              I specialize in modern UI/UX design, web development, and SaaS
+              dashboard interfaces. 🚀
+              <br />
+              My work blends strong visual design with efficient, scalable code. ⚙️✨
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
 
       default:
         return <h1 className="text-3xl font-bold">Page Not Found</h1>;
@@ -1129,7 +1225,8 @@ onClick={() => {
             { icon: Search, page: "search" },
             { icon: Mail, page: "emails" },
             { icon: Clock, page: "tasks" },
-            { icon: Folder, page: "projects" }
+            { icon: Folder, page: "projects" },
+            { icon: Settings, page: "settings" }
           ].map(({ icon: Icon, page }, i) => (
             <button
               key={i}
@@ -1146,7 +1243,6 @@ onClick={() => {
         {/* Bottom icons */}
         <div className="flex flex-col items-center space-y-3 mt-auto">
           <button className="p-3 text-white hover:bg-white/20 rounded-xl transition"><LogOut size={24} /></button>
-          <button className="p-3 text-white hover:bg-white/20 rounded-xl transition"><Settings size={24} /></button>
           <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center">
             <User size={24} className="text-blue-900" />
           </div>
