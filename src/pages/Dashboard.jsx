@@ -962,22 +962,27 @@ onClick={() => {
     
     <div className="w-full max-w-xl bg-white rounded-2xl overflow-hidden">
       
-      {/* HEADER */}
-      <div className="flex items-center justify-between p-4 border-b">
-        <div>
-          <h2 className="font-semibold text-lg">{selectedItem.title}</h2>
-          <p className="text-sm text-gray-500">{selectedItem.company}</p>
-        </div>
+{/* HEADER */}
+<div className="flex items-center justify-between p-4 border-b">
+  <div>
+    <h2 className="font-semibold text-lg">{selectedItem.title}</h2>
+    <p className="text-sm text-gray-500">{selectedItem.company}</p>
+  </div>
 
-        <div className="flex items-center gap-3">
-          <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
-            Discussion
-          </span>
-          <button onClick={() => setSelectedItem(null)}>
-            <i className="ri-close-line text-xl"></i>
-          </button>
-        </div>
-      </div>
+  <div className="flex items-center gap-3">
+    <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
+      Discussion
+    </span>
+
+    {/* CLOSE BUTTON */}
+    <button
+      onClick={() => setSelectedItem(null)}
+      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+    >
+      <i className="ri-close-line text-xl text-gray-600"></i>
+    </button>
+  </div>
+</div>
 
       {/* INFO BAR */}
       <div className="bg-[#C1E8FF] px-4 py-3 flex flex-wrap gap-4 text-sm">
