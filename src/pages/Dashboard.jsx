@@ -1107,7 +1107,7 @@ onClick={() => {
         {/* HEADER */}
         <div className="px-8 py-6 border-b">
           <h1 className="text-2xl font-semibold text-gray-900">
-            Setting
+            Settings
           </h1>
         </div>
 
