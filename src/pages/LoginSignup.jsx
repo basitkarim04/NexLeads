@@ -26,7 +26,7 @@ export default function AuthPages() {
     >
       {/* LOGO */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50">
-        <img src={nexLeadlogo} alt="Logo" className="h-20 w-auto" />
+        <img src={nexLeadlogo} alt="Logo" width="120"/>
       </div>
 
       {/* GRID */}
