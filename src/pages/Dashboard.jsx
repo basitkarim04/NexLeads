@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Mail, Clock, Folder, Moon, LogOut, Settings, Bell, Grid, ArrowUpRight, User, Menu } from 'lucide-react';
+import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
 
 const Dashboard = () => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -1128,7 +1129,7 @@ onClick={() => {
 
 <div className="mb-5 flex justify-center">
   <img
-    src="nexLeadLogo.png"    // <-- replace with your actual logo path
+    src={nexLeadlogo}    // <-- replace with your actual logo path
     alt="Nex Leads Logo"
     className="w-25 md:w-20 lg:w-25 h-auto object-contain"
   />
