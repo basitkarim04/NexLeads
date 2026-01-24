@@ -1210,11 +1210,11 @@ onClick={() => {
         transition-transform duration-300 md:transition-none`} 
       >
 
-<div className="mb-5 flex justify-center">
+<div className="mb-2 ml-4 flex w-30 items-center justify-center">
   <img
     src={nexLeadlogo}    // <-- replace with your actual logo path
     alt="Nex Leads Logo"
-    className="w-25 md:w-20 lg:w-25 h-auto object-contain"
+    className="w-full h-full"
   />
 </div>
 
