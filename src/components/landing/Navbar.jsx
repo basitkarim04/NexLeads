@@ -43,7 +43,9 @@ export default function Navbar() {
 
       {/* Actions - Desktop */}
       <div className="nav__actions desktop">
+        <Link to="/login">
         <button className="btn btn-outline">Login</button>
+        </Link>
       </div>
 
       {/* Burger Icon - Mobile */}
