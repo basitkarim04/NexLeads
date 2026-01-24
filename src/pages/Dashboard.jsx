@@ -136,6 +136,27 @@ const folderIcons = {
   trash: "ri-delete-bin-line",
 };
 
+
+const DISCOUNT = 0.15;
+
+const pricing = {
+  free: 0,
+  pro: 19,
+  enterprise: 49,
+};
+
+const getPrice = (monthlyPrice) => {
+  if (billingCycle === "annually") {
+    const yearly = monthlyPrice * 12;
+    return Math.round(yearly - yearly * DISCOUNT);
+  }
+  return monthlyPrice;
+};
+
+
+const [isEditOpen, setIsEditOpen] = useState(false);
+
+
   const renderPage = () => {
     switch (activePage) {
       case "dashboard":
@@ -392,7 +413,7 @@ const folderIcons = {
 </div>
 );
 
-case "emails":
+      case "emails":
   const foldersList = ["compose", "inbox", "sent", "drafts", "spam", "trash"];
   return (<div className="h-full w-full main-email">
    <div className="h-full w-full bg-[#EEF8FF] email-desktop-version mx-auto">
@@ -1120,19 +1141,19 @@ onClick={() => {
         <div className="px-8 py-6 flex gap-3">
           <button 
             onClick={() => setActiveTab("profile")}
-            className={`${activeTab === "profile" ? "bg-[#062D5E] text-white" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
+            className={`${activeTab === "profile" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
           >
             Profile Management
           </button>
           <button 
             onClick={() => setActiveTab("billing")}
-            className={`${activeTab === "billing" ? "bg-[#062D5E] text-white" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
+            className={`${activeTab === "billing" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
           >
             Plan & Billing
           </button>
           <button 
             onClick={() => setActiveTab("security")}
-            className={`${activeTab === "security" ? "bg-[#062D5E] text-white" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
+            className={`${activeTab === "security" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
           >
             Security
           </button>
@@ -1167,24 +1188,110 @@ onClick={() => {
               <div className="border rounded-2xl p-6">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="font-semibold text-lg">Personal Info</h2>
-                  <button className="flex items-center gap-2 border rounded-full px-4 py-1 text-sm">
+                  <button
+  onClick={() => setIsEditOpen(true)}
+  className="flex items-center gap-2 border rounded-full px-4 py-1 text-sm"
+>
+
                     <i className="ri-edit-line"></i>
                     Edit
                   </button>
                 </div>
+                 {isEditOpen && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    
+    {/* Modal Box */}
+    <div className="bg-white rounded-2xl w-full max-w-lg p-6 relative">
+      
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-lg font-semibold">Edit Profile</h2>
+<button
+  type="button"
+  onClick={() => setIsEditOpen(false)}
+  className="text-gray-500 hover:text-black"
+>
+  <i className="ri-close-line text-xl"></i>
+</button>
+      </div>
 
+      {/* Form */}
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-semibold mb-1">
+            Full Name
+          </label>
+          <input
+            type="text"
+            className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
+            placeholder="Full Name"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold mb-1">
+            Email
+          </label>
+          <input
+            type="email"
+            className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
+            placeholder="Email"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold mb-1">
+            Country
+          </label>
+          <input
+            type="text"
+            className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
+            placeholder="Phone Number"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold mb-1">
+            Bio
+          </label>
+          <textarea
+            rows="4"
+            className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
+            placeholder="Write something about yourself..."
+          />
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex justify-end gap-3 mt-6">
+<button
+  type="button"
+  onClick={() => setIsEditOpen(false)}
+  className="px-5 py-2 rounded-xl border text-sm"
+>
+  Cancel
+</button>
+        <button
+          className="px-6 py-2 rounded-xl bg-[#062D5E] text-white text-sm font-semibold"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <p className="text-sm text-gray-400">Full Name</p>
-                    <p className="font-semibold">Mohsin Salman</p>
+                    <p className="text-sm font-semibold">Full Name</p>
+                    <p className="text-gray-800">Mohsin Salman</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400">Email</p>
-                    <p className="font-semibold">mohsin@nexleads.com</p>
+                    <p className="text-sm font-semibold">Email</p>
+                    <p className="text-gray-800">mohsin@nexleads.com</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400">Phone</p>
-                    <p className="font-semibold">+92 300 3244414</p>
+                    <p className="text-sm font-semibold">Country</p>
+                    <p className="text-gray-800">Pakistan</p>
                   </div>
                 </div>
                 
@@ -1193,7 +1300,7 @@ onClick={() => {
                 </div>
 
                 <p className="text-gray-700 leading-relaxed text-sm">
-                  <strong>Hi, I'm Mohsin Salman. 👋</strong>
+                  Hi, I'm Mohsin Salman. 👋
                   <br />
                   I'm a passionate designer and developer focused on creating clean,
                   functional, and user-friendly digital experiences. 🎨💻
@@ -1213,24 +1320,24 @@ onClick={() => {
   <>
     {/* YOUR CURRENT PLAN */}
     <div className="px-8 py-6 border-b">
-      <h2 className="text-2xl font-bold mb-6">Your Current Plan</h2>
+      <h2 className="text-3xl font-medium font-bold mb-6">Your Current Plan</h2>
       <div className="flex items-start gap-6">
         <div>
           <p className="text-gray-400 text-base mb-1">Basic</p>
-          <p className="text-5xl font-bold text-gray-900">$0</p>
+          <p className="text-5xl font-bold text-gray-400">$0</p>
         </div>
         <div className="flex-1 space-y-3 mt-2">
           <div className="flex items-center gap-2">
             <i className="ri-check-line text-gray-900 text-lg"></i>
-            <span className="text-base text-gray-900">50 leads/month</span>
+            <span className="text-base text-black">50 leads/month</span>
           </div>
           <div className="flex items-center gap-2">
             <i className="ri-check-line text-gray-900 text-lg"></i>
-            <span className="text-base text-gray-900">Basic email templates</span>
+            <span className="text-base text-black">Basic email templates</span>
           </div>
           <div className="flex items-center gap-2">
             <i className="ri-check-line text-gray-900 text-lg"></i>
-            <span className="text-base text-gray-900">Limited follow-up tracking</span>
+            <span className="text-base text-black">Limited follow-up tracking</span>
           </div>
         </div>
       </div>
@@ -1238,143 +1345,108 @@ onClick={() => {
 
     {/* BILLING CYCLE TOGGLE */}
     <div className="px-8 py-6">
-      {/* Container - Light blue pill background */}
       <div className="flex items-center gap-6 bg-[#C1E8FF] rounded-full px-6 py-3 w-fit">
         
-        {/* Monthly Option */}
-        <label 
-          className="flex items-center gap-3 cursor-pointer group"
+        {/* Monthly */}
+        <label
+          className="flex items-center gap-3 cursor-pointer"
           onClick={() => setBillingCycle("monthly")}
         >
-          <div className="relative flex items-center justify-center">
-            {/* Outer Circle */}
-            <div className="w-9 h-9 rounded-full border-[3px] border-black flex items-center justify-center bg-transparent">
-              {/* Inner Dot - Visible only when selected */}
-              {billingCycle === "monthly" && (
-                <div className="w-6 h-6 rounded-full bg-[#062D5E]"></div>
-              )}
-            </div>
+          <div className="w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center">
+            {billingCycle === "monthly" && (
+              <div className="w-4 h-4 rounded-full bg-[#062D5E]" />
+            )}
           </div>
-          <span className="text-2xl font-bold text-black">Monthly</span>
+          <span className="text-xl font-medium text-black">Monthly</span>
         </label>
 
-        {/* Annually Option */}
-        <label 
-          className="flex items-center gap-3 cursor-pointer group"
+        {/* Annually */}
+        <label
+          className="flex items-center gap-3 cursor-pointer"
           onClick={() => setBillingCycle("annually")}
         >
-          <div className="relative flex items-center justify-center">
-            {/* Outer Circle */}
-            <div className="w-9 h-9 rounded-full border-[3px] border-black flex items-center justify-center bg-transparent">
-              {/* Inner Dot - Visible only when selected */}
-              {billingCycle === "annually" && (
-                <div className="w-6 h-6 rounded-full bg-[#062D5E]"></div>
-              )}
-            </div>
+          <div className="w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center">
+            {billingCycle === "annually" && (
+              <div className="w-4 h-4 rounded-full bg-[#062D5E]" />
+            )}
           </div>
-          <span className="text-2xl font-bold text-black">Annually</span>
+          <span className="text-xl font-medium text-black">Annually</span>
         </label>
 
-        {/* Save Percentage Text */}
-        <span className="text-xl text-[#333333] font-medium ml-2">
-          Save 15 %
+        <span className="text-l text-[#2C2C2C] font-medium ml-2">
+          Save 15%
         </span>
       </div>
     </div>
- 
 
     {/* PRICING CARDS */}
     <div className="px-8 pb-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
+
         {/* FREE PLAN */}
         <div className="bg-[#001933] rounded-3xl p-8 text-white">
           <h3 className="text-base mb-3">Free</h3>
-          <div className="mb-2">
-            <span className="text-6xl">$0</span>
-          </div>
+          <span className="text-6xl">$0</span>
+
           <p className="text-base text-gray-300 mb-6">Basic Pricing Plan</p>
-          
-          <button className="w-full bg-gray-600 text-white py-3.5 rounded-xl font-semibold text-base mb-4 hover:bg-gray-700">
+
+          <button className="w-full bg-gray-600 py-3.5 rounded-xl font-semibold mb-4">
             Your Current Plan
           </button>
-          
-          <p className="text-sm text-center text-gray-400 mb-6">Billed Monthly</p>
-          
-          <div className="border-t border-gray-700 pt-6 space-y-3">
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">50 leads/month</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">Basic email templates</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">Limited follow-up tracking</span>
-            </div>
-          </div>
+
+          <p className="text-sm text-center text-gray-400 mb-6">
+            {billingCycle === "monthly" ? "Billed Monthly" : "Billed Annually"}
+          </p>
+          <div className="border-t border-gray-700 pt-6 space-y-3"> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">50 leads/month</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Basic email templates</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Limited follow-up tracking</span> </div> </div>
         </div>
 
         {/* PRO PLAN */}
         <div className="bg-[#052659] rounded-3xl p-8 text-white">
           <h3 className="text-base mb-3">Pro</h3>
-          <div className="mb-2">
-            <span className="text-6xl">$19</span>
-          </div>
-          <p className="text-base text-gray-300 mb-6">Advanced tools for Growing</p>
-          
-          <button className="w-full bg-white text-[#001933] py-3.5 rounded-xl font-semibold text-base mb-4 hover:bg-gray-100">
+
+          <span className="text-6xl">
+            ${getPrice(pricing.pro)}
+          </span>
+
+          <p className="text-base text-gray-300 mb-6">
+            Advanced tools for Growing
+          </p>
+
+          <button className="w-full bg-white text-[#001933] py-3.5 rounded-xl font-semibold mb-4">
             Upgrade Now
           </button>
-          
-          <p className="text-sm text-center text-gray-400 mb-6">Billed Monthly</p>
-          
-          <div className="border-t border-gray-700 pt-6 space-y-3">
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">Unlimited leads</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">Custom email sequences</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">Advanced analytics</span>
-            </div>
-          </div>
+
+          <p className="text-sm text-center text-gray-400 mb-6">
+            {billingCycle === "monthly"
+              ? "Billed Monthly"
+              : "Billed Annually (15% off)"}
+          </p>
+
+          <div className="border-t border-gray-700 pt-6 space-y-3"> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Unlimited leads</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Custom email sequences</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Advanced analytics</span> </div> </div>
         </div>
 
         {/* ENTERPRISE PLAN */}
         <div className="bg-[#001933] rounded-3xl p-8 text-white">
           <h3 className="text-base mb-3">Enterprise</h3>
-          <div className="mb-2">
-            <span className="text-6xl">$49</span>
-          </div>
-          <p className="text-base text-gray-300 mb-6">Complete Collaboration of tools</p>
-          
-          <button className="w-full bg-white text-[#001933] py-3.5 rounded-xl font-semibold text-base mb-4 hover:bg-gray-100">
+
+          <span className="text-6xl">
+            ${getPrice(pricing.enterprise)}
+          </span>
+          <p className="text-base text-gray-300 mb-6">
+            Complete Collaboration of tools
+          </p>
+
+          <button className="w-full bg-white text-[#001933] py-3.5 rounded-xl font-semibold mb-4">
             Upgrade Now
           </button>
-          
-          <p className="text-sm text-center text-gray-400 mb-6">Billed Monthly</p>
-          
-          <div className="border-t border-gray-700 pt-6 space-y-3">
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">API access</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">Team collaboration</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <i className="ri-check-line text-lg"></i>
-              <span className="text-base">Dedicated account manager</span>
-            </div>
-          </div>
+
+          <p className="text-sm text-center text-gray-400 mb-6">
+            {billingCycle === "monthly"
+              ? "Billed Monthly"
+              : "Billed Annually (15% off)"}
+          </p>
+
+          <div className="border-t border-gray-700 pt-6 space-y-3"> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">API access</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Team collaboration</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Dedicated account manager</span> </div> </div>
         </div>
 
       </div>
@@ -1402,7 +1474,7 @@ onClick={() => {
           />
           <button
             onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-            className="absolute right-5 top-1/2 -translate-y-1/2"
+            className="absolute mt-4 right-5 top-1/2 -translate-y-1/2"
             type="button"
           >
             <i className={`${showCurrentPassword ? "ri-eye-line" : "ri-eye-off-line"} text-2xl text-gray-700`}></i>
@@ -1423,7 +1495,7 @@ onClick={() => {
           />
           <button
             onClick={() => setShowNewPassword(!showNewPassword)}
-            className="absolute right-5 top-1/2 -translate-y-1/2"
+            className="absolute mt-4 right-5 top-1/2 -translate-y-1/2"
             type="button"
           >
             <i className={`${showNewPassword ? "ri-eye-line" : "ri-eye-off-line"} text-2xl text-gray-700`}></i>
@@ -1444,7 +1516,7 @@ onClick={() => {
           />
           <button
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-5 top-1/2 -translate-y-1/2"
+            className="absolute mt-4 right-5 top-1/2 -translate-y-1/2"
             type="button"
           >
             <i className={`${showConfirmPassword ? "ri-eye-line" : "ri-eye-off-line"} text-2xl text-gray-700`}></i>
