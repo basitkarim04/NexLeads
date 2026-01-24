@@ -1117,7 +1117,7 @@ onClick={() => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden" style={{background: '#FFF'}}>
 
       {/* Sidebar */}
       <div
