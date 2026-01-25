@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
 import Login from "../assets/Images/Login.png";
 import starBg from "../assets/Images/star.png";
 import { baseurl } from "../BaseUrl";
+import { toast } from "react-toastify";
 
 
 export default function AuthPages() {
@@ -39,7 +42,8 @@ export default function AuthPages() {
     if (token) {
       setResetToken(token);
       setMode("reset");
-      setMessage({ text: "Enter your new password below.", type: "success" });
+      // setMessage({ text: "Enter your new password below.", type: "success" });
+      toast.error("Enter your new password below.");
     }
   }, []);
 
@@ -55,13 +59,13 @@ export default function AuthPages() {
       const res = await axios.post(`${baseurl}/user/login`, loginData);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userData", JSON.stringify(res.data.user));
-      showMessage("Login successful! Redirecting...", "success");
+      toast.success("Login successful! Redirecting...", "success");
       // Redirect to dashboard after 1s
       setTimeout(() => {
         window.location.href = "/dashboard"; // Change to your protected route
       }, 1000);
     } catch (err) {
-      showMessage(err.response?.data?.message || "Login failed", "error");
+      toast.error(err.response?.data?.message || "Login failed", "error");
     } finally {
       setLoading(false);
     }
@@ -70,7 +74,7 @@ export default function AuthPages() {
   const handleSignup = async (e) => {
     e.preventDefault();
     if (signupData.password !== signupData.confirmPassword) {
-      return showMessage("Passwords do not match", "error");
+      return toast.error("Passwords do not match", "error");
     }
     setLoading(true);
     try {
@@ -82,12 +86,12 @@ export default function AuthPages() {
       });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      showMessage("Account created successfully!", "success");
+      toast.success("Account created successfully!", "success");
       setTimeout(() => {
         window.location.href = "/dashboard";
       }, 1000);
     } catch (err) {
-      showMessage(err.response?.data?.message || "Signup failed", "error");
+      toast.error(err.response?.data?.message || "Signup failed", "error");
     } finally {
       setLoading(false);
     }
@@ -147,7 +151,9 @@ export default function AuthPages() {
     >
       {/* LOGO */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50">
+        <Link to="/">
         <img src={nexLeadlogo} alt="Logo" className="h-20 w-auto" />
+        </Link>
       </div>
 
       {/* Message Alert */}

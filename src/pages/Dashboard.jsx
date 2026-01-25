@@ -9,7 +9,7 @@ import Dashboardemail from '../components/main-dashbord/Sidebar-box/Dashboardema
 import DashboardTask from '../components/main-dashbord/Sidebar-box/DashboardTask';
 import DashboardProject from '../components/main-dashbord/DashboardProject';
 import DashboardSetting from '../components/main-dashbord/Sidebar-box/DashboardSetting';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -136,7 +136,11 @@ const Dashboard = () => {
 
         {/* Bottom icons */}
         <div className="flex flex-col items-center space-y-3 mt-auto">
-          <button className="p-3 text-white hover:bg-white/20 rounded-xl transition"><LogOut size={24} /></button>
+          <button className="p-3 text-white hover:bg-white/20 rounded-xl transition">
+          <Link to="/">
+          <LogOut size={24} />
+          </Link>
+          </button>
           <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center">
             <User size={24} className="text-blue-900" />
           </div>
