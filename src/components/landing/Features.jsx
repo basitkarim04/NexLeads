@@ -73,8 +73,8 @@ export default function Features() {
               <div className="feature__image">
                 <img src={feature.image} alt={feature.title} />
               </div>
-              <h3 className="feature__title">{feature.title}</h3>
-              <p className="feature__desc">{feature.description}</p>
+              <h3 className="mt-5 mb-6 feature__title">{feature.title}</h3>
+              <p className="feature__desc mb-5">{feature.description}</p>
             </motion.div>
           ))}
         </div>
