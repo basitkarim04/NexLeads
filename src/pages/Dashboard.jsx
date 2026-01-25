@@ -46,10 +46,10 @@ const Dashboard = () => {
   useEffect(() => {
      const token = localStorage.getItem("token");
 
-    if (!token) {
-      navigate("/login");
-      return;
-    }
+    // if (!token) {
+    //   navigate("/login");
+    //   return;
+    // }
 
     localStorage.setItem("activePage", activePage);
   }, [activePage]);
