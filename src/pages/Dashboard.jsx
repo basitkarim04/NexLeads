@@ -12,20 +12,20 @@ const Dashboard = () => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activePage, setActivePage] = useState(() => {
-    return localStorage.getItem("activePage") || "dashboard";
-  });
-  const [activeFolder, setActiveFolder] = useState("inbox");
+  return localStorage.getItem("activePage") || "dashboard";
+});
+    const [activeFolder, setActiveFolder] = useState("inbox");
   const [selectedMail, setSelectedMail] = useState(null);
-  const [isComposing, setIsComposing] = useState(false);
+    const [isComposing, setIsComposing] = useState(false);
   const [composeData, setComposeData] = useState({
-    to: "",
-    subject: "",
-    body: ""
-  });
-  const [selectedItem, setSelectedItem] = useState(null);
+  to: "",
+  subject: "",
+  body: ""
+});
+const [selectedItem, setSelectedItem] = useState(null);
 
 
-  const [open, setOpen] = useState(false);
+const [open, setOpen] = useState(false);
 
   // ⬇️ Sidebar reference for outside click detection
   const sidebarRef = useRef(null);
@@ -52,12 +52,12 @@ const Dashboard = () => {
   }, [sidebarOpen]);
 
   useEffect(() => {
-    localStorage.setItem("activePage", activePage);
-  }, [activePage]);
+  localStorage.setItem("activePage", activePage);
+}, [activePage]);
 
-  useEffect(() => {
-    localStorage.setItem("activeFolder", activeFolder);
-  }, [activeFolder]);
+useEffect(() => {
+  localStorage.setItem("activeFolder", activeFolder);
+}, [activeFolder]);
 
   const statCards = [
     { title: 'Total Emails Sent', value: '230', change: 'Increased from last month', gradient: true },
@@ -74,67 +74,67 @@ const Dashboard = () => {
     { name: 'Flutter Dev - Suhalat 911', date: 'Sep 31, 2025', color: 'bg-cyan-500' }
   ];
 
+  
+const folders = {
+  inbox: [
+    {
+      id: 1,
+      sender: "Anas R.",
+      subject: "Meeting reschedule",
+      preview: "Can we move our...",
+      body:
+        "Hi Mohsin,\n\nCan we move our meeting to tomorrow?\n\nRegards,\nAnas",
+      date: "10:20 AM",
+      from: "anas@gmail.com",
+    },
+    {
+      id: 2,
+      sender: "Basit Karim",
+      subject: "Web dev Proposal",
+      preview: "Hi Mohsin, I have seen...",
+      body:
+        "Hi Mohsin,\n\nI have seen your proposal. I really liked it.\n\nRegards,\nBasit",
+      date: "Yesterday",
+      from: "basit@gmail.com",
+    },
+  ],
 
-  const folders = {
-    inbox: [
-      {
-        id: 1,
-        sender: "Anas R.",
-        subject: "Meeting reschedule",
-        preview: "Can we move our...",
-        body:
-          "Hi Mohsin,\n\nCan we move our meeting to tomorrow?\n\nRegards,\nAnas",
-        date: "10:20 AM",
-        from: "anas@gmail.com",
-      },
-      {
-        id: 2,
-        sender: "Basit Karim",
-        subject: "Web dev Proposal",
-        preview: "Hi Mohsin, I have seen...",
-        body:
-          "Hi Mohsin,\n\nI have seen your proposal. I really liked it.\n\nRegards,\nBasit",
-        date: "Yesterday",
-        from: "basit@gmail.com",
-      },
-    ],
+  sent: [
+    {
+      id: 3,
+      sender: "Me",
+      subject: "Project Update",
+      preview: "Hi Nex Leads...",
+      body: "Here is the project update.",
+      date: "9:15 AM",
+      from: "me@nexleads.com",
+    },
+  ],
 
-    sent: [
-      {
-        id: 3,
-        sender: "Me",
-        subject: "Project Update",
-        preview: "Hi Nex Leads...",
-        body: "Here is the project update.",
-        date: "9:15 AM",
-        from: "me@nexleads.com",
-      },
-    ],
+  drafts: [
+    {
+      id: 4,
+      sender: "Draft",
+      subject: "Unfinished Proposal",
+      preview: "Still working on...",
+      body: "Draft content here...",
+      date: "1w ago",
+      from: "me@nexleads.com",
+    },
+  ],
 
-    drafts: [
-      {
-        id: 4,
-        sender: "Draft",
-        subject: "Unfinished Proposal",
-        preview: "Still working on...",
-        body: "Draft content here...",
-        date: "1w ago",
-        from: "me@nexleads.com",
-      },
-    ],
-
-    spam: [],
-    trash: [],
-  };
+  spam: [],
+  trash: [],
+};
   const mails = folders[activeFolder] || [];
 
-  const folderIcons = {
-    inbox: "ri-inbox-line",
-    sent: "ri-send-plane-line",
-    drafts: "ri-draft-line",
-    spam: "ri-spam-2-line",
-    trash: "ri-delete-bin-line",
-  };
+const folderIcons = {
+  inbox: "ri-inbox-line",
+  sent: "ri-send-plane-line",
+  drafts: "ri-draft-line",
+  spam: "ri-spam-2-line",
+  trash: "ri-delete-bin-line",
+};
 
 
 const DISCOUNT = 0.15;
@@ -158,6 +158,15 @@ const [isEditOpen, setIsEditOpen] = useState(false);
 
 const [selectedCard, setSelectedCard] = useState(null);
 
+const [leadStatus, setLeadStatus] = useState(
+  Array(6).fill("interested") // default for all rows
+);
+
+const updateStatus = (index, value) => {
+  const updated = [...leadStatus];
+  updated[index] = value;
+  setLeadStatus(updated);
+};
 
 
 
@@ -173,7 +182,7 @@ const [selectedCard, setSelectedCard] = useState(null);
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
               {statCards.map((card, idx) => (
-                <div
+                <div 
                   key={idx}
                   className={`p-4 md:p-6 rounded-2xl ${card.gradient ? 'text-white' : 'bg-white'} relative`}
                   style={card.gradient ? { background: 'linear-gradient(135deg, #1e3a5f 0%, #2d4a7c 100%)' } : {}}
@@ -189,7 +198,7 @@ const [selectedCard, setSelectedCard] = useState(null);
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-
+              
               <div className="bg-white p-4 md:p-6 rounded-2xl lg:col-span-2">
                 <h2 className="text-lg md:text-xl font-bold mb-6">Emails Breakdown</h2>
                 <div className="space-y-4">
@@ -237,20 +246,16 @@ const [selectedCard, setSelectedCard] = useState(null);
                   {[
                     { label: 'Leads', icon: <Search className="text-white" size={20} />, color: '#1e3a5f' },
                     { label: 'Emails', icon: <Mail className="text-white" size={20} />, color: '#2a4a7c' },
-                    {
-                      label: 'Response', icon: (
+                    { label: 'Response', icon: (
                         <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
-                      ), color: '#3a5a8c'
-                    },
-                    {
-                      label: 'Project', icon: (
+                      ), color: '#3a5a8c' },
+                    { label: 'Project', icon: (
                         <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
-                      ), color: '#4a6a9c'
-                    }
+                      ), color: '#4a6a9c' }
                   ].map((step, i) => (
                     <React.Fragment key={i}>
                       <div className="flex flex-col items-center flex-shrink-0">
@@ -271,16 +276,16 @@ const [selectedCard, setSelectedCard] = useState(null);
       case "search":
         return (<div className="w-full flex flex-col lg:flex-row gap-6">
 
-          {/* LEFT CONTENT — JOB BOARD */}
-          <div className="flex-1 bg-white rounded-3xl p-6 shadow-sm border space-y-6">
+  {/* LEFT CONTENT — JOB BOARD */}
+  <div className="flex-1 bg-white rounded-3xl p-6 shadow-sm border space-y-6">
 
-            {/* Job Board Header */}
-            <div>
-              <h1 className="text-3xl font-medium text-[#000000]">Job Board</h1>
-              <p className="text-gray-900 mt-1">
-                Find leads, email them, close the deal, and happily earn.
-              </p>
-            </div>
+    {/* Job Board Header */}
+    <div>
+      <h1 className="text-3xl font-medium text-[#000000]">Job Board</h1>
+      <p className="text-gray-900 mt-1">
+        Find leads, email them, close the deal, and happily earn.
+      </p>
+    </div>
 
     {/* Search + Controls */}
     <div className="flex flex-col xl:flex-row items-center gap-4">
@@ -495,28 +500,62 @@ onClick={() => {
               <div className="flex items-center max-w-xs bg-[#EEF8FF] px-3 py-2 rounded-lg">
                 <i className="ri-search-line text-gray-600"></i>
                 <input
-                  type="text"
-                  placeholder="Search by job title, keywords…"
-                  className="flex-1 bg-transparent outline-none text-gray-700 ml-2 text-sm"
+                  placeholder="Search Mail"
+                  className="ml-2 w-full bg-transparent outline-none text-sm"
                 />
               </div>
+            </div>
 
-              {/* Platforms Dropdown */}
-              <div className="w-full xl:w-1/4">
-                <button className="w-full flex justify-between items-center px-4 py-3 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl text-gray-700 text-sm">
-                  <span className="flex items-center gap-2">
-                    <i className="ri-apps-2-line text-lg text-gray-900 font-bold"></i>
-                    Platforms
-                  </span>
-                  <i className="ri-arrow-down-s-line text-xl text-gray-500 font-bold"></i>
-                </button>
+            {/* Header */}
+            <div className="hidden md:grid grid-cols-12 font-semibold px-4 py-2 text-xs text-[#052659] border-b">
+              <div className="col-span-3">Sender</div>
+              <div className="col-span-6">Subject</div>
+              <div className="col-span-3 text-right">Date</div>
+            </div>
+          </>
+
+        {/* Emails List */}
+        <div>
+          {mails.map((mail) => (
+            <div
+              key={mail.id}
+              onClick={() => {
+                if (activeFolder === "drafts") {
+                  setIsComposing(true);
+                  setComposeData({ subject: mail.subject, body: mail.body });
+                  setSelectedMail(null);
+                } else {
+                  setSelectedMail(mail);
+                  setIsComposing(false);
+                }
+              }}
+              className={`group px-4 py-3 cursor-pointer md:grid md:grid-cols-12 transition-colors
+                ${
+                  selectedMail?.id === mail.id
+                    ? "bg-[#072A5A] text-white"
+                    : "bg-[#EEF8FF] hover:bg-[#072A5A] hover:text-white"
+                }`}
+            >
+              <div className="md:col-span-3 font-medium text-sm">{mail.sender}</div>
+              <div className="md:col-span-6">
+                <div className="font-semibold text-sm">{mail.subject}</div>
+                <div className="text-xs opacity-70 truncate">{mail.preview}</div>
               </div>
+              <div className="md:col-span-3 text-xs md:text-right opacity-70">{mail.date}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
 
-              {/* Filter Button */}
-              <button className="w-full xl:w-auto flex items-center gap-2 px-4 py-3 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl text-gray-700 text-sm">
-                <i className="ri-equalizer-line text-lg text-gray-900"></i>
-                Filter
-              </button>
+    {/* ================= COMPOSE / PREVIEW ================= */}
+    {isComposing ? (
+      // Compose takes full panel width
+      <aside className="w-full bg-[#EEF8FF] p-4 rounded-r-2xl">
+        <div className="bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
+          <h2 className="text-xl font-medium mb-4 text-center">
+            {activeFolder === "drafts" ? "Edit Draft" : "Compose Mail"}
+          </h2>
 
          <input
   type="email"
@@ -618,341 +657,145 @@ onClick={() => {
               <p><strong>From:</strong> {selectedMail.from}</p>
             </div>
 
-            {/* Tags */}
-            <div className="flex items-center flex-wrap gap-3">
-              {["Web Developer", "UI Designer", "Backend Dev", "Figma designer"].map((tag) => (
-                <span
-                  key={tag}
-                  className="flex items-center gap-2 px-3 py-1 text-gray-900 rounded-full text-sm"
-                  style={{ backgroundColor: "#C1E8FF" }}>
-                  <i className="ri-close-line text-base cursor-pointer text-gray-900  hover:text-blue-900"></i>
-                  {tag}
+            <div className="mt-4 whitespace-pre-line text-sm">{selectedMail.body}</div>
+          </>
+        ) : (
+          <p className="text-center text-sm text-gray-500 mt-10">Select an email</p>
+        )}
+      </aside>
+    )}
+
+  </div>
+
+</div>
+
+{/* ================= SMALLER SCREENS VERSION ================= */}
+<div className="h-full w-full bg-[#EEF8FF] email-desktop-smaller-version mx-auto hidden">
+  <div className="h-full bg-white rounded-2xl overflow-hidden flex flex-col">
+
+    {/* ================= FOLDER NAVIGATION ================= */}
+    <aside className="w-full bg-[#072A5A] text-white p-4 flex flex-row overflow-x-auto gap-2">
+      {foldersList.map((folder) => {
+        if (folder === "compose") {
+          return (
+            <div
+              key="compose"
+              onClick={() => {
+                setIsComposing(true);
+                setSelectedMail(null);
+                setComposeData({ to: "", subject: "", body: "" });
+                setActiveFolder("compose");
+              }}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm
+                ${activeFolder === "compose" ? "bg-[#5F81AF]" : "hover:bg-[#5F81AF]"}`}
+            >
+              <i className="ri-pencil-line text-base"></i>
+              <span>Compose</span>
+            </div>
+          );
+        } else {
+          return (
+            <div
+              key={folder}
+              onClick={() => {
+                setActiveFolder(folder);
+                setSelectedMail(null);
+                setIsComposing(false);
+              }}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm
+                ${activeFolder === folder ? "bg-[#5F81AF]" : "hover:bg-[#5F81AF]"}`}
+            >
+              <i className={`${folderIcons[folder]} text-base`}></i>
+              <span className="capitalize">{folder}</span>
+              {folders[folder]?.length > 0 && (
+                <span className="bg-white text-[#072A5A] text-xs px-2 rounded-full font-semibold">
+                  {folders[folder].length}
                 </span>
-              ))}
-
-              <button className="text-sm text-gray-500 ml-2">
-                Clear All
-              </button>
+              )}
             </div>
+          );
+        }
+      })}
+    </aside>
 
-
-            {/* Found Jobs */}
-            <div className="flex items-center justify-between w-full">
-              <p className="font-medium text-gray-600">
-                We've found <span className="text-[#9711B9] font-semibold">20</span> Jobs!
-              </p>
-
-              <button className="text-sm text-[#FFFFFF] font-medium hover:underline bg-[#052659] pr-5 pl-5 pt-2 pb-2 border border-[#052659] rounded-xl">
-                Select All
-              </button>
-            </div>
-
-
-            {/* Jobs Table */}
-            <div className="overflow-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="border-b">
-                    <th className="py-3 px-2"><input type="checkbox" /></th>
-                    <th className="py-3 px-2 font-medium text-[#000000]">Name</th>
-                    <th className="py-3 px-2 font-medium text-[#000000]">Description</th>
-                    <th className="py-3 px-2 font-medium text-[#000000]">Email</th>
-                    <th className="py-3 px-2 font-medium text-[#000000]">Platform</th>
-                    <th className="py-3 px-2 font-medium text-[#000000]">Date</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {[
-                    ["Syed Anas", "Looking for a website dev…", "anas@gmail.com", "Facebook", "9/10/25"],
-                    ["Mohsin", "Need UI Designer", "Mohsin@gmail.com", "Thread", "9/10/25"],
-                    ["Sohaib", "Need Shopify store dev…", "Sohaib@gmail.com", "LinkedIn", "9/10/25"],
-                    ["Basit Karim", "Backend Dev - for deploy…", "basit@gmail.com", "Twitter", "7/10/25"],
-                    ["Syed Anas", "Looking for figma expert…", "anas.r@gmail.com", "Facebook", "23/09/25"],
-                    ["Sohaib", "Logo Designer required…", "Sohaib@gmail.com", "Upwork", "20/09/25"],
-                  ].map((item, i) => (
-                    <tr key={i} className="border-b text-gray-700">
-                      <td className="py-3 px-2">
-                        <input type="checkbox" />
-                      </td>
-                      <td className="py-3 px-2">{item[0]}</td>
-                      <td className="py-3 px-2">{item[1]}</td>
-                      <td className="py-3 px-2">{item[2]}</td>
-                      <td className="py-3 px-2">{item[3]}</td>
-                      <td className="py-3 px-2">{item[4]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <button className="text-[#052659] font-medium mt-2">See more ▼</button>
+    {/* ================= MAIL LIST ================= */}
+    {!isComposing && activeFolder !== "compose" && selectedMail === null && (
+      <section className="w-full border-b overflow-auto">
+        {folders[activeFolder]?.map((mail) => (
+          <div
+            key={mail.id}
+            onClick={() => {
+              if (activeFolder === "drafts") {
+                setIsComposing(true);
+                setComposeData({ subject: mail.subject, body: mail.body });
+                setSelectedMail(null);
+              } else {
+                setIsComposing(false);
+                setSelectedMail(mail); // show preview fullscreen
+              }
+            }}
+            className="group px-4 py-3 cursor-pointer transition-colors bg-[#EEF8FF] hover:bg-[#072A5A] hover:text-white border-b border-[#5F81AF]"
+          >
+            <div className="font-medium text-sm">{mail.sender}</div>
+            <div className="font-semibold text-sm">{mail.subject}</div>
+            <div className="text-xs opacity-70 truncate">{mail.preview}</div>
+            <div className="text-xs opacity-70 text-right">{mail.date}</div>
           </div>
+        ))}
+      </section>
+    )}
 
-          {/* RIGHT PANEL — COMPOSE MAIL */}
-          <div className="lg:w-1/3 bg-white rounded-3xl p-6 shadow-sm border h-fit">
-            <h2 className="text-xl font-medium mb-4 text-[#000000] text-center">COMPOSE MAIL</h2>
+    {/* ================= PREVIEW / COMPOSE FULL SCREEN ================= */}
+    {(isComposing || selectedMail) && (
+      <aside className="w-full bg-[#EEF8FF] p-4 flex-1">
+        {isComposing ? (
+          <div className="bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
+            <h2 className="text-xl font-medium mb-4 text-center">
+              {activeFolder === "drafts" ? "Edit Draft" : "Compose Mail"}
+            </h2>
 
-            <input
-              type="text"
-              placeholder="Subject Line"
-              className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
-            />
+           <input
+  type="email"
+  placeholder="To"
+  value={composeData.to}
+  onChange={(e) =>
+    setComposeData({ ...composeData, to: e.target.value })
+  }
+  className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+/>
+
+<input
+  type="text"
+  placeholder="Subject"
+  value={composeData.subject}
+  onChange={(e) =>
+    setComposeData({ ...composeData, subject: e.target.value })
+  }
+  className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+/>
 
             <textarea
-              placeholder="Your Subject..."
+              placeholder="Your Message..."
               rows={8}
-              className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none"
-            ></textarea>
+              value={composeData.body}
+              onChange={(e) => setComposeData({ ...composeData, body: e.target.value })}
+              className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none flex-1"
+            />
 
-            {/* Formatting buttons */}
             <div className="flex items-center gap-4 mt-4 text-gray-700 px-2">
               <b>B</b>
               <i>I</i>
               <u>U</u>
               <i className="ri-list-unordered"></i>
               <i className="ri-list-ordered"></i>
-              <span className=" text-gray-700">Cc Bcc</span>
-              <button className="px-3 py-1 bg-[#EEF8FF] text-[#000000] rounded-lg text-sm">
-                AI Assist
-              </button>
+              <span>Cc Bcc</span>
+              <button className="px-3 py-1 bg-[#EEF8FF] rounded-lg text-sm">AI Assist</button>
             </div>
 
-            {/* Send Button */}
-            <button className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium hover:bg-blue-800">
-              Send to all Selected
+            <button className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium">
+              Send
             </button>
           </div>
-        </div>
-        );
-
-      case "emails":
-        const foldersList = ["compose", "inbox", "sent", "drafts", "spam", "trash"];
-        return (<div className="h-full w-full main-email">
-          <div className="h-full w-full bg-[#EEF8FF] email-desktop-version mx-auto">
-            <div className="h-full bg-white rounded-2xl overflow-hidden flex">
-
-              {/* ================= SIDEBAR ================= */}
-              <aside className="w-64 bg-[#072A5A] text-white h-full p-4 hidden md:flex flex-col rounded-l-2xl">
-                <h2 className="text-xl font-bold mb-6 capitalize">{activeFolder}</h2>
-
-                <nav className="space-y-2 text-sm">
-                  {foldersList.map((folder) => {
-                    if (folder === "compose") {
-                      return (
-                        <div
-                          key="compose"
-                          onClick={() => {
-                            setIsComposing(true);
-                            setSelectedMail(null);
-                            setComposeData({ to: "", subject: "", body: "" });
-                            setActiveFolder("compose");
-                          }}
-                          className="flex items-center gap-3 bg-[#EEF8FF] hover:bg-[#5F81AF] hover:text-white text-[#052659] px-3 py-2 rounded-lg cursor-pointer"
-                        >
-                          <i className="ri-pencil-line text-base"></i>
-                          <span className="font-medium">Compose</span>
-                        </div>
-                      );
-                    } else {
-                      return (
-                        <div
-                          key={folder}
-                          onClick={() => {
-                            setActiveFolder(folder);
-                            setSelectedMail(null);
-                            setIsComposing(false);
-                          }}
-                          className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer
-                  ${activeFolder === folder
-                              ? "bg-[#5F81AF] text-white"
-                              : "hover:bg-[#5F81AF] hover:text-white"
-                            }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <i className={`${folderIcons[folder]} text-base`}></i>
-                            <span className="capitalize">{folder}</span>
-                          </div>
-
-                          {folders[folder]?.length > 0 && (
-                            <span className="bg-white text-[#072A5A] text-xs px-2 rounded-full font-semibold">
-                              {folders[folder].length}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    }
-                  })}
-                </nav>
-              </aside>
-
-              {/* ================= MAIL LIST ================= */}
-              {!isComposing && (
-                <section
-                  className={`flex-1 border-r overflow-auto ${activeFolder === "drafts" ? "" : ""
-                    }`}
-                >
-                  <>
-                    {/* Search */}
-                    <div className="p-4 border-b">
-                      <div className="flex items-center max-w-xs bg-[#EEF8FF] px-3 py-2 rounded-lg">
-                        <i className="ri-search-line text-gray-600"></i>
-                        <input
-                          placeholder="Search Mail"
-                          className="ml-2 w-full bg-transparent outline-none text-sm"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Header */}
-                    <div className="hidden md:grid grid-cols-12 font-semibold px-4 py-2 text-xs text-[#052659] border-b">
-                      <div className="col-span-3">Sender</div>
-                      <div className="col-span-6">Subject</div>
-                      <div className="col-span-3 text-right">Date</div>
-                    </div>
-                  </>
-
-                  {/* Emails List */}
-                  <div>
-                    {mails.map((mail) => (
-                      <div
-                        key={mail.id}
-                        onClick={() => {
-                          if (activeFolder === "drafts") {
-                            setIsComposing(true);
-                            setComposeData({ subject: mail.subject, body: mail.body });
-                            setSelectedMail(null);
-                          } else {
-                            setSelectedMail(mail);
-                            setIsComposing(false);
-                          }
-                        }}
-                        className={`group px-4 py-3 cursor-pointer md:grid md:grid-cols-12 transition-colors
-                ${selectedMail?.id === mail.id
-                            ? "bg-[#072A5A] text-white"
-                            : "bg-[#EEF8FF] hover:bg-[#072A5A] hover:text-white"
-                          }`}
-                      >
-                        <div className="md:col-span-3 font-medium text-sm">{mail.sender}</div>
-                        <div className="md:col-span-6">
-                          <div className="font-semibold text-sm">{mail.subject}</div>
-                          <div className="text-xs opacity-70 truncate">{mail.preview}</div>
-                        </div>
-                        <div className="md:col-span-3 text-xs md:text-right opacity-70">{mail.date}</div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* ================= COMPOSE / PREVIEW ================= */}
-              {isComposing ? (
-                // Compose takes full panel width
-                <aside className="w-full bg-[#EEF8FF] p-4 rounded-r-2xl">
-                  <div className="bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
-                    <h2 className="text-xl font-medium mb-4 text-center">
-                      {activeFolder === "drafts" ? "Edit Draft" : "Compose Mail"}
-                    </h2>
-
-                    <input
-                      type="email"
-                      placeholder="To"
-                      value={composeData.to}
-                      onChange={(e) =>
-                        setComposeData({ ...composeData, to: e.target.value })
-                      }
-                      className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
-                    />
-
-                    <input
-                      type="text"
-                      placeholder="Subject"
-                      value={composeData.subject}
-                      onChange={(e) =>
-                        setComposeData({ ...composeData, subject: e.target.value })
-                      }
-                      className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
-                    />
-
-                    <textarea
-                      placeholder="Your Message..."
-                      rows={8}
-                      value={composeData.body}
-                      onChange={(e) => setComposeData({ ...composeData, body: e.target.value })}
-                      className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none flex-1"
-                    />
-
-                    {/* Formatting buttons */}
-                    <div className="flex items-center gap-4 mt-4 text-gray-700 px-2">
-                      <b>B</b>
-                      <i>I</i>
-                      <u>U</u>
-                      <i className="ri-list-unordered"></i>
-                      <i className="ri-list-ordered"></i>
-                      <span>Cc Bcc</span>
-                      <button className="px-3 py-1 bg-[#EEF8FF] rounded-lg text-sm">AI Assist</button>
-                    </div>
-
-                    <button className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium">
-                      Send
-                    </button>
-                  </div>
-                </aside>
-              ) : (
-                // Preview stays narrow
-                <aside className="w-[360px] bg-[#EEF8FF] p-4 rounded-r-2xl hidden lg:block">
-                  {selectedMail ? (
-                    <>
-                      <div className="relative flex justify-end gap-2 mb-4">
-                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
-                          <i className="ri-reply-line"></i> Reply
-                        </button>
-
-                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
-                          <i className="ri-share-forward-line"></i> Forward
-                        </button>
-
-                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
-                          <i className="ri-delete-bin-line"></i> Delete
-                        </button>
-
-                        {/* 3 dots button */}
-                        <button
-                          onClick={() => setOpen(!open)}
-                          className="bg-[#C1E8FF] px-2 py-1 rounded text-xs"
-                        >
-                          <i className="ri-more-2-fill text-base"></i>
-                        </button>
-
-                        {/* Dropdown */}
-                        {open && (
-                          <div className="absolute right-0 top-9 w-40 bg-white border border-gray-200 rounded shadow-md z-50">
-                            <button
-                              className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
-                              onClick={() => {
-                                setOpen(false);
-                                // handle mark as ongoing here
-                              }}
-                            >
-                              Mark as Ongoing
-                            </button>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="text-sm space-y-2 border-y py-4">
-                        <p><strong>Subject:</strong> {selectedMail.subject}</p>
-                        <p><strong>From:</strong> {selectedMail.from}</p>
-                      </div>
-
-                      <div className="mt-4 whitespace-pre-line text-sm">{selectedMail.body}</div>
-                    </>
-                  ) : (
-                    <p className="text-center text-sm text-gray-500 mt-10">Select an email</p>
-                  )}
-                </aside>
-              )}
-
         ) : (
           <div className="relative bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
             <div className="flex justify-end gap-2 mb-4">
@@ -994,169 +837,26 @@ onClick={() => {
   )}
             </div>
 
-          </div>
-
-          {/* ================= SMALLER SCREENS VERSION ================= */}
-          <div className="h-full w-full bg-[#EEF8FF] email-desktop-smaller-version mx-auto hidden">
-            <div className="h-full bg-white rounded-2xl overflow-hidden flex flex-col">
-
-              {/* ================= FOLDER NAVIGATION ================= */}
-              <aside className="w-full bg-[#072A5A] text-white p-4 flex flex-row overflow-x-auto gap-2">
-                {foldersList.map((folder) => {
-                  if (folder === "compose") {
-                    return (
-                      <div
-                        key="compose"
-                        onClick={() => {
-                          setIsComposing(true);
-                          setSelectedMail(null);
-                          setComposeData({ to: "", subject: "", body: "" });
-                          setActiveFolder("compose");
-                        }}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm
-                ${activeFolder === "compose" ? "bg-[#5F81AF]" : "hover:bg-[#5F81AF]"}`}
-                      >
-                        <i className="ri-pencil-line text-base"></i>
-                        <span>Compose</span>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div
-                        key={folder}
-                        onClick={() => {
-                          setActiveFolder(folder);
-                          setSelectedMail(null);
-                          setIsComposing(false);
-                        }}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm
-                ${activeFolder === folder ? "bg-[#5F81AF]" : "hover:bg-[#5F81AF]"}`}
-                      >
-                        <i className={`${folderIcons[folder]} text-base`}></i>
-                        <span className="capitalize">{folder}</span>
-                        {folders[folder]?.length > 0 && (
-                          <span className="bg-white text-[#072A5A] text-xs px-2 rounded-full font-semibold">
-                            {folders[folder].length}
-                          </span>
-                        )}
-                      </div>
-                    );
-                  }
-                })}
-              </aside>
-
-              {/* ================= MAIL LIST ================= */}
-              {!isComposing && activeFolder !== "compose" && selectedMail === null && (
-                <section className="w-full border-b overflow-auto">
-                  {folders[activeFolder]?.map((mail) => (
-                    <div
-                      key={mail.id}
-                      onClick={() => {
-                        if (activeFolder === "drafts") {
-                          setIsComposing(true);
-                          setComposeData({ subject: mail.subject, body: mail.body });
-                          setSelectedMail(null);
-                        } else {
-                          setIsComposing(false);
-                          setSelectedMail(mail); // show preview fullscreen
-                        }
-                      }}
-                      className="group px-4 py-3 cursor-pointer transition-colors bg-[#EEF8FF] hover:bg-[#072A5A] hover:text-white border-b border-[#5F81AF]"
-                    >
-                      <div className="font-medium text-sm">{mail.sender}</div>
-                      <div className="font-semibold text-sm">{mail.subject}</div>
-                      <div className="text-xs opacity-70 truncate">{mail.preview}</div>
-                      <div className="text-xs opacity-70 text-right">{mail.date}</div>
-                    </div>
-                  ))}
-                </section>
-              )}
-
-              {/* ================= PREVIEW / COMPOSE FULL SCREEN ================= */}
-              {(isComposing || selectedMail) && (
-                <aside className="w-full bg-[#EEF8FF] p-4 flex-1">
-                  {isComposing ? (
-                    <div className="bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
-                      <h2 className="text-xl font-medium mb-4 text-center">
-                        {activeFolder === "drafts" ? "Edit Draft" : "Compose Mail"}
-                      </h2>
-
-                      <input
-                        type="email"
-                        placeholder="To"
-                        value={composeData.to}
-                        onChange={(e) =>
-                          setComposeData({ ...composeData, to: e.target.value })
-                        }
-                        className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
-                      />
-
-                      <input
-                        type="text"
-                        placeholder="Subject"
-                        value={composeData.subject}
-                        onChange={(e) =>
-                          setComposeData({ ...composeData, subject: e.target.value })
-                        }
-                        className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
-                      />
-
-                      <textarea
-                        placeholder="Your Message..."
-                        rows={8}
-                        value={composeData.body}
-                        onChange={(e) => setComposeData({ ...composeData, body: e.target.value })}
-                        className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none flex-1"
-                      />
-
-                      <div className="flex items-center gap-4 mt-4 text-gray-700 px-2">
-                        <b>B</b>
-                        <i>I</i>
-                        <u>U</u>
-                        <i className="ri-list-unordered"></i>
-                        <i className="ri-list-ordered"></i>
-                        <span>Cc Bcc</span>
-                        <button className="px-3 py-1 bg-[#EEF8FF] rounded-lg text-sm">AI Assist</button>
-                      </div>
-
-                      <button className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium">
-                        Send
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
-                      <div className="flex justify-end gap-2 mb-4">
-                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
-                          <i className="ri-reply-line"></i> Reply
-                        </button>
-                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
-                          <i className="ri-share-forward-line"></i> Forward
-                        </button>
-                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
-                          <i className="ri-delete-bin-line"></i> Delete
-                        </button>
-                      </div>
-
-                      <div className="text-sm space-y-2 border-y py-4">
-                        <p><strong>Subject:</strong> {selectedMail.subject}</p>
-                        <p><strong>From:</strong> {selectedMail.from}</p>
-                      </div>
-
-                      <div className="mt-4 whitespace-pre-line text-sm">{selectedMail.body}</div>
-                    </div>
-                  )}
-                </aside>
-              )}
+            <div className="text-sm space-y-2 border-y py-4">
+              <p><strong>Subject:</strong> {selectedMail.subject}</p>
+              <p><strong>From:</strong> {selectedMail.from}</p>
             </div>
+
+            <div className="mt-4 whitespace-pre-line text-sm">{selectedMail.body}</div>
           </div>
+        )}
+      </aside>
+    )}
+  </div>
+</div>
 
 
-        </div>
-        );
+</div>
+  );
 
       case "tasks":
         return (
-          <div className="bg-white rounded-3xl p-5 md:p-8">
+      <div className="bg-white rounded-3xl p-5 md:p-8">
 
 
        
@@ -1271,37 +971,64 @@ onClick={() => {
       <p className="text-gray-900 mt-1">Date: 08-01-2026</p>
 
       {/* Jobs Table */}
-      <div className="overflow-auto">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="border-b">
-              <th className="py-3 px-2 font-medium text-[#000000]">Name</th>
-              <th className="py-3 px-2 font-medium text-[#000000]">Description</th>
-              <th className="py-3 px-2 font-medium text-[#000000]">Email</th>
-              <th className="py-3 px-2 font-medium text-[#000000]">Platform</th>
-              <th className="py-3 px-2 font-medium text-[#000000]">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              ["Syed Anas", "Looking for a website dev…", "anas@gmail.com", "Facebook", "9/10/25"],
-              ["Mohsin", "Need UI Designer", "Mohsin@gmail.com", "Thread", "9/10/25"],
-              ["Sohaib", "Need Shopify store dev…", "Sohaib@gmail.com", "LinkedIn", "9/10/25"],
-              ["Basit Karim", "Backend Dev - for deploy…", "basit@gmail.com", "Twitter", "7/10/25"],
-              ["Syed Anas", "Looking for figma expert…", "anas.r@gmail.com", "Facebook", "23/09/25"],
-              ["Sohaib", "Logo Designer required…", "Sohaib@gmail.com", "Upwork", "20/09/25"],
-            ].map((item, i) => (
-              <tr key={i} className="border-b text-gray-700">
-                <td className="py-3 px-2">{item[0]}</td>
-                <td className="py-3 px-2">{item[1]}</td>
-                <td className="py-3 px-2">{item[2]}</td>
-                <td className="py-3 px-2">{item[3]}</td>
-                <td className="py-3 px-2">{item[4]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+  <div className="overflow-auto">
+  <table className="w-full text-left">
+    <thead>
+      <tr className="border-b">
+        <th className="py-3 px-2 font-medium text-[#000000]">Status</th>
+        <th className="py-3 px-2 font-medium text-[#000000]">Name</th>
+        <th className="py-3 px-2 font-medium text-[#000000]">Description</th>
+        <th className="py-3 px-2 font-medium text-[#000000]">Email</th>
+        <th className="py-3 px-2 font-medium text-[#000000]">Platform</th>
+        <th className="py-3 px-2 font-medium text-[#000000]">Date</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {[
+        ["Syed Anas", "Looking for a website dev…", "anas@gmail.com", "Facebook", "9/10/25"],
+        ["Mohsin", "Need UI Designer", "Mohsin@gmail.com", "Thread", "9/10/25"],
+        ["Sohaib", "Need Shopify store dev…", "Sohaib@gmail.com", "LinkedIn", "9/10/25"],
+        ["Basit Karim", "Backend Dev - for deploy…", "basit@gmail.com", "Twitter", "7/10/25"],
+        ["Syed Anas", "Looking for figma expert…", "anas.r@gmail.com", "Facebook", "23/09/25"],
+        ["Sohaib", "Logo Designer required…", "Sohaib@gmail.com", "Upwork", "20/09/25"],
+      ].map((item, i) => (
+        <tr key={i} className="border-b text-gray-700">
+          
+          {/* STATUS COLUMN */}
+          <td className="py-3 px-2">
+            <div className="flex items-center gap-2">
+
+              {/* Email Icon */}
+              <i className="ri-mail-line text-lg text-[#052659]"></i>
+
+              {/* Dropdown */}
+              <select
+                value={leadStatus[i]}
+                onChange={(e) => updateStatus(i, e.target.value)}
+                className={`text-xs px-2 py-1 rounded-lg border cursor-pointer
+                  ${leadStatus[i] === "interested"
+                    ? "bg-green-100 text-green-700 border-green-300"
+                    : "bg-red-100 text-red-700 border-red-300"
+                  }`}
+              >
+                <option value="interested">Interested</option>
+                <option value="not_interested">Not Interested</option>
+              </select>
+
+            </div>
+          </td>
+
+          <td className="py-3 px-2">{item[0]}</td>
+          <td className="py-3 px-2">{item[1]}</td>
+          <td className="py-3 px-2">{item[2]}</td>
+          <td className="py-3 px-2">{item[3]}</td>
+          <td className="py-3 px-2">{item[4]}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
     </div>
   </div>
 )}
@@ -1914,23 +1641,23 @@ onClick={() => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#FFF' }}>
+    <div className="flex h-screen overflow-hidden" style={{background: '#FFF'}}>
 
       {/* Sidebar */}
       <div
         ref={sidebarRef}
         className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
         sidebar-menu md:translate-x-0 w-24 h-screen flex-shrink-0 flex flex-col items-center py-6 fixed md:sticky top-0 left-0 z-50 
-        transition-transform duration-300 md:transition-none`}
+        transition-transform duration-300 md:transition-none`} 
       >
 
-        <div className="mb-2 ml-4 flex w-30 items-center justify-center">
-          <img
-            src={nexLeadlogo}    // <-- replace with your actual logo path
-            alt="Nex Leads Logo"
-            className="w-full h-full"
-          />
-        </div>
+<div className="mb-2 ml-4 flex w-30 items-center justify-center">
+  <img
+    src={nexLeadlogo}    // <-- replace with your actual logo path
+    alt="Nex Leads Logo"
+    className="w-full h-full"
+  />
+</div>
 
         {/* Navigation Icons */}
         <div className="flex-1 flex flex-col items-center space-y-3 overflow-y-auto">
@@ -1945,8 +1672,9 @@ onClick={() => {
             <button
               key={i}
               onClick={() => setActivePage(page)}
-              className={`p-3 rounded-xl transition ${activePage === page ? "bg-[#5F81AF] text-white text-bold" : "text-white"
-                }`}
+              className={`p-3 rounded-xl transition ${
+                activePage === page ? "bg-[#5F81AF] text-white text-bold" : "text-white"
+              }`}
             >
               <Icon size={24} />
             </button>
@@ -1966,66 +1694,67 @@ onClick={() => {
       {/* Main Section */}
       <div className="main-section flex-1 flex flex-col overflow-hidden w-full md:w-auto">
 
-        {/* HEADER */}
-        <div className="main-section-header bg-[#EEF8FF] flex items-center justify-between px-2 md:px-4 py-3">
+         {/* HEADER */}
+      <div className="main-section-header bg-[#EEF8FF] flex items-center justify-between px-2 md:px-4 py-3">
 
-          {/* Sidebar Toggle (Mobile only) */}
+        {/* Sidebar Toggle (Mobile only) */}
+        <button
+          className="md:hidden p-2 hover:bg-gray-100 rounded-lg mr-2"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          <Menu size={24} />
+        </button>
+
+        {/* DESKTOP SEARCH BAR */}
+        <div className="hidden md:flex items-center w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-2 py-2 bg-white border border-white rounded-xl">
+          <i className="ri-search-line text-lg text-gray-900 font-bold"></i>
+          <input
+            type="text"
+            placeholder="Search"
+            className="flex-1 bg-transparent outline-none text-gray-700 ml-2 text-sm px-2 py-2"
+          />
+        </div>
+
+        {/* RIGHT SECTION */}
+        <div className="flex items-center space-x-2 md:space-x-4">
+
+          {/* MOBILE SEARCH ICON (toggles search bar) */}
           <button
-            className="md:hidden p-2 hover:bg-gray-100 rounded-lg mr-2"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="md:hidden"
+            onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
           >
-            <Menu size={24} />
+            <i className="ri-search-line text-xl text-gray-900"></i>
           </button>
 
-          {/* DESKTOP SEARCH BAR */}
-          <div className="hidden md:flex items-center w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-2 py-2 bg-white border border-white rounded-xl">
-            <i className="ri-search-line text-lg text-gray-900 font-bold"></i>
-            <input
-              type="text"
-              placeholder="Search"
-              className="flex-1 bg-transparent outline-none text-gray-700 ml-2 text-sm px-2 py-2"
-            />
-          </div>
+          {/* USER */}
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-300 flex items-center justify-center">
+              <User size={20} className="text-blue-900" />
+            </div>
 
-          {/* RIGHT SECTION */}
-          <div className="flex items-center space-x-2 md:space-x-4">
-
-            {/* MOBILE SEARCH ICON (toggles search bar) */}
-            <button
-              className="md:hidden"
-              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-            >
-              <i className="ri-search-line text-xl text-gray-900"></i>
-            </button>
-
-            {/* USER */}
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-300 flex items-center justify-center">
-                <User size={20} className="text-blue-900" />
-              </div>
-
-              <div className="hidden md:block">
-                <div className="font-semibold text-sm">Sohaib Kamran</div>
-                <div className="text-xs text-gray-500">sohaib@nexleads.com</div>
-              </div>
+            <div className="hidden md:block">
+              <div className="font-semibold text-sm">Sohaib Kamran</div>
+              <div className="text-xs text-gray-500">sohaib@nexleads.com</div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* MOBILE SEARCH BAR — appears ONLY when clicking search icon */}
-        <div
-          className={`md:hidden transition-all duration-300 overflow-hidden ${mobileSearchOpen ? "max-h-[80px] opacity-100 mt-2" : "max-h-0 opacity-0"
-            }`}
-        >
-          <div className="m-auto flex items-center w-[90%] px-4 py-4 bg-[#EEF8FF] border border-white rounded-[30px]">
-            <i className="ri-search-line text-lg text-gray-900 font-bold"></i>
-            <input
-              type="text"
-              placeholder="Search"
-              className="flex-1 bg-transparent outline-none text-gray-700 ml-2 text-sm px-2 py-2"
-            />
-          </div>
+      {/* MOBILE SEARCH BAR — appears ONLY when clicking search icon */}
+      <div
+        className={`md:hidden transition-all duration-300 overflow-hidden ${
+          mobileSearchOpen ? "max-h-[80px] opacity-100 mt-2" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="m-auto flex items-center w-[90%] px-4 py-4 bg-[#EEF8FF] border border-white rounded-[30px]">
+          <i className="ri-search-line text-lg text-gray-900 font-bold"></i>
+          <input
+            type="text"
+            placeholder="Search"
+            className="flex-1 bg-transparent outline-none text-gray-700 ml-2 text-sm px-2 py-2"
+          />
         </div>
+      </div>
 
 
         {/* Dynamic Page Content */}
