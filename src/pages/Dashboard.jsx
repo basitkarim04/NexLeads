@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Mail, Clock, Folder, Moon, LogOut, Settings, Bell, Grid, ArrowUpRight, User, Menu } from 'lucide-react';
 import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
@@ -975,12 +976,12 @@ onClick={() => {
   <table className="w-full text-left">
     <thead>
       <tr className="border-b">
-        <th className="py-3 px-2 font-medium text-[#000000]">Status</th>
-        <th className="py-3 px-2 font-medium text-[#000000]">Name</th>
+                <th className="py-3 px-2 font-medium text-[#000000]">Name</th>
         <th className="py-3 px-2 font-medium text-[#000000]">Description</th>
         <th className="py-3 px-2 font-medium text-[#000000]">Email</th>
         <th className="py-3 px-2 font-medium text-[#000000]">Platform</th>
         <th className="py-3 px-2 font-medium text-[#000000]">Date</th>
+        <th className="py-3 px-2 font-medium text-[#000000]">Status</th>
       </tr>
     </thead>
 
@@ -993,38 +994,43 @@ onClick={() => {
         ["Syed Anas", "Looking for figma expert…", "anas.r@gmail.com", "Facebook", "23/09/25"],
         ["Sohaib", "Logo Designer required…", "Sohaib@gmail.com", "Upwork", "20/09/25"],
       ].map((item, i) => (
-        <tr key={i} className="border-b text-gray-700">
-          
-          {/* STATUS COLUMN */}
-          <td className="py-3 px-2">
-            <div className="flex items-center gap-2">
+<tr key={i} className="border-b text-gray-700">
 
-              {/* Email Icon */}
-              <i className="ri-mail-line text-lg text-[#052659]"></i>
+  {/* STATUS */}
+  <td className="py-3 px-2">{item[0]}</td>
+  <td className="py-3 px-2">{item[1]}</td>
+  <td className="py-3 px-2">{item[2]}</td>
+  <td className="py-3 px-2">{item[3]}</td>
+  <td className="py-3 px-2">{item[4]}</td>
+    <td className="py-3 px-2">
+    <div className="flex items-center gap-2">
 
-              {/* Dropdown */}
-              <select
-                value={leadStatus[i]}
-                onChange={(e) => updateStatus(i, e.target.value)}
-                className={`text-xs px-2 py-1 rounded-lg border cursor-pointer
-                  ${leadStatus[i] === "interested"
-                    ? "bg-green-100 text-green-700 border-green-300"
-                    : "bg-red-100 text-red-700 border-red-300"
-                  }`}
-              >
-                <option value="interested">Interested</option>
-                <option value="not_interested">Not Interested</option>
-              </select>
+      {/* EMAIL ICON */}
+      <button
+        onClick={() => openComposeWithEmail(item[2])}
+        className="hover:text-blue-700"
+      >
+        <i className="ri-mail-line text-lg text-[#052659]"></i>
+      </button>
 
-            </div>
-          </td>
+      {/* STATUS DROPDOWN */}
+<select
+  value={leadStatus[i]}
+  onChange={(e) => updateStatus(i, e.target.value)}
+  className={`bg-white text-xs px-2 py-1 rounded-lg border cursor-pointer outline-none
+    ${leadStatus[i] === "interested"
+      ? "bg-green-200 text-green-700 border-green-300 focus:bg-white"
+      : "bg-red-200 text-red-700 border-red-300 focus:bg-White"
+    }
+  `}
+>
+        <option value="interested">Interested</option>
+        <option value="not_interested">Not Interested</option>
+      </select>
+    </div>
+  </td>
+</tr>
 
-          <td className="py-3 px-2">{item[0]}</td>
-          <td className="py-3 px-2">{item[1]}</td>
-          <td className="py-3 px-2">{item[2]}</td>
-          <td className="py-3 px-2">{item[3]}</td>
-          <td className="py-3 px-2">{item[4]}</td>
-        </tr>
       ))}
     </tbody>
   </table>
@@ -1768,3 +1774,4 @@ onClick={() => {
 };
 
 export default Dashboard;
+
