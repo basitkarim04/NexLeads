@@ -4,6 +4,11 @@ import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
 import profileImage from "../assets/Images/basit.jpg";
 
 const Dashboard = () => {
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [billingCycle, setBillingCycle] = useState("monthly");
+  const [activeTab, setActiveTab] = useState("profile");
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activePage, setActivePage] = useState(() => {
@@ -131,6 +136,31 @@ const Dashboard = () => {
     trash: "ri-delete-bin-line",
   };
 
+
+const DISCOUNT = 0.15;
+
+const pricing = {
+  free: 0,
+  pro: 19,
+  enterprise: 49,
+};
+
+const getPrice = (monthlyPrice) => {
+  if (billingCycle === "annually") {
+    const yearly = monthlyPrice * 12;
+    return Math.round(yearly - yearly * DISCOUNT);
+  }
+  return monthlyPrice;
+};
+
+
+const [isEditOpen, setIsEditOpen] = useState(false);
+
+const [selectedCard, setSelectedCard] = useState(null);
+
+
+
+
   const renderPage = () => {
     switch (activePage) {
       case "dashboard":
@@ -252,11 +282,218 @@ const Dashboard = () => {
               </p>
             </div>
 
-            {/* Search + Controls */}
-            <div className="flex flex-col xl:flex-row items-center gap-4">
-              {/* Search Input */}
-              <div className="flex items-center w-full xl:w-1/2 px-4 py-3 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl">
-                <i className="ri-search-line text-lg text-gray-900 font-bold"></i>
+    {/* Search + Controls */}
+    <div className="flex flex-col xl:flex-row items-center gap-4">
+      {/* Search Input */}
+<div className="flex items-center w-full xl:w-1/2 px-4 py-3 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl">
+  <i className="ri-search-line text-lg text-gray-900 font-bold"></i>
+  <input
+    type="text"
+    placeholder="Search by job title, keywords…"
+    className="flex-1 bg-transparent outline-none text-gray-700 ml-2 text-sm"
+  />
+</div>
+
+{/* Platforms Dropdown */}
+<div className="w-full xl:w-1/4">
+  <button className="w-full flex justify-between items-center px-4 py-3 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl text-gray-700 text-sm">
+    <span className="flex items-center gap-2">
+      <i className="ri-apps-2-line text-lg text-gray-900 font-bold"></i>
+      Platforms
+    </span>
+    <i className="ri-arrow-down-s-line text-xl text-gray-500 font-bold"></i>
+  </button>
+</div>
+
+{/* Filter Button */}
+<button className="w-full xl:w-auto flex items-center gap-2 px-4 py-3 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl text-gray-700 text-sm">
+  <i className="ri-equalizer-line text-lg text-gray-900"></i>
+  Filter
+</button>
+
+    </div>
+
+    {/* Tags */}
+<div className="flex items-center flex-wrap gap-3">
+  {["Web Developer", "UI Designer", "Backend Dev", "Figma designer"].map((tag) => (
+    <span
+      key={tag}
+      className="flex items-center gap-2 px-3 py-1 text-gray-900 rounded-full text-sm"
+    style={{ backgroundColor: "#C1E8FF" }}>
+      <i className="ri-close-line text-base cursor-pointer text-gray-900  hover:text-blue-900"></i>
+      {tag}
+    </span>
+  ))}
+
+  <button className="text-sm text-gray-500 ml-2">
+    Clear All
+  </button>
+</div>
+
+
+    {/* Found Jobs */}
+<div className="flex items-center justify-between w-full">
+  <p className="font-medium text-gray-600">
+    We've found <span className="text-[#9711B9] font-semibold">20</span> Jobs!
+  </p>
+
+  <button className="text-sm text-[#FFFFFF] font-medium hover:underline bg-[#052659] pr-5 pl-5 pt-2 pb-2 border border-[#052659] rounded-xl">
+    Select All
+  </button>
+</div>
+
+
+    {/* Jobs Table */}
+    <div className="overflow-auto">
+      <table className="w-full text-left">
+        <thead>
+          <tr className="border-b">
+            <th className="py-3 px-2"><input type="checkbox" /></th>
+            <th className="py-3 px-2 font-medium text-[#000000]">Name</th>
+            <th className="py-3 px-2 font-medium text-[#000000]">Description</th>
+            <th className="py-3 px-2 font-medium text-[#000000]">Email</th>
+            <th className="py-3 px-2 font-medium text-[#000000]">Platform</th>
+            <th className="py-3 px-2 font-medium text-[#000000]">Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {[
+            ["Syed Anas", "Looking for a website dev…", "anas@gmail.com", "Facebook", "9/10/25"],
+            ["Mohsin", "Need UI Designer", "Mohsin@gmail.com", "Thread", "9/10/25"],
+            ["Sohaib", "Need Shopify store dev…", "Sohaib@gmail.com", "LinkedIn", "9/10/25"],
+            ["Basit Karim", "Backend Dev - for deploy…", "basit@gmail.com", "Twitter", "7/10/25"],
+            ["Syed Anas", "Looking for figma expert…", "anas.r@gmail.com", "Facebook", "23/09/25"],
+            ["Sohaib", "Logo Designer required…", "Sohaib@gmail.com", "Upwork", "20/09/25"],
+          ].map((item, i) => (
+            <tr key={i} className="border-b text-gray-700">
+              <td className="py-3 px-2">
+                <input type="checkbox" />
+              </td>
+              <td className="py-3 px-2">{item[0]}</td>
+              <td className="py-3 px-2">{item[1]}</td>
+              <td className="py-3 px-2">{item[2]}</td>
+              <td className="py-3 px-2">{item[3]}</td>
+              <td className="py-3 px-2">{item[4]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <button className="text-[#052659] font-medium mt-2">See more ▼</button>
+  </div>
+
+  {/* RIGHT PANEL — COMPOSE MAIL */}
+  <div className="lg:w-1/3 bg-white rounded-3xl p-6 shadow-sm border h-fit">
+    <h2 className="text-xl font-medium mb-4 text-[#000000] text-center">COMPOSE MAIL</h2>
+
+    <input
+      type="text"
+      placeholder="Subject Line"
+      className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+    />
+
+    <textarea
+      placeholder="Your Subject..."
+      rows={8}
+      className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none"
+    ></textarea>
+
+    {/* Formatting buttons */}
+    <div className="flex items-center gap-4 mt-4 text-gray-700 px-2">
+      <b>B</b>
+      <i>I</i>
+      <u>U</u>
+      <i className="ri-list-unordered"></i>
+      <i className="ri-list-ordered"></i>
+      <span className=" text-gray-700">Cc Bcc</span>
+      <button className="px-3 py-1 bg-[#EEF8FF] text-[#000000] rounded-lg text-sm">
+        AI Assist
+      </button>
+    </div>
+
+    {/* Send Button */}
+    <button className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium hover:bg-blue-800">
+      Send to all Selected
+    </button>
+  </div>
+</div>
+);
+
+      case "emails":
+  const foldersList = ["compose", "inbox", "sent", "drafts", "spam", "trash"];
+  return (<div className="h-full w-full main-email">
+   <div className="h-full w-full bg-[#EEF8FF] email-desktop-version mx-auto">
+  <div className="h-full bg-white rounded-2xl overflow-hidden flex">
+
+    {/* ================= SIDEBAR ================= */}
+    <aside className="w-64 bg-[#072A5A] text-white h-full p-4 hidden md:flex flex-col rounded-l-2xl">
+      <h2 className="text-xl font-bold mb-6 capitalize">{activeFolder}</h2>
+
+      <nav className="space-y-2 text-sm">
+        {foldersList.map((folder) => {
+          if (folder === "compose") {
+            return (
+              <div
+                key="compose"
+onClick={() => {
+  setIsComposing(true);
+  setSelectedMail(null);
+  setComposeData({ to: "", subject: "", body: "" });
+  setActiveFolder("compose");
+}}
+                className="flex items-center gap-3 bg-[#EEF8FF] hover:bg-[#5F81AF] hover:text-white text-[#052659] px-3 py-2 rounded-lg cursor-pointer"
+              >
+                <i className="ri-pencil-line text-base"></i>
+                <span className="font-medium">Compose</span>
+              </div>
+            );
+          } else {
+            return (
+              <div
+                key={folder}
+                onClick={() => {
+                  setActiveFolder(folder);
+                  setSelectedMail(null);
+                  setIsComposing(false);
+                }}
+                className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer
+                  ${
+                    activeFolder === folder
+                      ? "bg-[#5F81AF] text-white"
+                      : "hover:bg-[#5F81AF] hover:text-white"
+                  }`}
+              >
+                <div className="flex items-center gap-3">
+                  <i className={`${folderIcons[folder]} text-base`}></i>
+                  <span className="capitalize">{folder}</span>
+                </div>
+
+                {folders[folder]?.length > 0 && (
+                  <span className="bg-white text-[#072A5A] text-xs px-2 rounded-full font-semibold">
+                    {folders[folder].length}
+                  </span>
+                )}
+              </div>
+            );
+          }
+        })}
+      </nav>
+    </aside>
+
+    {/* ================= MAIL LIST ================= */}
+    {!isComposing && (
+      <section
+        className={`flex-1 border-r overflow-auto ${
+          activeFolder === "drafts" ? "" : ""
+        }`}
+      >
+          <>
+            {/* Search */}
+            <div className="p-4 border-b">
+              <div className="flex items-center max-w-xs bg-[#EEF8FF] px-3 py-2 rounded-lg">
+                <i className="ri-search-line text-gray-600"></i>
                 <input
                   type="text"
                   placeholder="Search by job title, keywords…"
@@ -281,6 +518,104 @@ const Dashboard = () => {
                 Filter
               </button>
 
+         <input
+  type="email"
+  placeholder="To"
+  value={composeData.to}
+  onChange={(e) =>
+    setComposeData({ ...composeData, to: e.target.value })
+  }
+  className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+/>
+
+<input
+  type="text"
+  placeholder="Subject"
+  value={composeData.subject}
+  onChange={(e) =>
+    setComposeData({ ...composeData, subject: e.target.value })
+  }
+  className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+/>
+
+          <textarea
+            placeholder="Your Message..."
+            rows={8}
+            value={composeData.body}
+            onChange={(e) => setComposeData({ ...composeData, body: e.target.value })}
+            className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none flex-1"
+          />
+
+          {/* Formatting buttons */}
+          <div className="flex items-center gap-4 mt-4 text-gray-700 px-2">
+            <b>B</b>
+            <i>I</i>
+            <u>U</u>
+            <i className="ri-list-unordered"></i>
+            <i className="ri-list-ordered"></i>
+            <span>Cc Bcc</span>
+            <button className="px-3 py-1 bg-[#EEF8FF] rounded-lg text-sm">AI Assist</button>
+          </div>
+
+          <button className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium">
+            Send
+          </button>
+        </div>
+      </aside>
+    ) : (
+      // Preview stays narrow
+      <aside className="w-[360px] bg-[#EEF8FF] p-4 rounded-r-2xl hidden lg:block">
+        {selectedMail ? (
+          <>
+                <div className="relative flex justify-end gap-2 mb-4">
+      <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+        <i className="ri-reply-line"></i> Reply
+      </button>
+
+      <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+        <i className="ri-share-forward-line"></i> Forward
+      </button>
+
+      <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+        <i className="ri-delete-bin-line"></i> Delete
+      </button>
+
+      {/* 3 dots button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="bg-[#C1E8FF] px-2 py-1 rounded text-xs"
+      >
+        <i className="ri-more-2-fill text-base"></i>
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div className="absolute right-0 top-9 w-40 bg-white border border-gray-200 rounded shadow-md z-50">
+          <button
+            className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+            onClick={() => {
+              setOpen(false);
+              // handle mark as ongoing here
+            }}
+          >
+            Mark as Discussion
+          </button>
+                    <button
+            className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+            onClick={() => {
+              setOpen(false);
+              // handle mark as ongoing here
+            }}
+          >
+            Mark as Ongoing
+          </button>
+        </div>
+      )}
+    </div>
+
+            <div className="text-sm space-y-2 border-y py-4">
+              <p><strong>Subject:</strong> {selectedMail.subject}</p>
+              <p><strong>From:</strong> {selectedMail.from}</p>
             </div>
 
             {/* Tags */}
@@ -618,6 +953,45 @@ const Dashboard = () => {
                 </aside>
               )}
 
+        ) : (
+          <div className="relative bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
+            <div className="flex justify-end gap-2 mb-4">
+              <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+                <i className="ri-reply-line"></i> Reply
+              </button>
+              <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+                <i className="ri-share-forward-line"></i> Forward
+              </button>
+              <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+                <i className="ri-delete-bin-line"></i> Delete
+              </button>
+               <button
+    onClick={() => setOpen(!open)}
+    className="bg-[#C1E8FF] px-2 py-1 rounded text-xs"
+  >
+    <i className="ri-more-2-fill text-base"></i>
+  </button>
+
+  {open && (
+    <div className="absolute right-0 mt-9 mr-9 w-40 bg-white border border-gray-200 rounded shadow-md z-50">
+      <button
+        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+        onClick={() => {
+          setOpen(false);
+        }}
+      >
+        Mark as Discussion
+      </button>
+      <button
+        className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
+        onClick={() => {
+          setOpen(false);
+        }}
+      >
+        Mark as Ongoing
+      </button>
+      </div>
+  )}
             </div>
 
           </div>
@@ -784,416 +1158,755 @@ const Dashboard = () => {
         return (
           <div className="bg-white rounded-3xl p-5 md:p-8">
 
-            {/* Header */}
-            <div className="mb-6">
-              <h1 className="text-2xl md:text-3xl font-semibold text-[#0A2A55]">
-                Follow – up Tracking
-              </h1>
-              <p className="text-sm text-gray-500">
-                Monitor leads, responses, and follow-ups in one place.
-              </p>
-            </div>
 
-            {/* Filters */}
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
-                <i className="ri-calendar-line"></i>
-                Date: From - To
-                <i className="ri-arrow-down-s-line"></i>
-              </div>
+       
+{!selectedCard ? (
+<div>
 
-              <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
-                <i className="ri-stack-line"></i>
-                Platforms
-                <i className="ri-arrow-down-s-line"></i>
-              </div>
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#0A2A55]">
+            Follow – up Tracking
+          </h1>
+          <p className="text-sm text-gray-500">
+            Monitor leads, responses, and follow-ups in one place.
+          </p>
+        </div>
 
-              <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
-                <i className="ri-loader-3-line"></i>
-                Status
-                <i className="ri-arrow-down-s-line"></i>
-              </div>
-
-              <button className="ml-auto flex items-center gap-2 bg-[#EAF6FF] px-5 py-2 rounded-xl text-sm text-[#0A2A55]">
-                <i className="ri-equalizer-line"></i>
-                Filter
-              </button>
-            </div>
-            <hr className="mb-6 border-t border-[#C3C3C3]" />
-
-
-
-            {/* Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-              {[
-                "Website Developer",
-                "Graphic Designing",
-                "SEO",
-                "3d Animation",
-                "Social Media Marketing",
-                "Ecommerce",
-              ].map((title, i) => (
-                <div key={i} className="bg-[#EEF8FF] rounded-2xl p-5">
-
-                  <p className="text-sm text-gray-400 mb-2">
-                    08-01-2026 [{title}]
-                  </p>
-
-                  {/* Platforms */}
-                  <div className="flex gap-2 mb-4">
-                    <span
-                      className="px-3 py-1 text-xs rounded-full border"
-                      style={{
-                        backgroundColor: "#D2F5FF",
-                        borderColor: "#029FCA",
-                        color: "#029FCA",
-                      }}
-                    >
-                      Twitter
-                    </span>
-
-                    <span
-                      className="px-3 py-1 text-xs rounded-full border"
-                      style={{
-                        backgroundColor: "#FFD9D5",
-                        borderColor: "#EA4335",
-                        color: "#EA4335",
-                      }}
-                    >
-                      Google
-                    </span>
-                  </div>
-
-                  {/* Stats Header */}
-                  <div className="bg-white rounded-xl px-4 py-3 mb-4 flex justify-between items-center">
-                    <div>
-                      <p className="text-xs text-gray-400">Total Leads</p>
-                      <p className="text-3xl font-semibold text-[#0A2A55]">45</p>
-                    </div>
-
-                    <div className="text-right">
-                      <p className="text-xs text-gray-400">Follow-Up Sent</p>
-                      <p className="text-3xl font-semibold text-[#0A2A55]">02</p>
-                    </div>
-                  </div>
-
-
-                  {/* Detailed Stats */}
-                  <div className="grid grid-cols-3 gap-3 mb-4">
-                    <div className="border rounded-xl py-3 text-center" style={{ borderColor: "#7DA0CA" }}>
-                      <i className="ri-eye-line text-[#0A2A55]"></i>
-                      <p className="font-semibold text-[#0A2A55]">20</p>
-                      <p className="text-xs text-gray-400">Opened</p>
-                    </div>
-
-                    <div className="border rounded-xl py-3 text-center" style={{ borderColor: "#7DA0CA" }}>
-                      <i className="ri-reply-line text-[#0A2A55]"></i>
-                      <p className="font-semibold text-[#0A2A55]">25</p>
-                      <p className="text-xs text-gray-400">Replied</p>
-                    </div>
-
-                    <div className="border rounded-xl py-3 text-center" style={{ borderColor: "#7DA0CA" }}>
-                      <i className="ri-close-circle-line text-[#0A2A55]"></i>
-                      <p className="font-semibold text-[#0A2A55]">0</p>
-                      <p className="text-xs text-gray-400">Bounced</p>
-                    </div>
-                  </div>
-
-
-                  {/* Button */}
-                  <button className="w-full bg-[#7DA0CA] hover:bg-[#7AA4CE] text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
-                    <i className="ri-send-plane-line"></i>
-                    Send Follow-Up
-                  </button>
-
-                </div>
-              ))}
-            </div>
+        {/* Filters */}
+        <div className="flex flex-wrap items-center gap-3 mb-6">
+          <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
+            <i className="ri-calendar-line"></i>
+            Date: From - To
+            <i className="ri-arrow-down-s-line"></i>
           </div>
 
-        );
+          <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
+            <i className="ri-stack-line"></i>
+            Platforms
+            <i className="ri-arrow-down-s-line"></i>
+          </div>
+
+          <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
+            <i className="ri-loader-3-line"></i>
+            Status
+            <i className="ri-arrow-down-s-line"></i>
+          </div>
+
+          <button className="ml-auto flex items-center gap-2 bg-[#EAF6FF] px-5 py-2 rounded-xl text-sm text-[#0A2A55]">
+            <i className="ri-equalizer-line"></i>
+            Filter
+          </button>
+        </div>
+          <hr className="mb-6 border-t border-[#C3C3C3]" />
+  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    
+    {[
+      "Website Developer",
+      "Graphic Designing",
+      "SEO",
+      "3d Animation",
+      "Social Media Marketing",
+      "Ecommerce",
+    ].map((title, i) => (
+      <div
+        key={i}
+        className="bg-[#EEF8FF] rounded-2xl p-5 cursor-pointer hover:shadow-md transition"
+        onClick={() => setSelectedCard(title)} // set selected card
+      >
+        <p className="text-sm text-gray-400 mb-2">08-01-2026 [{title}]</p>
+
+        {/* Platforms */}
+        <div className="flex gap-2 mb-4">
+          <span
+            className="px-3 py-1 text-xs rounded-full border"
+            style={{ backgroundColor: "#D2F5FF", borderColor: "#029FCA", color: "#029FCA" }}
+          >
+            Twitter
+          </span>
+          <span
+            className="px-3 py-1 text-xs rounded-full border"
+            style={{ backgroundColor: "#FFD9D5", borderColor: "#EA4335", color: "#EA4335" }}
+          >
+            Google
+          </span>
+        </div>
+
+        {/* Stats */}
+        <div className="bg-white rounded-xl px-4 py-3 mb-4 flex justify-between items-center">
+          <div>
+            <p className="text-xs text-gray-400">Total Leads</p>
+            <p className="text-3xl font-semibold text-[#0A2A55]">45</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-gray-400">Follow-Up Sent</p>
+            <p className="text-3xl font-semibold text-[#0A2A55]">02</p>
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <button className="w-full bg-[#7DA0CA] hover:bg-[#7AA4CE] text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
+          <i className="ri-send-plane-line"></i>
+          Send Follow-Up
+        </button>
+      </div>
+    ))}
+  </div>
+  </div>
+) : (
+  // DETAIL VIEW
+  <div className="w-full flex flex-col lg:flex-row gap-6 mt-6">
+
+    {/* LEFT CONTENT — JOB BOARD */}
+    <div className="flex-1 bg-white rounded-3xl p-6 shadow-sm border space-y-6">
+      <div className=" justify-between items-center">
+                <button
+          className="text-sm text-black font-bold hover:underline mb-5"
+          onClick={() => setSelectedCard(null)} // back button
+        >
+          ← Back
+        </button>
+        <h1 className="text-3xl font-medium text-[#000000]">{selectedCard} Board</h1>
+      </div>
+      <p className="text-gray-900 mt-1">Date: 08-01-2026</p>
+
+      {/* Jobs Table */}
+      <div className="overflow-auto">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b">
+              <th className="py-3 px-2 font-medium text-[#000000]">Name</th>
+              <th className="py-3 px-2 font-medium text-[#000000]">Description</th>
+              <th className="py-3 px-2 font-medium text-[#000000]">Email</th>
+              <th className="py-3 px-2 font-medium text-[#000000]">Platform</th>
+              <th className="py-3 px-2 font-medium text-[#000000]">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ["Syed Anas", "Looking for a website dev…", "anas@gmail.com", "Facebook", "9/10/25"],
+              ["Mohsin", "Need UI Designer", "Mohsin@gmail.com", "Thread", "9/10/25"],
+              ["Sohaib", "Need Shopify store dev…", "Sohaib@gmail.com", "LinkedIn", "9/10/25"],
+              ["Basit Karim", "Backend Dev - for deploy…", "basit@gmail.com", "Twitter", "7/10/25"],
+              ["Syed Anas", "Looking for figma expert…", "anas.r@gmail.com", "Facebook", "23/09/25"],
+              ["Sohaib", "Logo Designer required…", "Sohaib@gmail.com", "Upwork", "20/09/25"],
+            ].map((item, i) => (
+              <tr key={i} className="border-b text-gray-700">
+                <td className="py-3 px-2">{item[0]}</td>
+                <td className="py-3 px-2">{item[1]}</td>
+                <td className="py-3 px-2">{item[2]}</td>
+                <td className="py-3 px-2">{item[3]}</td>
+                <td className="py-3 px-2">{item[4]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+)}
+
+
+      </div>
+    
+  );
 
       case "projects":
-        return (
-          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
-            {/* Header */}
-            <h1 className="text-2xl font-semibold text-gray-900 mb-4">
-              Projects
-            </h1>
-            <hr className="mb-6" />
+  return (
+    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
+      {/* Header */}
+      <h1 className="text-2xl font-semibold text-gray-900 mb-4">
+        Projects
+      </h1>
+      <hr className="mb-6" />
 
-            {/* Columns */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Columns */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-              {/* ================= IN DISCUSSION ================= */}
-              <div className="bg-[#EEF8FF] rounded-t-2xl">
-                <div className="bg-[#C1E8FF] mb-4 p-4 rounded-t-2xl text-center">
-                  <h2 className="font-semibold text-lg">In Discussion</h2>
-                </div>
-
-                <div className="space-y-4 p-4">
-                  {[
-                    { title: "Website Redesign", company: "Acme Inc.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status: "Discussion", nextStatus: "Mark as Ongoing" },
-                    { title: "App Dev", company: "Brand Revamp.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status: "Discussion", nextStatus: "Mark as Ongoing" },
-                    { title: "SEO Optimization", company: "Wanderluster co.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status: "Discussion", nextStatus: "Mark as Ongoing" },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      onClick={() => setSelectedItem(item)} className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-semibold">{item.title}</h3>
-                        <span className="text-xs bg-red-100 text-red-500 px-3 py-1 rounded-full">
-                          Lead
-                        </span>
-                      </div>
-
-                      <p className="text-sm text-gray-500 mt-1">{item.company}</p>
-
-                      <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
-                        <i className="ri-calendar-line"></i>
-                        {item.date}
-                      </div>
-                    </div>
-                  ))}
-
-                  {selectedItem && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-
-                      <div className="w-full max-w-xl bg-white rounded-2xl overflow-hidden">
-
-                        {/* HEADER */}
-                        <div className="flex items-center justify-between p-4 border-b">
-                          <div>
-                            <h2 className="font-semibold text-lg">{selectedItem.title}</h2>
-                            <p className="text-sm text-gray-500">{selectedItem.company}</p>
-                          </div>
-
-                          <div className="flex items-center gap-3">
-                            <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
-                              {selectedItem.Status}
-                            </span>
-
-                            {/* CLOSE BUTTON */}
-                            <button
-                              onClick={() => setSelectedItem(null)}
-                              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
-                            >
-                              <i className="ri-close-line text-xl text-gray-600"></i>
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* INFO BAR */}
-                        <div className="bg-[#C1E8FF] px-4 py-3 flex flex-wrap gap-4 text-sm">
-                          <div className="flex items-center gap-2">
-                            <i className="ri-calendar-line"></i>
-                            <span>Start: 15 January 2026</span>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <span>|</span>
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            <i className="ri-time-line"></i>
-                            <span>Status:</span>
-                            <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs">
-                              {selectedItem.Status}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* CONTENT */}
-                        <div className="p-4 space-y-4">
-                          <div>
-                            <h3 className="font-semibold mb-1">Details</h3>
-                            <p className="text-sm text-gray-600">{selectedItem.details}</p>
-                          </div>
-                        </div>
-
-                        {/* FOOTER */}
-                        <div className="p-4 border-t flex justify-end">
-                          <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm">
-                            {selectedItem.nextStatus}
-                          </button>
-                        </div>
-
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-              </div>
-
-              {/* ================= ONGOING ================= */}
-              <div className="bg-[#EEF8FF] rounded-t-2xl">
-                <div className="bg-[#C1E8FF] mb-4 p-4 rounded-t-2xl text-center">
-                  <h2 className="font-semibold text-lg">Ongoing</h2>
-                </div>
-
-                <div className="space-y-4 p-4">
-                  {[
-                    { title: "Sales Automation", company: "BizTech LLC.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Ongoing", nextStatus: "Mark as Completed" },
-                    { title: "Social Media Man...", company: "Connect Media.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Ongoing", nextStatus: "Mark as Completed" },
-                    { title: "CRM Implement...", company: "Vertex Solutions.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Ongoing", nextStatus: "Mark as Completed" },
-                    { title: "Content Writing", company: "BizTech LLC.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Ongoing", nextStatus: "Mark as Completed" },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      onClick={() => setSelectedItem(item)} className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-semibold">{item.title}</h3>
-                        <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
-                          Ongoing
-                        </span>
-                      </div>
-
-                      <p className="text-sm text-gray-500 mt-1">{item.company}</p>
-
-                      <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
-                        <i className="ri-calendar-line"></i>
-                        {item.date}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* ================= COMPLETED ================= */}
-              <div className="bg-[#EEF8FF] rounded-t-2xl">
-                <div className="bg-[#C1E8FF] mb-4 p-4 rounded-t-2xl text-center">
-                  <h2 className="font-semibold text-lg">Completed</h2>
-                </div>
-
-
-                <div className="bg-[#EEF8FF] space-y-4 p-4">
-                  {[
-                    { title: "Web App Dev...", company: "Inno Soft Tech.", date: "8 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Completed", nextStatus: "Completed" },
-                    { title: "Content Writing Ca...", company: "Blumesoft.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Completed", nextStatus: "Completed" },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      onClick={() => setSelectedItem(item)} className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-semibold">{item.title}</h3>
-                        <span className="text-xs bg-green-600 text-white px-3 py-1 rounded-full">
-                          Completed
-                        </span>
-                      </div>
-
-                      <p className="text-sm text-gray-500 mt-1">{item.company}</p>
-
-                      <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
-                        <i className="ri-calendar-line"></i>
-                        {item.date}
-                      </div>
-                    </div>
-                  ))}
-
-
-                </div>
-              </div>
-
-            </div>
+        {/* ================= IN DISCUSSION ================= */}
+        <div className="bg-[#EEF8FF] rounded-t-2xl">
+          <div className="bg-[#C1E8FF] mb-4 p-4 rounded-t-2xl text-center">
+            <h2 className="font-semibold text-lg">In Discussion</h2>
           </div>
-        );
 
-
-      case "settings":
-        return (
-          <div className="bg-[#F3FAFF] min-h-screen">
-            <div className="w-full mx-auto bg-white rounded-3xl shadow-sm overflow-hidden">
-
-              {/* HEADER */}
-              <div className="px-8 py-6 border-b">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  Settings
-                </h1>
-              </div>
-
-              {/* TABS */}
-              <div className="px-8 py-6 flex gap-3">
-                <button className="bg-[#062D5E] text-white px-6 py-2 rounded-full text-sm font-medium">
-                  Profile Management
-                </button>
-                <button className="bg-[#BFE4FF] text-[#062D5E] px-6 py-2 rounded-full text-sm font-medium">
-                  Plan & Billing
-                </button>
-                <button className="bg-[#BFE4FF] text-[#062D5E] px-6 py-2 rounded-full text-sm font-medium">
-                  Security
-                </button>
-              </div>
-
-              {/* PROFILE IMAGE */}
-              <div className="px-8 pb-8 flex items-center gap-6 border-b">
-                <div className="w-50 h-50 rounded-full overflow-hidden">
-                  <img
-                    src={profileImage}
-                    alt="avatar"
-                    className="w-full h-full object-cover"
-                  />
+          <div className="space-y-4 p-4">
+            {[
+              { title: "Website Redesign", company: "Acme Inc.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status:"Discussion", nextStatus:"Mark as Ongoing" },
+              { title: "App Dev", company: "Brand Revamp.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status:"Discussion", nextStatus:"Mark as Ongoing"},
+              { title: "SEO Optimization", company: "Wanderluster co.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status:"Discussion", nextStatus:"Mark as Ongoing" },
+            ].map((item, i) => (
+              <div
+              key={i}
+              onClick={() => setSelectedItem(item)}className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">{item.title}</h3>
+                  <span className="text-xs bg-red-100 text-red-500 px-3 py-1 rounded-full">
+                    Lead
+                  </span>
                 </div>
 
-                <div>
-                  <button className="border border-gray-300 rounded-full px-6 py-2 text-sm font-medium">
-                    Upload new photo
+                <p className="text-sm text-gray-500 mt-1">{item.company}</p>
+
+                <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
+                  <i className="ri-calendar-line"></i>
+                  {item.date}
+                </div>
+              </div>
+            ))}
+            
+            {selectedItem && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    
+    <div className="w-full max-w-xl bg-white rounded-2xl overflow-hidden">
+      
+{/* HEADER */}
+<div className="flex items-center justify-between p-4 border-b">
+  <div>
+    <h2 className="font-semibold text-lg">{selectedItem.title}</h2>
+    <p className="text-sm text-gray-500">{selectedItem.company}</p>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
+      {selectedItem.Status}
+    </span>
+
+    {/* CLOSE BUTTON */}
+    <button
+      onClick={() => setSelectedItem(null)}
+      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+    >
+      <i className="ri-close-line text-xl text-gray-600"></i>
+    </button>
+  </div>
+</div>
+
+      {/* INFO BAR */}
+      <div className="bg-[#C1E8FF] px-4 py-3 flex flex-wrap gap-4 text-sm">
+        <div className="flex items-center gap-2">
+          <i className="ri-calendar-line"></i>
+          <span>Start: 15 January 2026</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+           <span>|</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <i className="ri-time-line"></i>
+          <span>Status:</span>
+          <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs">
+            {selectedItem.Status}
+          </span>
+        </div>
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-4 space-y-4">
+        <div>
+          <h3 className="font-semibold mb-1">Details</h3>
+          <p className="text-sm text-gray-600">{selectedItem.details}</p>
+        </div>
+</div>
+
+      {/* FOOTER */}
+      <div className="p-4 border-t flex justify-end">
+        <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm">
+          {selectedItem.nextStatus}
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
+
+          </div>
+        </div>
+
+        {/* ================= ONGOING ================= */}
+        <div className="bg-[#EEF8FF] rounded-t-2xl">
+         <div className="bg-[#C1E8FF] mb-4 p-4 rounded-t-2xl text-center">
+            <h2 className="font-semibold text-lg">Ongoing</h2>
+          </div>
+
+          <div className="space-y-4 p-4">
+            {[
+              { title: "Sales Automation", company: "BizTech LLC.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status:"Ongoing", nextStatus:"Mark as Completed" },
+              { title: "Social Media Man...", company: "Connect Media.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status:"Ongoing", nextStatus:"Mark as Completed" },
+              { title: "CRM Implement...", company: "Vertex Solutions.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status:"Ongoing", nextStatus:"Mark as Completed" },
+              { title: "Content Writing", company: "BizTech LLC.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status:"Ongoing", nextStatus:"Mark as Completed" },
+            ].map((item, i) => (
+                <div
+              key={i}
+              onClick={() => setSelectedItem(item)}className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">{item.title}</h3>
+                  <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
+                    Ongoing
+                  </span>
+                </div>
+
+                <p className="text-sm text-gray-500 mt-1">{item.company}</p>
+
+                <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
+                  <i className="ri-calendar-line"></i>
+                  {item.date}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ================= COMPLETED ================= */}
+        <div className="bg-[#EEF8FF] rounded-t-2xl">
+          <div className="bg-[#C1E8FF] mb-4 p-4 rounded-t-2xl text-center">
+  <h2 className="font-semibold text-lg">Completed</h2>
+</div>
+
+
+          <div className="bg-[#EEF8FF] space-y-4 p-4">
+            {[
+              { title: "Web App Dev...", company: "Inno Soft Tech.", date: "8 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status:"Completed", nextStatus:"Completed"  },
+              { title: "Content Writing Ca...", company: "Blumesoft.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status:"Completed", nextStatus:"Completed" },
+            ].map((item, i) => (
+                <div
+              key={i}
+              onClick={() => setSelectedItem(item)}className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">{item.title}</h3>
+                  <span className="text-xs bg-green-600 text-white px-3 py-1 rounded-full">
+                    Completed
+                  </span>
+                </div>
+
+                <p className="text-sm text-gray-500 mt-1">{item.company}</p>
+
+                <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
+                  <i className="ri-calendar-line"></i>
+                  {item.date}
+                </div>
+              </div>
+            ))}
+            
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+
+  
+  case "settings":
+  return (
+    <div className="bg-[#F3FAFF] min-h-screen">
+      <div className="w-full mx-auto bg-white rounded-3xl shadow-sm overflow-hidden">
+        
+        {/* HEADER */}
+        <div className="px-8 py-6 border-b">
+          <h1 className="text-2xl font-semibold text-gray-900">
+            Settings
+          </h1>
+        </div>
+
+        {/* TABS */}
+        <div className="px-8 py-6 flex gap-3">
+          <button 
+            onClick={() => setActiveTab("profile")}
+            className={`${activeTab === "profile" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
+          >
+            Profile Management
+          </button>
+          <button 
+            onClick={() => setActiveTab("billing")}
+            className={`${activeTab === "billing" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
+          >
+            Plan & Billing
+          </button>
+          <button 
+            onClick={() => setActiveTab("security")}
+            className={`${activeTab === "security" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
+          >
+            Security
+          </button>
+        </div>
+
+        {/* PROFILE MANAGEMENT TAB */}
+        {activeTab === "profile" && (
+          <>
+            {/* PROFILE IMAGE */}
+            <div className="px-8 pb-8 flex items-center gap-6 border-b">
+              <div className="w-50 h-50 rounded-full overflow-hidden">
+                <img 
+                  src={profileImage} 
+                  alt="avatar" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+
+              <div>
+                <button className="border border-gray-300 rounded-full px-6 py-2 text-sm font-medium">
+                  Upload new photo
+                </button>
+                <p className="text-xs text-gray-400 mt-2">
+                  At least 800 × 800 px recommended. <br /> JPG or PNG is Allowed
+                </p>
+              </div>
+            </div>
+
+            {/* CONTENT */}
+            <div className="px-8 py-8 space-y-6">
+              {/* PERSONAL INFO */}
+              <div className="border rounded-2xl p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="font-semibold text-lg">Personal Info</h2>
+                  <button
+  onClick={() => setIsEditOpen(true)}
+  className="flex items-center gap-2 border rounded-full px-4 py-1 text-sm"
+>
+
+                    <i className="ri-edit-line"></i>
+                    Edit
                   </button>
-                  <p className="text-xs text-gray-400 mt-2">
-                    At least 800 × 800 px recommended. <br /> JPG or PNG is Allowed
-                  </p>
                 </div>
-              </div>
+                 {isEditOpen && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    
+    {/* Modal Box */}
+    <div className="bg-white rounded-2xl w-full max-w-lg p-6 relative">
+      
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-lg font-semibold">Edit Profile</h2>
+<button
+  type="button"
+  onClick={() => setIsEditOpen(false)}
+  className="text-gray-500 hover:text-black"
+>
+  <i className="ri-close-line text-xl"></i>
+</button>
+      </div>
 
-              {/* CONTENT */}
-              <div className="px-8 py-8 space-y-6">
+      {/* Form */}
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-semibold mb-1">
+            Full Name
+          </label>
+          <input
+            type="text"
+            className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
+            placeholder="Full Name"
+          />
+        </div>
 
-                {/* PERSONAL INFO */}
-                <div className="border rounded-2xl p-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <h2 className="font-semibold text-lg">Personal Info</h2>
-                    <button className="flex items-center gap-2 border rounded-full px-4 py-1 text-sm">
-                      <i className="ri-edit-line"></i>
-                      Edit
-                    </button>
+        <div>
+          <label className="block text-sm font-semibold mb-1">
+            Email
+          </label>
+          <input
+            type="email"
+            className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
+            placeholder="Email"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold mb-1">
+            Country
+          </label>
+          <input
+            type="text"
+            className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
+            placeholder="Phone Number"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold mb-1">
+            Bio
+          </label>
+          <textarea
+            rows="4"
+            className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
+            placeholder="Write something about yourself..."
+          />
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex justify-end gap-3 mt-6">
+<button
+  type="button"
+  onClick={() => setIsEditOpen(false)}
+  className="px-5 py-2 rounded-xl border text-sm"
+>
+  Cancel
+</button>
+        <button
+          className="px-6 py-2 rounded-xl bg-[#062D5E] text-white text-sm font-semibold"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <p className="text-sm font-semibold">Full Name</p>
+                    <p className="text-gray-800">Mohsin Salman</p>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <p className="text-sm text-gray-400">Full Name</p>
-                      <p className="font-semibold">Mohsin Salman</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">Email</p>
-                      <p className="font-semibold">mohsin@nexleads.com</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">Phone</p>
-                      <p className="font-semibold">+92 300 3244414</p>
-                    </div>
-
+                  <div>
+                    <p className="text-sm font-semibold">Email</p>
+                    <p className="text-gray-800">mohsin@nexleads.com</p>
                   </div>
-                  <div className="flex justify-between items-center mb-4 mt-6">
-                    <h2 className="font-semibold text-lg">Bio</h2>
+                  <div>
+                    <p className="text-sm font-semibold">Country</p>
+                    <p className="text-gray-800">Pakistan</p>
                   </div>
-
-                  <p className="text-gray-700 leading-relaxed text-sm">
-                    <strong>Hi, I’m Mohsin Salman. 👋</strong>
-                    <br />
-                    I’m a passionate designer and developer focused on creating clean,
-                    functional, and user-friendly digital experiences. 🎨💻
-                    <br />
-                    I specialize in modern UI/UX design, web development, and SaaS
-                    dashboard interfaces. 🚀
-                    <br />
-                    My work blends strong visual design with efficient, scalable code. ⚙️✨
-                  </p>
                 </div>
+                
+                <div className="flex justify-between items-center mb-4 mt-6">
+                  <h2 className="font-semibold text-lg">Bio</h2>
+                </div>
+
+                <p className="text-gray-700 leading-relaxed text-sm">
+                  Hi, I'm Mohsin Salman. 👋
+                  <br />
+                  I'm a passionate designer and developer focused on creating clean,
+                  functional, and user-friendly digital experiences. 🎨💻
+                  <br />
+                  I specialize in modern UI/UX design, web development, and SaaS
+                  dashboard interfaces. 🚀
+                  <br />
+                  My work blends strong visual design with efficient, scalable code. ⚙️✨
+                </p>
               </div>
             </div>
-          </div>
-        );
+          </>
+        )}
 
+        {/* PLAN & BILLING TAB */}
+{activeTab === "billing" && (
+  <>
+    {/* YOUR CURRENT PLAN */}
+    <div className="px-8 py-6 border-b">
+      <h2 className="text-3xl font-medium font-bold mb-6">Your Current Plan</h2>
+      <div className="flex items-start gap-6">
+        <div>
+          <p className="text-gray-400 text-base mb-1">Basic</p>
+          <p className="text-5xl font-bold text-gray-400">$0</p>
+        </div>
+        <div className="flex-1 space-y-3 mt-2">
+          <div className="flex items-center gap-2">
+            <i className="ri-check-line text-gray-900 text-lg"></i>
+            <span className="text-base text-black">50 leads/month</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <i className="ri-check-line text-gray-900 text-lg"></i>
+            <span className="text-base text-black">Basic email templates</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <i className="ri-check-line text-gray-900 text-lg"></i>
+            <span className="text-base text-black">Limited follow-up tracking</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* BILLING CYCLE TOGGLE */}
+    <div className="px-8 py-6">
+      <div className="flex items-center gap-6 bg-[#C1E8FF] rounded-full px-6 py-3 w-fit">
+        
+        {/* Monthly */}
+        <label
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => setBillingCycle("monthly")}
+        >
+          <div className="w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center">
+            {billingCycle === "monthly" && (
+              <div className="w-4 h-4 rounded-full bg-[#062D5E]" />
+            )}
+          </div>
+          <span className="text-xl font-medium text-black">Monthly</span>
+        </label>
+
+        {/* Annually */}
+        <label
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => setBillingCycle("annually")}
+        >
+          <div className="w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center">
+            {billingCycle === "annually" && (
+              <div className="w-4 h-4 rounded-full bg-[#062D5E]" />
+            )}
+          </div>
+          <span className="text-xl font-medium text-black">Annually</span>
+        </label>
+
+        <span className="text-l text-[#2C2C2C] font-medium ml-2">
+          Save 15%
+        </span>
+      </div>
+    </div>
+
+    {/* PRICING CARDS */}
+    <div className="px-8 pb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        {/* FREE PLAN */}
+        <div className="bg-[#001933] rounded-3xl p-8 text-white">
+          <h3 className="text-base mb-3">Free</h3>
+          <span className="text-6xl">$0</span>
+
+          <p className="text-base text-gray-300 mb-6">Basic Pricing Plan</p>
+
+          <button className="w-full bg-gray-600 py-3.5 rounded-xl font-semibold mb-4">
+            Your Current Plan
+          </button>
+
+          <p className="text-sm text-center text-gray-400 mb-6">
+            {billingCycle === "monthly" ? "Billed Monthly" : "Billed Annually"}
+          </p>
+          <div className="border-t border-gray-700 pt-6 space-y-3"> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">50 leads/month</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Basic email templates</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Limited follow-up tracking</span> </div> </div>
+        </div>
+
+        {/* PRO PLAN */}
+        <div className="bg-[#052659] rounded-3xl p-8 text-white">
+          <h3 className="text-base mb-3">Pro</h3>
+
+          <span className="text-6xl">
+            ${getPrice(pricing.pro)}
+          </span>
+
+          <p className="text-base text-gray-300 mb-6">
+            Advanced tools for Growing
+          </p>
+
+          <button className="w-full bg-white text-[#001933] py-3.5 rounded-xl font-semibold mb-4">
+            Upgrade Now
+          </button>
+
+          <p className="text-sm text-center text-gray-400 mb-6">
+            {billingCycle === "monthly"
+              ? "Billed Monthly"
+              : "Billed Annually (15% off)"}
+          </p>
+
+          <div className="border-t border-gray-700 pt-6 space-y-3"> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Unlimited leads</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Custom email sequences</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Advanced analytics</span> </div> </div>
+        </div>
+
+        {/* ENTERPRISE PLAN */}
+        <div className="bg-[#001933] rounded-3xl p-8 text-white">
+          <h3 className="text-base mb-3">Enterprise</h3>
+
+          <span className="text-6xl">
+            ${getPrice(pricing.enterprise)}
+          </span>
+          <p className="text-base text-gray-300 mb-6">
+            Complete Collaboration of tools
+          </p>
+
+          <button className="w-full bg-white text-[#001933] py-3.5 rounded-xl font-semibold mb-4">
+            Upgrade Now
+          </button>
+
+          <p className="text-sm text-center text-gray-400 mb-6">
+            {billingCycle === "monthly"
+              ? "Billed Monthly"
+              : "Billed Annually (15% off)"}
+          </p>
+
+          <div className="border-t border-gray-700 pt-6 space-y-3"> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">API access</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Team collaboration</span> </div> <div className="flex items-center gap-3"> <i className="ri-check-line text-lg"></i> <span className="text-base">Dedicated account manager</span> </div> </div>
+        </div>
+
+      </div>
+    </div>
+  </>
+)}
+
+      {/* SECURITY TAB */}
+{activeTab === "security" && (
+  <>
+    {/* CHANGE PASSWORD */}
+    <div className="px-8 py-6 border-b">
+      <h2 className="text-2xl font-bold mb-6">Change Password</h2>
+      
+      {/* Current Password */}
+      <div className="mb-6">
+        <label className="block text-base font-semibold text-[#062D5E] mb-3">
+          Current Password
+        </label>
+        <div className="relative max-w-lg">
+          <input
+            type={showCurrentPassword ? "text" : "password"}
+            placeholder="Enter Current Password"
+            className="w-full px-6 py-4 pr-14 border border-gray-300 rounded-2xl text-base placeholder-gray-300 focus:outline-none focus:border-[#062D5E]"
+          />
+          <button
+            onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+            className="absolute mt-4 right-5 top-1/2 -translate-y-1/2"
+            type="button"
+          >
+            <i className={`${showCurrentPassword ? "ri-eye-line" : "ri-eye-off-line"} text-2xl text-gray-700`}></i>
+          </button>
+        </div>
+      </div>
+
+      {/* New Password */}
+      <div className="mb-6">
+        <label className="block text-base font-semibold text-[#062D5E] mb-3">
+          New Password
+        </label>
+        <div className="relative max-w-lg">
+          <input
+            type={showNewPassword ? "text" : "password"}
+            placeholder="Enter New Password"
+            className="w-full px-6 py-4 pr-14 border border-gray-300 rounded-2xl text-base placeholder-gray-300 focus:outline-none focus:border-[#062D5E]"
+          />
+          <button
+            onClick={() => setShowNewPassword(!showNewPassword)}
+            className="absolute mt-4 right-5 top-1/2 -translate-y-1/2"
+            type="button"
+          >
+            <i className={`${showNewPassword ? "ri-eye-line" : "ri-eye-off-line"} text-2xl text-gray-700`}></i>
+          </button>
+        </div>
+      </div>
+
+      {/* Confirm New Password */}
+      <div className="mb-8">
+        <label className="block text-base font-semibold text-[#062D5E] mb-3">
+          Confirm New Password
+        </label>
+        <div className="relative max-w-lg">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="Confirm New Password"
+            className="w-full px-6 py-4 pr-14 border border-gray-300 rounded-2xl text-base placeholder-gray-300 focus:outline-none focus:border-[#062D5E]"
+          />
+          <button
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute mt-4 right-5 top-1/2 -translate-y-1/2"
+            type="button"
+          >
+            <i className={`${showConfirmPassword ? "ri-eye-line" : "ri-eye-off-line"} text-2xl text-gray-700`}></i>
+          </button>
+        </div>
+      </div>
+
+      {/* Update Password Button */}
+      <button className="bg-[#062D5E] text-white px-12 py-3.5 rounded-xl text-base font-semibold hover:bg-[#041d3f] transition-colors">
+        Update Password
+      </button>
+    </div>
+  </>
+)}
+
+      </div>
+    </div>
+  );
 
       default:
         return <h1 className="text-3xl font-bold">Page Not Found</h1>;

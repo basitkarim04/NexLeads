@@ -37,13 +37,13 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <p>Follow Us</p>
-            <div className="s_icons">
-              <a href="#"><i className="fab fa-linkedin"></i></a>
-              <a href="#"><i className="fab fa-github"></i></a>
-              <a href="#"><i className="fab fa-facebook"></i></a>
-              <a href="#"><i className="fab fa-instagram"></i></a>
-              <a href="#"><i className="fab fa-twitter"></i></a>
-            </div>
+<div className="s_icons flex gap-3">
+  <a href="#"><i className="ri-linkedin-fill"></i></a>
+  <a href="#"><i className="ri-github-fill"></i></a>
+  <a href="#"><i className="ri-facebook-fill"></i></a>
+  <a href="#"><i className="ri-instagram-fill"></i></a>
+  <a href="#"><i className="ri-twitter-x-fill"></i></a>
+</div>
           </motion.div>
         </motion.div>
 

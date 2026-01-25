@@ -745,9 +745,9 @@ body::before {
   margin-top: 60px;
   margin-left: 40px;
   font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
-  background: #0e2342;
+  background: #021024b4;
   padding: 30px;
-  border-radius: 12px;
+  border-radius: 15px;
   width: 90%;
 }
 
@@ -773,7 +773,7 @@ body::before {
 .form-box textarea {
   width: 100%;
   padding: 12px;
-  border: none;
+  background-color: white;
   border-radius: 6px;
   font-size: 12px;
 }
