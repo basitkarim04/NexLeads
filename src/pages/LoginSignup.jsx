@@ -1,128 +1,296 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
 import Login from "../assets/Images/Login.png";
-
 import starBg from "../assets/Images/star.png";
+import { baseurl } from "../BaseUrl";
+
 
 export default function AuthPages() {
   const [mode, setMode] = useState("login");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ text: "", type: "" }); // success or error
+
+  // Form states
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [signupData, setSignupData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [resetData, setResetData] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+  const [resetToken, setResetToken] = useState("");
 
   const isLogin = mode === "login";
   const isSignup = mode === "signup";
   const isForgot = mode === "forgot";
-
-  // 🔑 LOGIN + FORGOT behave the same
+  const isReset = mode === "reset";
   const isLoginLike = isLogin || isForgot;
+
+  // Check URL for reset token on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    if (token) {
+      setResetToken(token);
+      setMode("reset");
+      setMessage({ text: "Enter your new password below.", type: "success" });
+    }
+  }, []);
+
+  const showMessage = (text, type = "error") => {
+    setMessage({ text, type });
+    setTimeout(() => setMessage({ text: "", type: "" }), 5000);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post(`${baseurl}/user/login`, loginData);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userData", JSON.stringify(res.data.user));
+      showMessage("Login successful! Redirecting...", "success");
+      // Redirect to dashboard after 1s
+      setTimeout(() => {
+        window.location.href = "/dashboard"; // Change to your protected route
+      }, 1000);
+    } catch (err) {
+      showMessage(err.response?.data?.message || "Login failed", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    if (signupData.password !== signupData.confirmPassword) {
+      return showMessage("Passwords do not match", "error");
+    }
+    setLoading(true);
+    try {
+      const res = await axios.post(`${baseurl}/user/signup`, {
+        name: signupData.name,
+        email: signupData.email,
+        password: signupData.password,
+        confirmPassword: signupData.confirmPassword,
+      });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      showMessage("Account created successfully!", "success");
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 1000);
+    } catch (err) {
+      showMessage(err.response?.data?.message || "Signup failed", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgot = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await axios.post(`${baseurl}/user/forgot-password`, { email: forgotEmail });
+      showMessage("Password reset link sent to your email!", "success");
+    } catch (err) {
+      showMessage(
+        err.response?.data?.message || "Failed to send reset link",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    if (resetData.password !== resetData.confirmPassword) {
+      return showMessage("Passwords do not match", "error");
+    }
+    setLoading(true);
+    try {
+      await axios.post(`${baseurl}/user/reset-password/${resetToken}`, {
+        password: resetData.password,
+        confirmPassword: resetData.confirmPassword,
+      });
+      showMessage("Password reset successful! Logging you in...", "success");
+      setTimeout(() => {
+        setMode("login");
+        setResetToken("");
+      }, 2000);
+    } catch (err) {
+      showMessage(
+        err.response?.data?.message || "Invalid or expired token",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
-      className="h-screen w-full flex relative"
+      className="h-screen w-full flex relative overflow-hidden"
       style={{
         background: isSignup
           ? `url(${starBg}) repeat center center, linear-gradient(90deg, #3671cc 0%, #021024 100%)`
           : `url(${starBg}) repeat center center, linear-gradient(270deg, #3671cc 0%, #021024 100%)`,
-        backgroundSize: "auto, auto, auto, cover",
+        backgroundSize: "auto, cover",
       }}
     >
       {/* LOGO */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50">
-        <img src={nexLeadlogo} alt="Logo" width="120"/>
+        <img src={nexLeadlogo} alt="Logo" className="h-20 w-auto" />
       </div>
+
+      {/* Message Alert */}
+      {message.text && (
+        <div
+          className={`absolute top-24 left-1/2 -translate-x-1/2 px-6 py-3 rounded-lg text-white font-medium z-50 shadow-lg ${
+            message.type === "success" ? "bg-green-600" : "bg-red-600"
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
 
       {/* GRID */}
       <div className="w-full grid grid-cols-1 lg:grid-cols-2">
         {/* FORM SECTION */}
         <div
-          className={`w-full p-8 sm:p-12 text-white flex items-center justify-center
-          ${isLoginLike ? "order-1" : "order-2"}`}
+          className={`w-full p-8 sm:p-12 text-white flex items-center justify-center ${
+            isLoginLike ? "order-1" : "order-2"
+          }`}
         >
           <div className="w-full max-w-md">
             {/* LOGIN */}
             {isLogin && (
-              <>
+              <form onSubmit={handleLogin} className="space-y-6">
                 <h2 className="text-3xl font-bold mb-8">Login</h2>
 
-                <div className="space-y-6">
-                  <input
-                    type="text"
-                    placeholder="Username Or Email Address *"
-                    className="auth-input"
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password *"
-                    className="auth-input"
-                  />
+                <input
+                  type="text"
+                  placeholder="Username Or Email Address *"
+                  className="auth-input"
+                  value={loginData.email}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, email: e.target.value })
+                  }
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Password *"
+                  className="auth-input"
+                  value={loginData.password}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, password: e.target.value })
+                  }
+                  required
+                />
 
-                  <label className="flex items-center gap-2 text-sm text-white">
-                    <input type="checkbox" className="accent-white" />
-                    Remember me
-                  </label>
+                <label className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" className="accent-white" />
+                  Remember me
+                </label>
 
-                  <button className="w-full bg-white text-[#0b1c33] py-3 rounded-full font-semibold">
-                    LOG IN
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-white text-[#0b1c33] py-3 rounded-full font-semibold disabled:opacity-70"
+                >
+                  {loading ? "Logging in..." : "LOG IN"}
+                </button>
+
+                <p className="text-center text-sm">
+                  <button type="button" onClick={() => setMode("signup")}>
+                    Sign up
+                  </button>{" "}
+                  |{" "}
+                  <button type="button" onClick={() => setMode("forgot")}>
+                    Lost your Password?
                   </button>
-
-                  <p className="text-center text-sm text-white">
-                    <button
-                      onClick={() => setMode("signup")}
-                      
-                    >
-                      Sign up
-                    </button>{" "}
-                    |{" "}
-                    <button
-                      onClick={() => setMode("forgot")}
-                      
-                    >
-                      Lost your Password?
-                    </button>
-                  </p>
-                </div>
-              </>
+                </p>
+              </form>
             )}
 
             {/* SIGNUP */}
             {isSignup && (
-              <>
+              <form onSubmit={handleSignup} className="space-y-5">
                 <h2 className="text-3xl font-bold mb-6">Create Account</h2>
 
-                <div className="space-y-5">
-                  <input placeholder="Name" className="auth-input" />
-                  <input placeholder="Email Address" className="auth-input" />
-                  <input placeholder="Username" className="auth-input" />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="auth-input"
-                  />
-                  <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    className="auth-input"
-                  />
+                <input
+                  placeholder="Name *"
+                  className="auth-input"
+                  value={signupData.name}
+                  onChange={(e) =>
+                    setSignupData({ ...signupData, name: e.target.value })
+                  }
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Email Address *"
+                  className="auth-input"
+                  value={signupData.email}
+                  onChange={(e) =>
+                    setSignupData({ ...signupData, email: e.target.value })
+                  }
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Password *"
+                  className="auth-input"
+                  value={signupData.password}
+                  onChange={(e) =>
+                    setSignupData({ ...signupData, password: e.target.value })
+                  }
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm Password *"
+                  className="auth-input"
+                  value={signupData.confirmPassword}
+                  onChange={(e) =>
+                    setSignupData({
+                      ...signupData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  required
+                />
 
-                  <button className="w-full bg-white text-[#0b1c33] py-3 rounded-full font-semibold">
-                    Sign Up
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-white text-[#0b1c33] py-3 rounded-full font-semibold disabled:opacity-70"
+                >
+                  {loading ? "Creating Account..." : "Sign Up"}
+                </button>
+
+                <p className="text-center text-sm">
+                  Already have an account?{" "}
+                  <button type="button" onClick={() => setMode("login")}>
+                    Log in
                   </button>
-
-                  <p className="text-center text-sm text-white">
-                    Already have an account?{" "}
-                    <button
-                      onClick={() => setMode("login")}
-                   
-                    >
-                      Log in
-                    </button>
-                  </p>
-                </div>
-              </>
+                </p>
+              </form>
             )}
 
             {/* FORGOT PASSWORD */}
             {isForgot && (
-              <>
+              <form onSubmit={handleForgot} className="space-y-6">
                 <button
+                  type="button"
                   onClick={() => setMode("login")}
                   className="text-sm mb-6 inline-block"
                 >
@@ -130,31 +298,89 @@ export default function AuthPages() {
                 </button>
 
                 <h2 className="text-3xl font-bold mb-4">Forgot Password</h2>
-
                 <p className="text-white mb-6 text-sm">
                   Enter your email address and we’ll send you a reset link.
                 </p>
 
-                <div className="space-y-6">
-                  <input
-                    type="email"
-                    placeholder="Email Address *"
-                    className="auth-input"
-                  />
+                <input
+                  type="email"
+                  placeholder="Email Address *"
+                  className="auth-input"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  required
+                />
 
-                  <button className="w-full bg-white text-[#0b1c33] py-3 rounded-full font-semibold">
-                    Send Reset Link
-                  </button>
-                </div>
-              </>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-white text-[#0b1c33] py-3 rounded-full font-semibold disabled:opacity-70"
+                >
+                  {loading ? "Sending..." : "Send Reset Link"}
+                </button>
+              </form>
+            )}
+
+            {/* RESET PASSWORD */}
+            {isReset && (
+              <form onSubmit={handleResetPassword} className="space-y-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode("login");
+                    setResetToken("");
+                  }}
+                  className="text-sm mb-6 inline-block"
+                >
+                  ← Back to Login
+                </button>
+
+                <h2 className="text-3xl font-bold mb-4">Reset Password</h2>
+                <p className="text-white mb-6 text-sm">
+                  Enter your new password below.
+                </p>
+
+                <input
+                  type="password"
+                  placeholder="New Password *"
+                  className="auth-input"
+                  value={resetData.password}
+                  onChange={(e) =>
+                    setResetData({ ...resetData, password: e.target.value })
+                  }
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm New Password *"
+                  className="auth-input"
+                  value={resetData.confirmPassword}
+                  onChange={(e) =>
+                    setResetData({
+                      ...resetData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  required
+                />
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-white text-[#0b1c33] py-3 rounded-full font-semibold disabled:opacity-70"
+                >
+                  {loading ? "Resetting..." : "Reset Password"}
+                </button>
+              </form>
             )}
           </div>
         </div>
 
         {/* IMAGE SECTION */}
         <div
-          className={`hidden lg:flex items-center justify-center h-screen
-          ${isLoginLike ? "order-2" : "order-1"}`}
+          className={`hidden lg:flex items-center justify-center h-screen ${
+            isLoginLike ? "order-2" : "order-1"
+          }`}
         >
           <img
             src={Login}
@@ -163,8 +389,6 @@ export default function AuthPages() {
           />
         </div>
       </div>
-
-
     </div>
   );
 }
