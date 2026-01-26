@@ -2,19 +2,43 @@ import React, { useState, useEffect } from 'react';
 
 const Dashboardemail = () => {
     const foldersList = ["compose", "inbox", "sent", "drafts", "spam", "trash"];
+    // Email
+      // Forward
+      const [showForward, setShowForward] = useState(false);
+      const [showCc, setShowCc] = useState(false);
+      const [showBcc, setShowBcc] = useState(false);
+      const [forwardData, setForwardData] = useState({
+        to: "",
+        cc: "",
+        bcc: "",
+      });
+      // Reply
+      const [showReply, setShowReply] = useState(false);
+      const [showReplyCc, setShowReplyCc] = useState(false);
+      const [showReplyBcc, setShowReplyBcc] = useState(false);
+      const [replyData, setReplyData] = useState({
+        to: "",
+        cc: "",
+        bcc: "",
+        body: "",
+      });
+      //Compose
+      const [composeData, setComposeData] = useState({
+        to: "",
+        cc: "",
+        bcc: "",
+        subject: "",
+        body: "",
+      });
+      const [showComposeCc, setShowComposeCc] = useState(false);
+      const [showComposeBcc, setShowComposeBcc] = useState(false);
 
 
     const [open, setOpen] = useState(false);
     const [activeFolder, setActiveFolder] = useState("inbox");
     const [selectedMail, setSelectedMail] = useState(null);
     const [isComposing, setIsComposing] = useState(false);
-    const [composeData, setComposeData] = useState({
-        to: "",
-        subject: "",
-        body: ""
-    });
-
-
+    
     useEffect(() => {
         localStorage.setItem("activeFolder", activeFolder);
     }, [activeFolder]);
@@ -118,7 +142,7 @@ const Dashboardemail = () => {
                                                 setIsComposing(false);
                                             }}
                                             className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer
-                                        ${activeFolder === folder
+                  ${activeFolder === folder
                                                     ? "bg-[#5F81AF] text-white"
                                                     : "hover:bg-[#5F81AF] hover:text-white"
                                                 }`}
@@ -182,7 +206,7 @@ const Dashboardemail = () => {
                                             }
                                         }}
                                         className={`group px-4 py-3 cursor-pointer md:grid md:grid-cols-12 transition-colors
-                                        ${selectedMail?.id === mail.id
+                ${selectedMail?.id === mail.id
                                                 ? "bg-[#072A5A] text-white"
                                                 : "bg-[#EEF8FF] hover:bg-[#072A5A] hover:text-white"
                                             }`}
@@ -201,33 +225,55 @@ const Dashboardemail = () => {
 
                     {/* ================= COMPOSE / PREVIEW ================= */}
                     {isComposing ? (
-                        // Compose takes full panel width
                         <aside className="w-full bg-[#EEF8FF] p-4 rounded-r-2xl">
                             <div className="bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
+
                                 <h2 className="text-xl font-medium mb-4 text-center">
                                     {activeFolder === "drafts" ? "Edit Draft" : "Compose Mail"}
                                 </h2>
 
+                                {/* TO */}
                                 <input
                                     type="email"
                                     placeholder="To"
                                     value={composeData.to}
-                                    onChange={(e) =>
-                                        setComposeData({ ...composeData, to: e.target.value })
-                                    }
+                                    onChange={(e) => setComposeData({ ...composeData, to: e.target.value })}
                                     className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
                                 />
 
+                                {/* CC/BCC toggles */}
+                                {/* CC */}
+                                {showComposeCc && (
+                                    <input
+                                        type="email"
+                                        placeholder="Cc"
+                                        value={composeData.cc}
+                                        onChange={(e) => setComposeData({ ...composeData, cc: e.target.value })}
+                                        className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+                                    />
+                                )}
+
+                                {/* BCC */}
+                                {showComposeBcc && (
+                                    <input
+                                        type="email"
+                                        placeholder="Bcc"
+                                        value={composeData.bcc}
+                                        onChange={(e) => setComposeData({ ...composeData, bcc: e.target.value })}
+                                        className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+                                    />
+                                )}
+
+                                {/* Subject */}
                                 <input
                                     type="text"
                                     placeholder="Subject"
                                     value={composeData.subject}
-                                    onChange={(e) =>
-                                        setComposeData({ ...composeData, subject: e.target.value })
-                                    }
+                                    onChange={(e) => setComposeData({ ...composeData, subject: e.target.value })}
                                     className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
                                 />
 
+                                {/* Body */}
                                 <textarea
                                     placeholder="Your Message..."
                                     rows={8}
@@ -236,15 +282,25 @@ const Dashboardemail = () => {
                                     className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none flex-1"
                                 />
 
-                                {/* Formatting buttons */}
-                                <div className="flex items-center gap-4 mt-4 text-gray-700 px-2">
+                                {/* Actions */}
+                                <div className="flex items-center gap-4 mt-4">
                                     <b>B</b>
                                     <i>I</i>
                                     <u>U</u>
-                                    <i className="ri-list-unordered"></i>
-                                    <i className="ri-list-ordered"></i>
-                                    <span>Cc Bcc</span>
-                                    <button className="px-3 py-1 bg-[#EEF8FF] rounded-lg text-sm">AI Assist</button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowComposeCc(!showComposeCc)}
+                                        className="text-black hover:underline"
+                                    >
+                                        Cc
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowComposeBcc(!showComposeBcc)}
+                                        className="text-black hover:underline"
+                                    >
+                                        Bcc
+                                    </button>
                                 </div>
 
                                 <button className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium">
@@ -257,14 +313,251 @@ const Dashboardemail = () => {
                         <aside className="w-[360px] bg-[#EEF8FF] p-4 rounded-r-2xl hidden lg:block">
                             {selectedMail ? (
                                 <>
-                                    <div className="relative flex justify-end gap-2 mb-4">
-                                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+                                    <div className="relative flex flex-wrap justify-end gap-2 mb-4">
+                                        <button
+                                            onClick={() => {
+                                                setReplyData({
+                                                    to: selectedMail.from,
+                                                    cc: "", // can be auto-filled if you store cc
+                                                    bcc: "",
+                                                    body: `\n\n--- Original Message ---\n${selectedMail.body}`,
+                                                });
+                                                setShowReply(true);
+                                            }}
+                                            className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
+                                        >
                                             <i className="ri-reply-line"></i> Reply
                                         </button>
+                                        {showReply && (
+                                            <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40">
+                                                <div className="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl p-4 sm:p-5 shadow-lg max-h-[90vh] overflow-y-auto">
 
-                                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+                                                    {/* Header */}
+                                                    <div className="flex justify-between items-center mb-3">
+                                                        <h3 className="text-base sm:text-lg font-semibold">Reply</h3>
+                                                        <button
+                                                            onClick={() => {
+                                                                setShowReply(false);
+                                                                setShowReplyCc(false);
+                                                                setShowReplyBcc(false);
+                                                            }}
+                                                            className="text-gray-500 text-xl"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+
+                                                    {/* TO */}
+                                                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 border-b pb-2 mb-2 text-sm">
+                                                        <span className="w-full sm:w-8 text-gray-500">To</span>
+
+                                                        <input
+                                                            type="email"
+                                                            value={replyData.to}
+                                                            onChange={(e) =>
+                                                                setReplyData({ ...replyData, to: e.target.value })
+                                                            }
+                                                            className="flex-1 outline-none border sm:border-none rounded px-2 py-1"
+                                                        />
+
+                                                        <div className="flex gap-2 text-xs">
+                                                            <button
+                                                                onClick={() => setShowReplyCc(!showReplyCc)}
+                                                                className="text-blue-600"
+                                                            >
+                                                                Cc
+                                                            </button>
+                                                            <button
+                                                                onClick={() => setShowReplyBcc(!showReplyBcc)}
+                                                                className="text-blue-600"
+                                                            >
+                                                                Bcc
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* CC */}
+                                                    {showReplyCc && (
+                                                        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 border-b pb-2 mb-2 text-sm">
+                                                            <span className="w-full sm:w-8 text-gray-500">Cc</span>
+                                                            <input
+                                                                type="email"
+                                                                value={replyData.cc}
+                                                                onChange={(e) =>
+                                                                    setReplyData({ ...replyData, cc: e.target.value })
+                                                                }
+                                                                className="flex-1 outline-none border sm:border-none rounded px-2 py-1"
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {/* BCC */}
+                                                    {showReplyBcc && (
+                                                        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 border-b pb-2 mb-2 text-sm">
+                                                            <span className="w-full sm:w-8 text-gray-500">Bcc</span>
+                                                            <input
+                                                                type="email"
+                                                                value={replyData.bcc}
+                                                                onChange={(e) =>
+                                                                    setReplyData({ ...replyData, bcc: e.target.value })
+                                                                }
+                                                                className="flex-1 outline-none border sm:border-none rounded px-2 py-1"
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {/* BODY */}
+                                                    <textarea
+                                                        value={replyData.body}
+                                                        onChange={(e) =>
+                                                            setReplyData({ ...replyData, body: e.target.value })
+                                                        }
+                                                        rows={6}
+                                                        className="w-full border rounded p-2 text-sm resize-none mt-3"
+                                                        placeholder="Write your reply..."
+                                                    />
+
+                                                    {/* ACTIONS */}
+                                                    <div className="flex flex-col sm:flex-row justify-end gap-2 mt-4">
+                                                        <button
+                                                            onClick={() => setShowReply(false)}
+                                                            className="px-4 py-2 text-sm rounded border w-full sm:w-auto"
+                                                        >
+                                                            Cancel
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => {
+                                                                console.log("Reply email:", replyData);
+                                                                setShowReply(false);
+                                                            }}
+                                                            className="px-4 py-2 text-sm rounded bg-[#071a3d] text-white w-full sm:w-auto"
+                                                        >
+                                                            Send
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+
+
+                                        <button
+                                            onClick={() => setShowForward(true)}
+                                            className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
+                                        >
                                             <i className="ri-share-forward-line"></i> Forward
                                         </button>
+                                        {showForward && (
+                                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                                                <div className="bg-white w-full max-w-lg rounded-2xl p-5 shadow-lg">
+                                                    {/* Header */}
+                                                    <div className="flex justify-between items-center mb-4">
+                                                        <h3 className="text-lg font-semibold">Forward Email</h3>
+                                                        <button
+                                                            onClick={() => {
+                                                                setShowForward(false);
+                                                                setShowCc(false);
+                                                                setShowBcc(false);
+                                                            }}
+                                                            className="text-gray-500 hover:text-black"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+
+                                                    {/* To Row */}
+                                                    <div className="flex items-center gap-2 border-b pb-2 mb-3 text-sm">
+                                                        <span className="w-8 text-gray-500">To</span>
+                                                        <input
+                                                            type="email"
+                                                            value={forwardData.to}
+                                                            onChange={(e) =>
+                                                                setForwardData({ ...forwardData, to: e.target.value })
+                                                            }
+                                                            placeholder="recipient@example.com"
+                                                            className="flex-1 outline-none"
+                                                        />
+
+                                                        <button
+                                                            onClick={() => setShowCc(!showCc)}
+                                                            className="text-xs text-blue-600"
+                                                        >
+                                                            Cc
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => setShowBcc(!showBcc)}
+                                                            className="text-xs text-blue-600"
+                                                        >
+                                                            Bcc
+                                                        </button>
+                                                    </div>
+
+                                                    {/* CC */}
+                                                    {showCc && (
+                                                        <div className="flex items-center gap-2 border-b pb-2 mb-3 text-sm">
+                                                            <span className="w-8 text-gray-500">Cc</span>
+                                                            <input
+                                                                type="email"
+                                                                value={forwardData.cc}
+                                                                onChange={(e) =>
+                                                                    setForwardData({ ...forwardData, cc: e.target.value })
+                                                                }
+                                                                placeholder="cc@example.com"
+                                                                className="flex-1 outline-none"
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {/* BCC */}
+                                                    {showBcc && (
+                                                        <div className="flex items-center gap-2 border-b pb-2 mb-3 text-sm">
+                                                            <span className="w-8 text-gray-500">Bcc</span>
+                                                            <input
+                                                                type="email"
+                                                                value={forwardData.bcc}
+                                                                onChange={(e) =>
+                                                                    setForwardData({ ...forwardData, bcc: e.target.value })
+                                                                }
+                                                                placeholder="bcc@example.com"
+                                                                className="flex-1 outline-none"
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {/* Body Preview (optional but realistic) */}
+                                                    <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded mt-3">
+                                                        <strong>Forwarded message:</strong>
+                                                        <p className="mt-1 whitespace-pre-line">
+                                                            {selectedMail?.body}
+                                                        </p>
+                                                    </div>
+
+                                                    {/* Actions */}
+                                                    <div className="flex justify-end gap-2 mt-5">
+                                                        <button
+                                                            onClick={() => setShowForward(false)}
+                                                            className="px-4 py-2 text-sm rounded border"
+                                                        >
+                                                            Cancel
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => {
+                                                                console.log("Forward email:", forwardData);
+                                                                setShowForward(false);
+                                                            }}
+                                                            className="px-4 py-2 text-sm rounded bg-[#071a3d] text-white"
+                                                        >
+                                                            Send
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+
 
                                         <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
                                             <i className="ri-delete-bin-line"></i> Delete
@@ -322,7 +615,7 @@ const Dashboardemail = () => {
 
             {/* ================= SMALLER SCREENS VERSION ================= */}
             <div className="h-full w-full bg-[#EEF8FF] email-desktop-smaller-version mx-auto hidden">
-                <div className="h-full bg-white rounded-2xl overflow-hidden flex flex-col">
+                <div className="h-full bg-white rounded-2xl flex flex-col">
 
                     {/* ================= FOLDER NAVIGATION ================= */}
                     <aside className="w-full bg-[#072A5A] text-white p-4 flex flex-row overflow-x-auto gap-2">
@@ -338,7 +631,7 @@ const Dashboardemail = () => {
                                             setActiveFolder("compose");
                                         }}
                                         className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm
-                    ${activeFolder === "compose" ? "bg-[#5F81AF]" : "hover:bg-[#5F81AF]"}`}
+                ${activeFolder === "compose" ? "bg-[#5F81AF]" : "hover:bg-[#5F81AF]"}`}
                                     >
                                         <i className="ri-pencil-line text-base"></i>
                                         <span>Compose</span>
@@ -354,7 +647,7 @@ const Dashboardemail = () => {
                                             setIsComposing(false);
                                         }}
                                         className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm
-                    ${activeFolder === folder ? "bg-[#5F81AF]" : "hover:bg-[#5F81AF]"}`}
+                ${activeFolder === folder ? "bg-[#5F81AF]" : "hover:bg-[#5F81AF]"}`}
                                     >
                                         <i className={`${folderIcons[folder]} text-base`}></i>
                                         <span className="capitalize">{folder}</span>
@@ -399,6 +692,17 @@ const Dashboardemail = () => {
                     {/* ================= PREVIEW / COMPOSE FULL SCREEN ================= */}
                     {(isComposing || selectedMail) && (
                         <aside className="w-full bg-[#EEF8FF] p-4 flex-1">
+                            <div className="flex items-center mb-4">
+                                {/* Back Button: only for Sent, Inbox, Spam */}
+                                {!isComposing && ["sent", "inbox", "spam"].includes(activeFolder) && (
+                                    <button
+                                        onClick={() => setSelectedMail(null)}
+                                        className="flex items-center gap-1 text-[#072A5A] hover:text-[#052659] font-medium"
+                                    >
+                                        <i className="ri-arrow-left-line"></i> Back
+                                    </button>
+                                )}
+                            </div>
                             {isComposing ? (
                                 <div className="bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
                                     <h2 className="text-xl font-medium mb-4 text-center">
@@ -414,7 +718,28 @@ const Dashboardemail = () => {
                                         }
                                         className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
                                     />
+                                    {/* CC/BCC toggles */}
+                                    {/* CC */}
+                                    {showComposeCc && (
+                                        <input
+                                            type="email"
+                                            placeholder="Cc"
+                                            value={composeData.cc}
+                                            onChange={(e) => setComposeData({ ...composeData, cc: e.target.value })}
+                                            className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+                                        />
+                                    )}
 
+                                    {/* BCC */}
+                                    {showComposeBcc && (
+                                        <input
+                                            type="email"
+                                            placeholder="Bcc"
+                                            value={composeData.bcc}
+                                            onChange={(e) => setComposeData({ ...composeData, bcc: e.target.value })}
+                                            className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+                                        />
+                                    )}
                                     <input
                                         type="text"
                                         placeholder="Subject"
@@ -433,14 +758,24 @@ const Dashboardemail = () => {
                                         className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none flex-1"
                                     />
 
-                                    <div className="flex items-center gap-4 mt-4 text-gray-700 px-2">
+                                    <div className="flex items-center gap-4 mt-4">
                                         <b>B</b>
                                         <i>I</i>
                                         <u>U</u>
-                                        <i className="ri-list-unordered"></i>
-                                        <i className="ri-list-ordered"></i>
-                                        <span>Cc Bcc</span>
-                                        <button className="px-3 py-1 bg-[#EEF8FF] rounded-lg text-sm">AI Assist</button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowComposeCc(!showComposeCc)}
+                                            className="text-black hover:underline"
+                                        >
+                                            Cc
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowComposeBcc(!showComposeBcc)}
+                                            className="text-black hover:underline"
+                                        >
+                                            Bcc
+                                        </button>
                                     </div>
 
                                     <button className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium">
@@ -449,13 +784,271 @@ const Dashboardemail = () => {
                                 </div>
                             ) : (
                                 <div className="relative bg-white rounded-3xl p-6 shadow-sm border h-full flex flex-col">
-                                    <div className="flex justify-end gap-2 mb-4">
-                                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+                                    <div className="relative flex flex-wrap justify-end gap-2 mb-4">
+                                        <button
+                                            onClick={() => {
+                                                setReplyData({
+                                                    to: selectedMail.from,
+                                                    cc: "",
+                                                    bcc: "",
+                                                    body: `\n\n--- Original Message ---\n${selectedMail.body}`,
+                                                });
+                                                setShowReply(true);
+                                            }}
+                                            className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
+                                        >
                                             <i className="ri-reply-line"></i> Reply
                                         </button>
-                                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+
+                                        {showReply && (
+                                            <div className="fixed inset-0 z-50 bg-black/40 flex justify-center items-end sm:items-center">
+                                                <div className="
+      bg-white
+      w-full
+      sm:max-w-lg
+      rounded-t-2xl sm:rounded-2xl
+      p-4 sm:p-5
+      max-h-[90vh]
+      overflow-y-auto
+    ">
+
+                                                    {/* Header */}
+                                                    <div className="flex justify-between items-center mb-3">
+                                                        <h3 className="text-base sm:text-lg font-semibold">Reply</h3>
+                                                        <button
+                                                            onClick={() => {
+                                                                setShowReply(false);
+                                                                setShowReplyCc(false);
+                                                                setShowReplyBcc(false);
+                                                            }}
+                                                            className="text-xl text-gray-500"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+
+                                                    {/* TO */}
+                                                    <div className="border-b pb-2 mb-2 text-sm">
+                                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                                            <span className="text-gray-500 sm:w-8">To</span>
+
+                                                            <input
+                                                                type="email"
+                                                                value={replyData.to}
+                                                                onChange={(e) =>
+                                                                    setReplyData({ ...replyData, to: e.target.value })
+                                                                }
+                                                                className="flex-1 border sm:border-none rounded px-2 py-1 outline-none"
+                                                            />
+
+                                                            <div className="flex gap-3 text-xs sm:ml-auto">
+                                                                <button
+                                                                    onClick={() => setShowReplyCc(!showReplyCc)}
+                                                                    className="text-blue-600"
+                                                                >
+                                                                    Cc
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => setShowReplyBcc(!showReplyBcc)}
+                                                                    className="text-blue-600"
+                                                                >
+                                                                    Bcc
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* CC */}
+                                                    {showReplyCc && (
+                                                        <div className="border-b pb-2 mb-2 text-sm">
+                                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                                                <span className="text-gray-500 sm:w-8">Cc</span>
+                                                                <input
+                                                                    type="email"
+                                                                    value={replyData.cc}
+                                                                    onChange={(e) =>
+                                                                        setReplyData({ ...replyData, cc: e.target.value })
+                                                                    }
+                                                                    className="flex-1 border sm:border-none rounded px-2 py-1 outline-none"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* BCC */}
+                                                    {showReplyBcc && (
+                                                        <div className="border-b pb-2 mb-2 text-sm">
+                                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                                                <span className="text-gray-500 sm:w-8">Bcc</span>
+                                                                <input
+                                                                    type="email"
+                                                                    value={replyData.bcc}
+                                                                    onChange={(e) =>
+                                                                        setReplyData({ ...replyData, bcc: e.target.value })
+                                                                    }
+                                                                    className="flex-1 border sm:border-none rounded px-2 py-1 outline-none"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* BODY */}
+                                                    <textarea
+                                                        rows={6}
+                                                        value={replyData.body}
+                                                        onChange={(e) =>
+                                                            setReplyData({ ...replyData, body: e.target.value })
+                                                        }
+                                                        placeholder="Write your reply…"
+                                                        className="w-full border rounded p-2 text-sm resize-none mt-3"
+                                                    />
+
+                                                    {/* ACTIONS */}
+                                                    <div className="flex flex-col sm:flex-row justify-end gap-2 mt-4">
+                                                        <button
+                                                            onClick={() => setShowReply(false)}
+                                                            className="w-full sm:w-auto px-4 py-2 text-sm rounded border"
+                                                        >
+                                                            Cancel
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => {
+                                                                console.log("Reply sent:", replyData);
+                                                                setShowReply(false);
+                                                            }}
+                                                            className="w-full sm:w-auto px-4 py-2 text-sm rounded bg-[#071a3d] text-white"
+                                                        >
+                                                            Send
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+
+                                        <button
+                                            onClick={() => setShowForward(true)}
+                                            className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
+                                        >
                                             <i className="ri-share-forward-line"></i> Forward
                                         </button>
+
+                                        {showForward && (
+                                            <div className="fixed inset-0 z-50 flex flex-wrap items-end sm:items-center justify-center bg-black/40">
+                                                <div className="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl p-4 sm:p-5 shadow-lg max-h-[90vh] overflow-y-auto">
+
+                                                    {/* Header */}
+                                                    <div className="flex justify-between items-center mb-3">
+                                                        <h3 className="text-base sm:text-lg font-semibold">
+                                                            Forward Email
+                                                        </h3>
+                                                        <button
+                                                            onClick={() => {
+                                                                setShowForward(false);
+                                                                setShowCc(false);
+                                                                setShowBcc(false);
+                                                            }}
+                                                            className="text-gray-500 text-xl"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+
+                                                    {/* TO */}
+                                                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 border-b pb-2 mb-2 text-sm">
+                                                        <span className="w-full sm:w-8 text-gray-500">To</span>
+
+                                                        <input
+                                                            type="email"
+                                                            value={forwardData.to}
+                                                            onChange={(e) =>
+                                                                setForwardData({ ...forwardData, to: e.target.value })
+                                                            }
+                                                            placeholder="recipient@example.com"
+                                                            className="flex-1 min-w-0 outline-none border sm:border-none rounded px-2 py-1"
+                                                        />
+
+                                                        <div className="flex gap-2 text-xs">
+                                                            <button
+                                                                onClick={() => setShowCc(!showCc)}
+                                                                className="text-blue-600"
+                                                            >
+                                                                Cc
+                                                            </button>
+                                                            <button
+                                                                onClick={() => setShowBcc(!showBcc)}
+                                                                className="text-blue-600"
+                                                            >
+                                                                Bcc
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* CC */}
+                                                    {showCc && (
+                                                        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 border-b pb-2 mb-2 text-sm">
+                                                            <span className="w-full sm:w-8 text-gray-500">Cc</span>
+                                                            <input
+                                                                type="email"
+                                                                value={forwardData.cc}
+                                                                onChange={(e) =>
+                                                                    setForwardData({ ...forwardData, cc: e.target.value })
+                                                                }
+                                                                placeholder="cc@example.com"
+                                                                className="flex-1 outline-none border sm:border-none rounded px-2 py-1"
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {/* BCC */}
+                                                    {showBcc && (
+                                                        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 border-b pb-2 mb-2 text-sm">
+                                                            <span className="w-full sm:w-8 text-gray-500">Bcc</span>
+                                                            <input
+                                                                type="email"
+                                                                value={forwardData.bcc}
+                                                                onChange={(e) =>
+                                                                    setForwardData({ ...forwardData, bcc: e.target.value })
+                                                                }
+                                                                placeholder="bcc@example.com"
+                                                                className="flex-1 outline-none border sm:border-none rounded px-2 py-1"
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {/* BODY PREVIEW */}
+                                                    <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded mt-3">
+                                                        <strong>Forwarded message:</strong>
+                                                        <p className="mt-1 whitespace-pre-line">
+                                                            {selectedMail?.body}
+                                                        </p>
+                                                    </div>
+
+                                                    {/* ACTIONS */}
+                                                    <div className="flex flex-col sm:flex-row justify-end gap-2 mt-4">
+                                                        <button
+                                                            onClick={() => setShowForward(false)}
+                                                            className="px-4 py-2 text-sm rounded border w-full sm:w-auto"
+                                                        >
+                                                            Cancel
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => {
+                                                                console.log("Forward email:", forwardData);
+                                                                setShowForward(false);
+                                                            }}
+                                                            className="px-4 py-2 text-sm rounded bg-[#071a3d] text-white w-full sm:w-auto"
+                                                        >
+                                                            Send
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+
                                         <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
                                             <i className="ri-delete-bin-line"></i> Delete
                                         </button>

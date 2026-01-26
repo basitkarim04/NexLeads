@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const DashboardTask = () => {
-
+    const [platformOpen, setPlatformOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
     const [leadStatus, setLeadStatus] = useState(
         Array(6).fill("interested") // default for all rows
@@ -16,9 +16,6 @@ const DashboardTask = () => {
 
     return (
         <div className="bg-white rounded-3xl p-5 md:p-8">
-
-
-
             {!selectedCard ? (
                 <div>
 
@@ -39,17 +36,45 @@ const DashboardTask = () => {
                             Date: From - To
                             <i className="ri-arrow-down-s-line"></i>
                         </div>
+                        <div className="w-full xl:w-1/4 relative">
+                            <button
+                                onClick={() => setPlatformOpen(!platformOpen)}
+                                className="w-full flex justify-between items-center px-4 py-1 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl text-gray-500 text-sm"
+                            >
+                                <span className="flex items-center gap-2">
+                                    <i className="ri-apps-2-line text-lg text-gray-500 font-bold"></i>
+                                    Platforms
+                                </span>
+                                <i
+                                    className={`ri-arrow-down-s-line text-xl text-gray-500 transition-transform ${platformOpen ? "rotate-180" : ""
+                                        }`}
+                                ></i>
+                            </button>
+                            {platformOpen && (
+                                <div className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden">
+                                    <button
+                                        onClick={() => {
+                                            setPlatformOpen(false);
+                                            // handle facebook selection
+                                        }}
+                                        className="w-full text-left px-4 py-3 text-sm hover:bg-[#EEF8FF] flex items-center gap-2"
+                                    >
+                                        <i className="ri-facebook-fill text-blue-600"></i>
+                                        Facebook
+                                    </button>
 
-                        <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
-                            <i className="ri-stack-line"></i>
-                            Platforms
-                            <i className="ri-arrow-down-s-line"></i>
-                        </div>
-
-                        <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
-                            <i className="ri-loader-3-line"></i>
-                            Status
-                            <i className="ri-arrow-down-s-line"></i>
+                                    <button
+                                        onClick={() => {
+                                            setPlatformOpen(false);
+                                            // handle twitter selection
+                                        }}
+                                        className="w-full text-left px-4 py-3 text-sm hover:bg-[#EEF8FF] flex items-center gap-2"
+                                    >
+                                        <i className="ri-twitter-x-fill text-black"></i>
+                                        Twitter
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
                         <button className="ml-auto flex items-center gap-2 bg-[#EAF6FF] px-5 py-2 rounded-xl text-sm text-[#0A2A55]">
@@ -176,11 +201,11 @@ const DashboardTask = () => {
                                                         value={leadStatus[i]}
                                                         onChange={(e) => updateStatus(i, e.target.value)}
                                                         className={`bg-white text-xs px-2 py-1 rounded-lg border cursor-pointer outline-none
-                                                    ${leadStatus[i] === "interested"
+    ${leadStatus[i] === "interested"
                                                                 ? "bg-green-200 text-green-700 border-green-300 focus:bg-white"
                                                                 : "bg-red-200 text-red-700 border-red-300 focus:bg-White"
                                                             }
-                                                    `}
+  `}
                                                     >
                                                         <option value="interested">Interested</option>
                                                         <option value="not_interested">Not Interested</option>
@@ -199,7 +224,6 @@ const DashboardTask = () => {
 
 
         </div>
-
     )
 }
 

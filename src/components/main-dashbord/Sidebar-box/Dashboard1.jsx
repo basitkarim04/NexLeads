@@ -32,9 +32,9 @@ const Dashboard1 = () => {
                         className={`p-4 md:p-6 rounded-2xl ${card.gradient ? 'text-white' : 'bg-white'} relative`}
                         style={card.gradient ? { background: 'linear-gradient(135deg, #1e3a5f 0%, #2d4a7c 100%)' } : {}}
                     >
-                        <div className="absolute top-4 right-4 w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-current flex items-center justify-center">
+                        {/* <div className="absolute top-4 right-4 w-6 h-6 md:w-8 md:h-8 rounded-full border-2 border-current flex items-center justify-center">
                             <ArrowUpRight size={16} />
-                        </div>
+                        </div> */}
                         <div className={`text-xs md:text-sm mb-2 ${card.gradient ? 'text-white/80' : 'text-gray-600'}`}>{card.title}</div>
                         <div className="text-3xl md:text-4xl font-bold mb-1">{card.value}</div>
                         <div className={`text-xs ${card.gradient ? 'text-white/70' : 'text-gray-500'}`}>{card.change}</div>
