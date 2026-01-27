@@ -28,6 +28,8 @@ export default function AuthPages() {
     confirmPassword: "",
   });
   const [resetToken, setResetToken] = useState("");
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
+  const [otp, setOtp] = useState("");
 
   const isLogin = mode === "login";
   const isSignup = mode === "signup";
@@ -84,18 +86,40 @@ export default function AuthPages() {
         password: signupData.password,
         confirmPassword: signupData.confirmPassword,
       });
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      toast.success("Account created successfully!", "success");
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 1000);
+      const { data } = res; 
+
+      if (data.success) {
+        setShowOtpPopup(true);
+      }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Signup failed", "error");
+      toast.error(err?.response?.data?.message || "Signup failed", "error");
     } finally {
       setLoading(false);
     }
   };
+
+  const handleVerifyOtp = async () => {
+    const res = await fetch(`${baseurl}/user/verify-email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: signupData.email,
+        otp,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      toast.success("Account created successfully!", "success");
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 1000);
+    }
+  };
+
 
   const handleForgot = async (e) => {
     e.preventDefault();
@@ -152,16 +176,15 @@ export default function AuthPages() {
       {/* LOGO */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50">
         <Link to="/">
-        <img src={nexLeadlogo} alt="Logo" className="h-20 w-auto" />
+          <img src={nexLeadlogo} alt="Logo" className="h-20 w-auto" />
         </Link>
       </div>
 
       {/* Message Alert */}
       {message.text && (
         <div
-          className={`absolute top-24 left-1/2 -translate-x-1/2 px-6 py-3 rounded-lg text-white font-medium z-50 shadow-lg ${
-            message.type === "success" ? "bg-green-600" : "bg-red-600"
-          }`}
+          className={`absolute top-24 left-1/2 -translate-x-1/2 px-6 py-3 rounded-lg text-white font-medium z-50 shadow-lg ${message.type === "success" ? "bg-green-600" : "bg-red-600"
+            }`}
         >
           {message.text}
         </div>
@@ -171,9 +194,8 @@ export default function AuthPages() {
       <div className="w-full grid grid-cols-1 lg:grid-cols-2">
         {/* FORM SECTION */}
         <div
-          className={`w-full p-8 sm:p-12 text-white flex items-center justify-center ${
-            isLoginLike ? "order-1" : "order-2"
-          }`}
+          className={`w-full p-8 sm:p-12 text-white flex items-center justify-center ${isLoginLike ? "order-1" : "order-2"
+            }`}
         >
           <div className="w-full max-w-md">
             {/* LOGIN */}
@@ -384,9 +406,8 @@ export default function AuthPages() {
 
         {/* IMAGE SECTION */}
         <div
-          className={`hidden lg:flex items-center justify-center h-screen ${
-            isLoginLike ? "order-2" : "order-1"
-          }`}
+          className={`hidden lg:flex items-center justify-center h-screen ${isLoginLike ? "order-2" : "order-1"
+            }`}
         >
           <img
             src={Login}
@@ -395,6 +416,44 @@ export default function AuthPages() {
           />
         </div>
       </div>
+
+      {showOtpPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+
+            {/* Header */}
+            <h2 className="text-2xl font-bold text-center text-gray-900">
+              Verify Your Email
+            </h2>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Enter the 6-digit code sent to your email
+            </p>
+
+            {/* OTP Input */}
+            <input
+              type="text"
+              maxLength={6}
+              value={otp}
+              onChange={(e) =>
+                setOtp(e.target.value.replace(/\D/g, ""))
+              }
+              placeholder="••••••"
+              className="mt-6 w-full rounded-xl border border-gray-300 px-4 py-3 text-center text-xl tracking-widest focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            />
+
+            {/* Verify Button */}
+            <button
+              onClick={handleVerifyOtp}
+              disabled={otp.length !== 6 || loading}
+              className="mt-5 w-full rounded-xl bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {loading ? "Verifying..." : "Verify Code"}
+            </button>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

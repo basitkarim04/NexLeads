@@ -1,7 +1,13 @@
 import React from 'react';
+import { useDispatch, useSelector } from "react-redux";
+
 import { Search, Mail, Clock, Folder, Moon, LogOut, Settings, Bell, Grid, ArrowUpRight, User, Menu } from 'lucide-react';
 
 const Dashboard1 = () => {
+
+    const { userDetails, loading, error } = useSelector(
+        (state) => state.userDetail
+    );
 
     const statCards = [
         { title: 'Total Emails Sent', value: '230', change: 'Increased from last month', gradient: true },

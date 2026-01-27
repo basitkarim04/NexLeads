@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
- 
+import { baseurl } from "../../BaseUrl";
+
+const token = localStorage.getItem("token");
+
 
 //create action
 export const createUser = createAsyncThunk(
@@ -19,24 +22,6 @@ export const createUser = createAsyncThunk(
 
     try {
       const result = await response.json();
-      return result;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
-);
-
-//read action
-export const showUser = createAsyncThunk(
-  "showUser",
-  async (args, { rejectWithValue }) => {
-    const response = await fetch(
-      "https://brokerbulletins-54871d77d1d8.herokuapp.com/getallbrands"
-    );
-
-    try {
-      const result = await response.json();
-      console.log(result);
       return result;
     } catch (error) {
       return rejectWithValue(error);
@@ -116,17 +101,22 @@ export const signup = createAsyncThunk(
 );
 
 //read action
-export const getemails = createAsyncThunk(
-  "getemails",
+export const userData = createAsyncThunk(
+  "userData",
   async (args, { rejectWithValue }) => {
-    const response = await fetch(
-      `${baseurl}/get-emails`
-    );
-
     try {
+      const response = await fetch(`${baseurl}/user/profile`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const result = await response.json();
-      console.log(result);
-      return result;
+      const data = result.user;
+
+      return data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -136,6 +126,7 @@ export const getemails = createAsyncThunk(
 export const userDetail = createSlice({
   name: "userDetail",
   initialState: {
+    userDetails: null,
     users: [],
     loading: false,
     error: null,
@@ -160,14 +151,14 @@ export const userDetail = createSlice({
         state.loading = false;
         state.error = action.payload.message;
       })
-      .addCase(getemails.pending, (state) => {
+      .addCase(userData.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getemails.fulfilled, (state, action) => {
+      .addCase(userData.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload;
+        state.userDetails = action.payload;
       })
-      .addCase(getemails.rejected, (state, action) => {
+      .addCase(userData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

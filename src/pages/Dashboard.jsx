@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import { Search, Mail, Clock, Folder, Moon, LogOut, Settings, Bell, Grid, ArrowUpRight, User, Menu } from 'lucide-react';
 import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
 
@@ -10,9 +11,15 @@ import DashboardTask from '../components/main-dashbord/Sidebar-box/DashboardTask
 import DashboardProject from '../components/main-dashbord/DashboardProject';
 import DashboardSetting from '../components/main-dashbord/Sidebar-box/DashboardSetting';
 import { useNavigate, Link } from 'react-router-dom';
+import { userData } from '../Redux/Features/UserDetailSlice';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { userDetails, loading, error } = useSelector(
+  (state) => state.userDetail
+);
+
 
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -44,13 +51,12 @@ const Dashboard = () => {
   }, [sidebarOpen]);
 
   useEffect(() => {
-     const token = localStorage.getItem("token");
-
+    const token = localStorage.getItem("token");
     // if (!token) {
     //   navigate("/login");
     //   return;
     // }
-
+    dispatch(userData());
     localStorage.setItem("activePage", activePage);
   }, [activePage]);
 
@@ -137,9 +143,9 @@ const Dashboard = () => {
         {/* Bottom icons */}
         <div className="flex flex-col items-center space-y-3 mt-auto">
           <button className="p-3 text-white hover:bg-white/20 rounded-xl transition">
-          <Link to="/">
-          <LogOut size={24} />
-          </Link>
+            <Link to="/">
+              <LogOut size={24} />
+            </Link>
           </button>
           <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center">
             <User size={24} className="text-blue-900" />
@@ -190,8 +196,8 @@ const Dashboard = () => {
               </div>
 
               <div className="hidden md:block">
-                <div className="font-semibold text-sm">Sohaib Kamran</div>
-                <div className="text-xs text-gray-500">sohaib@nexleads.com</div>
+                <div className="font-semibold text-sm">{userDetails?.name}</div>
+                <div className="text-xs text-gray-500">{userDetails?.nexleadsEmail}</div>
               </div>
             </div>
           </div>
