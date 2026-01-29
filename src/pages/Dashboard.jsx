@@ -11,7 +11,7 @@ import DashboardTask from '../components/main-dashbord/Sidebar-box/DashboardTask
 import DashboardProject from '../components/main-dashbord/DashboardProject';
 import DashboardSetting from '../components/main-dashbord/Sidebar-box/DashboardSetting';
 import { useNavigate, Link } from 'react-router-dom';
-import { userData } from '../Redux/Features/UserDetailSlice';
+import { DashboardStats, getProjects, JobLeads, userData } from '../Redux/Features/UserDetailSlice';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -52,11 +52,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    // if (!token) {
-    //   navigate("/login");
-    //   return;
-    // }
+    if (!token) {
+      navigate("/login");
+      return;
+    }
     dispatch(userData());
+    dispatch(DashboardStats());
+    dispatch(JobLeads());
+    dispatch(getProjects());
+
+    
     localStorage.setItem("activePage", activePage);
   }, [activePage]);
 
@@ -98,6 +103,11 @@ const Dashboard = () => {
       default:
         return <h1 className="text-3xl font-bold">Page Not Found</h1>;
     }
+  };
+
+   const handleLogout = () => {
+    localStorage.clear(); 
+    navigate('/');    
   };
 
   return (
@@ -142,10 +152,8 @@ const Dashboard = () => {
 
         {/* Bottom icons */}
         <div className="flex flex-col items-center space-y-3 mt-auto">
-          <button className="p-3 text-white hover:bg-white/20 rounded-xl transition">
-            <Link to="/">
+          <button className="p-3 text-white hover:bg-white/20 rounded-xl transition" onClick={handleLogout} >
               <LogOut size={24} />
-            </Link>
           </button>
           <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center">
             <User size={24} className="text-blue-900" />

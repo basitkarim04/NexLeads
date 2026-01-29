@@ -2,27 +2,42 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
 import { Search, Mail, Clock, Folder, Moon, LogOut, Settings, Bell, Grid, ArrowUpRight, User, Menu } from 'lucide-react';
+import { toUTCString } from '../../../utils/helpers';
 
 const Dashboard1 = () => {
 
-    const { userDetails, loading, error } = useSelector(
+    const { dashboardStats, loading, error } = useSelector(
         (state) => state.userDetail
     );
-
     const statCards = [
-        { title: 'Total Emails Sent', value: '230', change: 'Increased from last month', gradient: true },
-        { title: 'Emails Opened', value: '150', change: 'Increased from last month', gradient: false },
-        { title: 'Responses Received', value: '70', change: 'Increased from last month', gradient: false },
-        { title: 'People Reached', value: '20', change: 'Increased from last month', gradient: false }
+        {
+            title: 'Total Emails Sent',
+            value: dashboardStats?.stats?.totalEmailsSent ?? 0,
+            change: 'Increased from last month',
+            gradient: true,
+        },
+        {
+            title: 'Emails Opened',
+            value: dashboardStats?.stats?.totalEmailsOpened ?? 0,
+            change: 'Increased from last month',
+            gradient: false,
+        },
+        {
+            title: 'Responses Received',
+            value: dashboardStats?.stats?.totalResponses ?? 0,
+            change: 'Increased from last month',
+            gradient: false,
+        },
+        {
+            title: 'People Reached',
+            value: dashboardStats?.stats?.totalLeads ?? 0,
+            change: 'Increased from last month',
+            gradient: false,
+        },
     ];
 
-    const projects = [
-        { name: 'Develop Flipkart Mobile app', date: 'Nov 26, 2025', color: 'bg-pink-500' },
-        { name: 'Reactjs - Landing Page', date: 'May, 2026', color: 'bg-blue-500' },
-        { name: '3d Animation - Blender', date: 'Dec 1, 2025', color: 'bg-orange-500' },
-        { name: 'Designing - Banner', date: 'Oct 2, 2025', color: 'bg-purple-500' },
-        { name: 'Flutter Dev - Suhalat 911', date: 'Sep 31, 2025', color: 'bg-cyan-500' }
-    ];
+    const projectColors = ['bg-pink-500', 'bg-blue-500', 'bg-orange-500', 'bg-purple-500', 'bg-cyan-500', 'bg-emerald-500'];
+
 
     return (
         <>
@@ -77,17 +92,21 @@ const Dashboard1 = () => {
                 <div className="bg-white p-4 md:p-6 rounded-2xl lg:row-span-2">
                     <h2 className="text-lg md:text-xl font-bold mb-6">Current Projects</h2>
                     <div className="space-y-4">
-                        {projects.map((p, i) => (
-                            <div key={i} className="flex items-center space-x-3">
-                                <div className={`w-10 h-10 rounded-full ${p.color} flex items-center justify-center text-white`}>
-                                    <User size={20} />
+                        {dashboardStats?.activeProjects?.map((p, i) => {
+                            const bgColor = projectColors[i % projectColors.length];
+
+                            return (
+                                <div key={i} className="flex items-center space-x-3">
+                                    <div className={`w-10 h-10 rounded-full ${bgColor} flex items-center justify-center text-white`}>
+                                        <User size={20} />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-semibold text-sm truncate">{p.title}</div>
+                                        <div className="text-xs text-gray-500">Due Date: {toUTCString(p.createdAt)}</div>
+                                    </div>
                                 </div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="font-semibold text-sm truncate">{p.name}</div>
-                                    <div className="text-xs text-gray-500">Due Date: {p.date}</div>
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 

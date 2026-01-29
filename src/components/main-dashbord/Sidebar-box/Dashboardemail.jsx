@@ -1,44 +1,52 @@
 import React, { useState, useEffect } from 'react';
+import { createProject, getEmails, moveFolderEmail, upsetEmail } from '../../../Redux/Features/UserDetailSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { toUTCString } from '../../../utils/helpers';
 
 const Dashboardemail = () => {
-    const foldersList = ["compose", "inbox", "sent", "drafts", "spam", "trash"];
+    const dispatch = useDispatch();
+    const { userEmails, loading, error } = useSelector(
+        (state) => state.userDetail
+    );
+
+    const foldersList = ["inbox", "sent", "trash"];
     // Email
-      // Forward
-      const [showForward, setShowForward] = useState(false);
-      const [showCc, setShowCc] = useState(false);
-      const [showBcc, setShowBcc] = useState(false);
-      const [forwardData, setForwardData] = useState({
+    // Forward
+    const [showForward, setShowForward] = useState(false);
+    const [showCc, setShowCc] = useState(false);
+    const [showBcc, setShowBcc] = useState(false);
+    const [forwardData, setForwardData] = useState({
         to: "",
         cc: "",
         bcc: "",
-      });
-      // Reply
-      const [showReply, setShowReply] = useState(false);
-      const [showReplyCc, setShowReplyCc] = useState(false);
-      const [showReplyBcc, setShowReplyBcc] = useState(false);
-      const [replyData, setReplyData] = useState({
+    });
+    // Reply
+    const [showReply, setShowReply] = useState(false);
+    const [showReplyCc, setShowReplyCc] = useState(false);
+    const [showReplyBcc, setShowReplyBcc] = useState(false);
+    const [replyData, setReplyData] = useState({
         to: "",
         cc: "",
         bcc: "",
         body: "",
-      });
-      //Compose
-      const [composeData, setComposeData] = useState({
+    });
+    //Compose
+    const [composeData, setComposeData] = useState({
         to: "",
         cc: "",
         bcc: "",
         subject: "",
         body: "",
-      });
-      const [showComposeCc, setShowComposeCc] = useState(false);
-      const [showComposeBcc, setShowComposeBcc] = useState(false);
+    });
+    const [showComposeCc, setShowComposeCc] = useState(false);
+    const [showComposeBcc, setShowComposeBcc] = useState(false);
 
 
     const [open, setOpen] = useState(false);
     const [activeFolder, setActiveFolder] = useState("inbox");
     const [selectedMail, setSelectedMail] = useState(null);
     const [isComposing, setIsComposing] = useState(false);
-    
+
     useEffect(() => {
         localStorage.setItem("activeFolder", activeFolder);
     }, [activeFolder]);
@@ -104,6 +112,40 @@ const Dashboardemail = () => {
         trash: "ri-delete-bin-line",
     };
 
+    useEffect(() => {
+        dispatch(getEmails(activeFolder));
+    }, [activeFolder])
+
+    const onSubmit = async () => {
+        const payload = {
+            body: replyData.body,
+            emailId: selectedMail._id,
+        };
+
+        await dispatch(upsetEmail(payload));
+        dispatch(getEmails(activeFolder));
+        setShowReply(false);
+    };
+    const onDelete = async () => {
+        
+        const payload = {
+            emailId: selectedMail._id,
+            folder: 'trash'
+        };
+
+        await dispatch(moveFolderEmail(payload));
+        dispatch(getEmails(activeFolder));
+    };
+    const onUpdate = async () => {
+        const payload = {
+            leadId: selectedMail.leadId._id,
+            title: selectedMail.leadId.jobTitle,
+            company: selectedMail.leadId.company,
+        };
+
+        await dispatch(createProject(payload));
+        setOpen(false);
+    };
 
     return (
         <div className="h-full w-full main-email">
@@ -192,7 +234,7 @@ const Dashboardemail = () => {
 
                             {/* Emails List */}
                             <div>
-                                {mails.map((mail) => (
+                                {userEmails?.emails.map((mail) => (
                                     <div
                                         key={mail.id}
                                         onClick={() => {
@@ -211,12 +253,12 @@ const Dashboardemail = () => {
                                                 : "bg-[#EEF8FF] hover:bg-[#072A5A] hover:text-white"
                                             }`}
                                     >
-                                        <div className="md:col-span-3 font-medium text-sm">{mail.sender}</div>
+                                        <div className="md:col-span-3 font-medium text-xs truncate">{mail.to}</div>
                                         <div className="md:col-span-6">
-                                            <div className="font-semibold text-sm">{mail.subject}</div>
-                                            <div className="text-xs opacity-70 truncate">{mail.preview}</div>
+                                            <div className="font-semibold text-xs">{mail.subject}</div>
+                                            <div className="text-xs opacity-70 truncate">{mail.body}</div>
                                         </div>
-                                        <div className="md:col-span-3 text-xs md:text-right opacity-70">{mail.date}</div>
+                                        <div className="md:col-span-3 text-xs md:text-right opacity-70">{toUTCString(mail.sentAt)}</div>
                                     </div>
                                 ))}
                             </div>
@@ -317,7 +359,7 @@ const Dashboardemail = () => {
                                         <button
                                             onClick={() => {
                                                 setReplyData({
-                                                    to: selectedMail.from,
+                                                    to: selectedMail.to,
                                                     cc: "", // can be auto-filled if you store cc
                                                     bcc: "",
                                                     body: `\n\n--- Original Message ---\n${selectedMail.body}`,
@@ -360,7 +402,7 @@ const Dashboardemail = () => {
                                                             className="flex-1 outline-none border sm:border-none rounded px-2 py-1"
                                                         />
 
-                                                        <div className="flex gap-2 text-xs">
+                                                        {/* <div className="flex gap-2 text-xs">
                                                             <button
                                                                 onClick={() => setShowReplyCc(!showReplyCc)}
                                                                 className="text-blue-600"
@@ -373,7 +415,7 @@ const Dashboardemail = () => {
                                                             >
                                                                 Bcc
                                                             </button>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
 
                                                     {/* CC */}
@@ -427,10 +469,7 @@ const Dashboardemail = () => {
                                                         </button>
 
                                                         <button
-                                                            onClick={() => {
-                                                                console.log("Reply email:", replyData);
-                                                                setShowReply(false);
-                                                            }}
+                                                            onClick={onSubmit}
                                                             className="px-4 py-2 text-sm rounded bg-[#071a3d] text-white w-full sm:w-auto"
                                                         >
                                                             Send
@@ -442,12 +481,12 @@ const Dashboardemail = () => {
 
 
 
-                                        <button
+                                        {/* <button
                                             onClick={() => setShowForward(true)}
                                             className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
                                         >
                                             <i className="ri-share-forward-line"></i> Forward
-                                        </button>
+                                        </button> */}
                                         {showForward && (
                                             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
                                                 <div className="bg-white w-full max-w-lg rounded-2xl p-5 shadow-lg">
@@ -559,7 +598,8 @@ const Dashboardemail = () => {
 
 
 
-                                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+                                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
+                                        onClick={onDelete}>
                                             <i className="ri-delete-bin-line"></i> Delete
                                         </button>
 
@@ -576,14 +616,11 @@ const Dashboardemail = () => {
                                             <div className="absolute right-0 top-9 w-40 bg-white border border-gray-200 rounded shadow-md z-50">
                                                 <button
                                                     className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
-                                                    onClick={() => {
-                                                        setOpen(false);
-                                                        // handle mark as ongoing here
-                                                    }}
+                                                    onClick={onUpdate}
                                                 >
                                                     Mark as Discussion
                                                 </button>
-                                                <button
+                                                {/* <button
                                                     className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
                                                     onClick={() => {
                                                         setOpen(false);
@@ -591,7 +628,7 @@ const Dashboardemail = () => {
                                                     }}
                                                 >
                                                     Mark as Ongoing
-                                                </button>
+                                                </button> */}
                                             </div>
                                         )}
                                     </div>
@@ -599,6 +636,7 @@ const Dashboardemail = () => {
                                     <div className="text-sm space-y-2 border-y py-4">
                                         <p><strong>Subject:</strong> {selectedMail.subject}</p>
                                         <p><strong>From:</strong> {selectedMail.from}</p>
+                                        <p><strong>To:</strong> {selectedMail.to}</p>
                                     </div>
 
                                     <div className="mt-4 whitespace-pre-line text-sm">{selectedMail.body}</div>
@@ -788,7 +826,7 @@ const Dashboardemail = () => {
                                         <button
                                             onClick={() => {
                                                 setReplyData({
-                                                    to: selectedMail.from,
+                                                    to: selectedMail.to,
                                                     cc: "",
                                                     bcc: "",
                                                     body: `\n\n--- Original Message ---\n${selectedMail.body}`,
@@ -841,7 +879,7 @@ const Dashboardemail = () => {
                                                                 className="flex-1 border sm:border-none rounded px-2 py-1 outline-none"
                                                             />
 
-                                                            <div className="flex gap-3 text-xs sm:ml-auto">
+                                                            {/* <div className="flex gap-3 text-xs sm:ml-auto">
                                                                 <button
                                                                     onClick={() => setShowReplyCc(!showReplyCc)}
                                                                     className="text-blue-600"
@@ -854,7 +892,7 @@ const Dashboardemail = () => {
                                                                 >
                                                                     Bcc
                                                                 </button>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </div>
 
@@ -913,10 +951,7 @@ const Dashboardemail = () => {
                                                         </button>
 
                                                         <button
-                                                            onClick={() => {
-                                                                console.log("Reply sent:", replyData);
-                                                                setShowReply(false);
-                                                            }}
+                                                            onClick={onSubmit}
                                                             className="w-full sm:w-auto px-4 py-2 text-sm rounded bg-[#071a3d] text-white"
                                                         >
                                                             Send
@@ -1049,7 +1084,9 @@ const Dashboardemail = () => {
                                         )}
 
 
-                                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs">
+                                        <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
+                                        onClick={onDelete}
+                                        >
                                             <i className="ri-delete-bin-line"></i> Delete
                                         </button>
                                         <button
@@ -1063,20 +1100,18 @@ const Dashboardemail = () => {
                                             <div className="absolute right-0 mt-9 mr-9 w-40 bg-white border border-gray-200 rounded shadow-md z-50">
                                                 <button
                                                     className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
-                                                    onClick={() => {
-                                                        setOpen(false);
-                                                    }}
+                                                    onClick={onUpdate}
                                                 >
                                                     Mark as Discussion
                                                 </button>
-                                                <button
+                                                {/* <button
                                                     className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
                                                     onClick={() => {
                                                         setOpen(false);
                                                     }}
                                                 >
                                                     Mark as Ongoing
-                                                </button>
+                                                </button> */}
                                             </div>
                                         )}
                                     </div>
@@ -1084,6 +1119,7 @@ const Dashboardemail = () => {
                                     <div className="text-sm space-y-2 border-y py-4">
                                         <p><strong>Subject:</strong> {selectedMail.subject}</p>
                                         <p><strong>From:</strong> {selectedMail.from}</p>
+                                        <p><strong>To:</strong> {selectedMail.to}</p>
                                     </div>
 
                                     <div className="mt-4 whitespace-pre-line text-sm">{selectedMail.body}</div>

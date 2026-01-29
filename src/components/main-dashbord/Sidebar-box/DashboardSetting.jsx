@@ -1,8 +1,13 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import profileImage from "../../../assets/Images/basit.jpg";
+import profileImage from "../../../assets/Images/feature1.png";
+import { useSelector } from 'react-redux';
 
 const DashboardSetting = () => {
+    const { userDetails, loading, error } = useSelector(
+      (state) => state.userDetail
+    );
+
     const [billingCycle, setBillingCycle] = useState("monthly");
     const [activeTab, setActiveTab] = useState("profile");
     const [isEditOpen, setIsEditOpen] = useState(false);
@@ -187,15 +192,15 @@ const DashboardSetting = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div>
                                         <p className="text-sm font-semibold">Full Name</p>
-                                        <p className="text-gray-800">Mohsin Salman</p>
+                                        <p className="text-gray-800">{userDetails?.name}</p>
                                     </div>
                                     <div>
-                                        <p className="text-sm font-semibold">Email</p>
-                                        <p className="text-gray-800">mohsin@nexleads.com</p>
+                                        <p className="text-sm font-semibold">Platform Email</p>
+                                        <p className="text-gray-800">{userDetails?.nexleadsEmail}</p>
                                     </div>
                                     <div>
-                                        <p className="text-sm font-semibold">Country</p>
-                                        <p className="text-gray-800">Pakistan</p>
+                                        <p className="text-sm font-semibold">Registered Email</p>
+                                        <p className="text-gray-800">{userDetails?.email}</p>
                                     </div>
                                 </div>
 
@@ -204,7 +209,7 @@ const DashboardSetting = () => {
                                 </div>
 
                                 <p className="text-gray-700 leading-relaxed text-sm">
-                                    Hi, I'm Mohsin Salman. 👋
+                                    Hi, I'm {userDetails.name}. 👋
                                     <br />
                                     I'm a passionate designer and developer focused on creating clean,
                                     functional, and user-friendly digital experiences. 🎨💻

@@ -1,8 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProjects, updateProject } from '../../Redux/Features/UserDetailSlice';
+import { toUTCString } from '../../utils/helpers';
 
 const DashboardProject = () => {
-    
-  const [selectedItem, setSelectedItem] = useState(null);
+    const dispatch = useDispatch();
+    const { userProjects, loading, error } = useSelector(
+        (state) => state.userDetail
+    );
+
+    const [selectedItem, setSelectedItem] = useState(null);
+
+  
+    const onUpdate = async (status) => {
+    const payload = {
+        projectId: selectedItem._id,
+        status: status, 
+    };
+
+    await dispatch(updateProject(payload)); 
+    dispatch(getProjects());
+};
+
 
     return (
         <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm">
@@ -22,26 +41,22 @@ const DashboardProject = () => {
                     </div>
 
                     <div className="space-y-4 p-4">
-                        {[
-                            { title: "Website Redesign", company: "Acme Inc.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status: "Discussion", nextStatus: "Mark as Ongoing" },
-                            { title: "App Dev", company: "Brand Revamp.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status: "Discussion", nextStatus: "Mark as Ongoing" },
-                            { title: "SEO Optimization", company: "Wanderluster co.", date: "10 January 2025", details: "jkbwvjbwbwvewvhcvwjdbcehbcjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjdclaj lhrv arwlv rhv", Status: "Discussion", nextStatus: "Mark as Ongoing" },
-                        ].map((item, i) => (
+                        {userProjects?.projects?.in_discussion?.map((item, i) => (
                             <div
                                 key={i}
                                 onClick={() => setSelectedItem(item)} className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
                                 <div className="flex items-center justify-between">
-                                    <h3 className="font-semibold">{item.title}</h3>
+                                    <h3 className="font-semibold">{item?.title}</h3>
                                     <span className="text-xs bg-red-100 text-red-500 px-3 py-1 rounded-full">
                                         Lead
                                     </span>
                                 </div>
 
-                                <p className="text-sm text-gray-500 mt-1">{item.company}</p>
+                                <p className="text-sm text-gray-500 mt-1">{item?.company}</p>
 
                                 <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
                                     <i className="ri-calendar-line"></i>
-                                    {item.date}
+                                    {toUTCString(item?.createdAt)}
                                 </div>
                             </div>
                         ))}
@@ -60,7 +75,7 @@ const DashboardProject = () => {
 
                                         <div className="flex items-center gap-3">
                                             <span className="text-xs bg-green-100 text-green-600 px-3 py-1 rounded-full">
-                                                {selectedItem.Status}
+                                                {selectedItem.status}
                                             </span>
 
                                             {/* CLOSE BUTTON */}
@@ -77,7 +92,7 @@ const DashboardProject = () => {
                                     <div className="bg-[#C1E8FF] px-4 py-3 flex flex-wrap gap-4 text-sm">
                                         <div className="flex items-center gap-2">
                                             <i className="ri-calendar-line"></i>
-                                            <span>Start: 15 January 2026</span>
+                                            <span>Start: {toUTCString(selectedItem?.createdAt)}</span>
                                         </div>
 
                                         <div className="flex items-center gap-2">
@@ -88,7 +103,7 @@ const DashboardProject = () => {
                                             <i className="ri-time-line"></i>
                                             <span>Status:</span>
                                             <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs">
-                                                {selectedItem.Status}
+                                                {selectedItem.status}
                                             </span>
                                         </div>
                                     </div>
@@ -103,9 +118,32 @@ const DashboardProject = () => {
 
                                     {/* FOOTER */}
                                     <div className="p-4 border-t flex justify-end">
-                                        <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm">
-                                            {selectedItem.nextStatus}
+                                       {selectedItem?.status === "in_discussion" && (
+                                        <button
+                                            className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg text-sm"
+                                            onClick={() => onUpdate("ongoing")}
+                                        >
+                                            Mark as Ongoing
                                         </button>
+                                    )}
+
+                                    {selectedItem?.status === "ongoing" && (
+                                        <button
+                                            className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg text-sm"
+                                            onClick={() => onUpdate("completed")}
+                                        >
+                                            Mark as Completed
+                                        </button>
+                                    )}
+                                    {selectedItem?.status === "completed" && (
+                                        <button
+                                            className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg text-sm"
+                                            onClick={() => onUpdate("completed")}
+                                        >
+                                            Completed
+                                        </button>
+                                    )}
+
                                     </div>
 
                                 </div>
@@ -122,12 +160,7 @@ const DashboardProject = () => {
                     </div>
 
                     <div className="space-y-4 p-4">
-                        {[
-                            { title: "Sales Automation", company: "BizTech LLC.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Ongoing", nextStatus: "Mark as Completed" },
-                            { title: "Social Media Man...", company: "Connect Media.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Ongoing", nextStatus: "Mark as Completed" },
-                            { title: "CRM Implement...", company: "Vertex Solutions.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Ongoing", nextStatus: "Mark as Completed" },
-                            { title: "Content Writing", company: "BizTech LLC.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Ongoing", nextStatus: "Mark as Completed" },
-                        ].map((item, i) => (
+                        {userProjects?.projects?.ongoing.map((item, i) => (
                             <div
                                 key={i}
                                 onClick={() => setSelectedItem(item)} className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
@@ -142,7 +175,7 @@ const DashboardProject = () => {
 
                                 <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
                                     <i className="ri-calendar-line"></i>
-                                    {item.date}
+                                    {toUTCString(item.startedAt)}
                                 </div>
                             </div>
                         ))}
@@ -157,10 +190,7 @@ const DashboardProject = () => {
 
 
                     <div className="bg-[#EEF8FF] space-y-4 p-4">
-                        {[
-                            { title: "Web App Dev...", company: "Inno Soft Tech.", date: "8 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Completed", nextStatus: "Completed" },
-                            { title: "Content Writing Ca...", company: "Blumesoft.", date: "15 January 2025", details: "jwevJRWVBJrbvjrj rv r vjf vjsvwvlJWVJWBVKJBRIVWRVWRYVWRBVWRVJWRVBWBVIWBIVYWB", Status: "Completed", nextStatus: "Completed" },
-                        ].map((item, i) => (
+                        {userProjects?.projects?.completed.map((item, i) => (
                             <div
                                 key={i}
                                 onClick={() => setSelectedItem(item)} className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition">
@@ -175,7 +205,7 @@ const DashboardProject = () => {
 
                                 <div className="flex items-center gap-2 mt-3 text-sm text-gray-500">
                                     <i className="ri-calendar-line"></i>
-                                    {item.date}
+                                    {toUTCString(item.completedAt)}
                                 </div>
                             </div>
                         ))}
