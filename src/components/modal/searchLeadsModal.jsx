@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { JobLeads, sendEmails } from '../../Redux/Features/UserDetailSlice';
 
-const SearchLeadsModal = ({ isOpen, onClose, onSubmit }) => {
+export const SearchLeadsModal = ({ isOpen, onClose, onSubmit }) => {
   const [keyword, setKeyword] = useState('');
   const [platforms, setPlatforms] = useState([]);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
 
-   const {  loading, error } = useSelector(
+  const { loading, error } = useSelector(
     (state) => state.userDetail
   );
-  
+
   if (!isOpen) return null;
 
   const togglePlatform = (platform) => {
@@ -57,11 +58,10 @@ const SearchLeadsModal = ({ isOpen, onClose, onSubmit }) => {
                   type="button"
                   key={platform}
                   onClick={() => togglePlatform(platform)}
-                  className={`rounded-lg border px-3 py-1 text-sm transition ${
-                    platforms.includes(platform)
-                      ? 'bg-[#052659] text-white'
-                      : 'bg-white text-gray-700'
-                  }`}
+                  className={`rounded-lg border px-3 py-1 text-sm transition ${platforms.includes(platform)
+                    ? 'bg-[#052659] text-white'
+                    : 'bg-white text-gray-700'
+                    }`}
                 >
                   {platform}
                 </button>
@@ -114,4 +114,143 @@ const SearchLeadsModal = ({ isOpen, onClose, onSubmit }) => {
   );
 };
 
-export default SearchLeadsModal;
+export const FollowTrackModal = ({ onClose, leadIds }) => {
+  const { loading, error } = useSelector(
+    (state) => state.userDetail
+  );
+  const dispatch = useDispatch();
+
+  const [subject, setSubject] = useState('');
+  const [body, setBody] = useState('');
+  const [attachments, setAttachments] = useState([]);
+
+  const formatText = (command) => {
+    document.execCommand(command, false, null);
+  };
+
+
+  // Drag & Drop
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+    setAttachments((prev) => [...prev, ...files]);
+  };
+
+  const handleFileInput = (e) => {
+    const files = Array.from(e.target.files);
+    setAttachments((prev) => [...prev, ...files]);
+  };
+
+
+
+  const handleSend = async () => {
+    await dispatch(sendEmails({
+      subject,
+      body,
+      attachments,
+      leadIds,
+    }));
+
+    dispatch(JobLeads());
+
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold">COMPOSE MAIL</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✕</button>
+        </div>
+
+        <div className="w-full max-w-lg bg-white rounded-3xl p-6 shadow-sm border h-fit">
+          <input
+            type="text"
+            placeholder="Subject Line"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="w-full mb-3 px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none"
+          />
+
+          {/* <textarea
+            placeholder="Write your message here..."
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            rows={8}
+            className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none"
+          ></textarea> */}
+          <div
+            contentEditable
+            suppressContentEditableWarning
+            className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none min-h-[180px]"
+            onInput={(e) => setBody(e.currentTarget.innerHTML)}
+            dangerouslySetInnerHTML={{ __html: body }}
+          ></div>
+
+          {/* Formatting buttons */}
+          <div className="flex items-center gap-4 mt-4 text-gray-700 px-2">
+            <button
+              type="button"
+              onClick={() => formatText("bold")}
+              className="font-bold"
+            >
+              B
+            </button>
+
+            <button
+              type="button"
+              onClick={() => formatText("italic")}
+              className="italic"
+            >
+              I
+            </button>
+
+            <button
+              type="button"
+              onClick={() => formatText("underline")}
+              className="underline"
+            >
+              U
+            </button>
+            <i className="ri-list-unordered"></i>
+            <i className="ri-list-ordered"></i>
+            <span className=" text-gray-700">Cc Bcc</span>
+            <button className="px-3 py-1 bg-[#EEF8FF] text-[#000000] rounded-lg text-sm">
+              AI Assist
+            </button>
+          </div>
+          <div
+            onDrop={handleDrop}
+            onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-blue-500', 'bg-blue-50'); }}
+            onDragLeave={(e) => e.currentTarget.classList.remove('border-blue-500', 'bg-blue-50')}
+            className="mt-5 p-4 border-2 border-dashed border-gray-300 rounded-xl text-center text-sm text-gray-500 hover:border-blue-400 transition"
+          >
+            <p>Drag & drop files here </p>
+            <button
+              type="button"
+              className="text-blue-600 hover:underline mt-1"
+            >
+              browse files
+            </button>
+            <input type="file" multiple onChange={handleFileInput} className="ml-2" style={{ position: 'relative', bottom: '25px', opacity: 0, }} />
+          </div>
+
+          <div className="flex flex-wrap gap-2 mt-2">
+            {attachments.map((file, idx) => (
+              <span key={idx} className="px-2 py-1 bg-gray-200 rounded">{file.name}</span>
+            ))}
+          </div>
+
+
+          {/* Send Button */}
+          <button
+            onClick={handleSend}
+            className="w-full mt-6 py-3 bg-[#052659] text-white rounded-xl font-medium hover:bg-blue-800">
+            {loading ? "Sending..." : "Send to all Interested"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

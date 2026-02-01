@@ -209,7 +209,7 @@ const DashboardSetting = () => {
                                 </div>
 
                                 <p className="text-gray-700 leading-relaxed text-sm">
-                                    Hi, I'm {userDetails.name}. 👋
+                                    Hi, I'm {userDetails?.name}. 👋
                                     <br />
                                     I'm a passionate designer and developer focused on creating clean,
                                     functional, and user-friendly digital experiences. 🎨💻

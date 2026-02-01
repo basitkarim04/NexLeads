@@ -368,6 +368,29 @@ export const updateProject = createAsyncThunk(
     }
   }
 );
+export const updateLeadInterest = createAsyncThunk(
+  'updateLeadInterest',
+  async ({ leadId, interest }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${baseurl}/user/leads-interest/${leadId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ interest }), // Sending status in body
+      });
+
+      const result = await response.json();
+      if (!response.ok) return rejectWithValue(result);
+      
+      toast.success(`Lead Status updated to ${interest}`);
+      return result;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
 
 export const userDetail = createSlice({
   name: "userDetail",

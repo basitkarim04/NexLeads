@@ -1,17 +1,99 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toUTCString } from '../../../utils/helpers';
+import { JobLeads, updateLeadInterest } from '../../../Redux/Features/UserDetailSlice';
+import { FollowTrackModal } from '../../modal/searchLeadsModal';
 
 const DashboardTask = () => {
+    const dispatch = useDispatch();
+
     const [platformOpen, setPlatformOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
-    const [leadStatus, setLeadStatus] = useState(
-        Array(6).fill("interested") // default for all rows
+    const [followOpen, setFollowOpen] = useState(false);
+    const [leadStatus, setLeadStatus] = useState("interested");
+
+
+    const { userLeads, loading, error } = useSelector(
+        (state) => state.userDetail
     );
 
-    const updateStatus = (index, value) => {
+
+    const leadsByJobField = React.useMemo(() => {
+        if (!userLeads?.leads) return {};
+
+        return userLeads.leads.reduce((acc, lead) => {
+            if (lead.status !== "contacted") return acc;
+
+            if (!acc[lead.jobField]) {
+                acc[lead.jobField] = [];
+            }
+
+            acc[lead.jobField].push(lead);
+            return acc;
+        }, {});
+    }, [userLeads]);
+
+
+    const selectedLeads = selectedCard
+        ? (leadsByJobField[selectedCard] ?? []).filter(
+            (lead) => lead.status === "contacted" || lead.status === "new"
+        )
+        : [];
+
+
+
+
+    const handleStatusChange = async (index, leadId, value) => {
+        // 1️⃣ Optimistic UI update
         const updated = [...leadStatus];
         updated[index] = value;
         setLeadStatus(updated);
+
+        try {
+            await dispatch(updateLeadInterest({
+                leadId,
+                interest: value,
+            })).unwrap();
+
+            dispatch(JobLeads());
+        } catch (err) {
+            console.error(err);
+        }
     };
+
+
+    const PLATFORM_STYLES = {
+        twitter: {
+            bg: "#D2F5FF",
+            border: "#029FCA",
+            text: "#029FCA",
+            label: "Twitter",
+        },
+        upwork: {
+            bg: "#FFD9D5",
+            border: "#EA4335",
+            text: "#EA4335",
+            label: "Upwork",
+        },
+        facebook: {
+            bg: "#E7F0FF",
+            border: "#1877F2",
+            text: "#1877F2",
+            label: "Facebook",
+        },
+        linkedin: {
+            bg: "#E8F4FF",
+            border: "#0A66C2",
+            text: "#0A66C2",
+            label: "LinkedIn",
+        },
+    };
+
+    const interestedLeadIds = React.useMemo(() => {
+        return selectedLeads
+            .filter((lead) => lead.interest === "interested")
+            .map((lead) => lead._id);
+    }, [selectedLeads]);
 
 
     return (
@@ -85,51 +167,59 @@ const DashboardTask = () => {
                     <hr className="mb-6 border-t border-[#C3C3C3]" />
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-                        {[
-                            "Website Developer",
-                            "Graphic Designing",
-                            "SEO",
-                            "3d Animation",
-                            "Social Media Marketing",
-                            "Ecommerce",
-                        ].map((title, i) => (
+                        {Object.entries(leadsByJobField).map(([jobField, leads]) => (
                             <div
-                                key={i}
+                                key={jobField}
                                 className="bg-[#EEF8FF] rounded-2xl p-5 cursor-pointer hover:shadow-md transition"
-                                onClick={() => setSelectedCard(title)} // set selected card
+                                onClick={() => setSelectedCard(jobField)}
                             >
-                                <p className="text-sm text-gray-400 mb-2">08-01-2026 [{title}]</p>
+                                <p className="text-sm text-gray-400 mb-2">
+                                    {toUTCString(leads[0].createdAt)} [{jobField}]
+                                </p>
 
                                 {/* Platforms */}
-                                <div className="flex gap-2 mb-4">
-                                    <span
-                                        className="px-3 py-1 text-xs rounded-full border"
-                                        style={{ backgroundColor: "#D2F5FF", borderColor: "#029FCA", color: "#029FCA" }}
-                                    >
-                                        Twitter
-                                    </span>
-                                    <span
-                                        className="px-3 py-1 text-xs rounded-full border"
-                                        style={{ backgroundColor: "#FFD9D5", borderColor: "#EA4335", color: "#EA4335" }}
-                                    >
-                                        Google
-                                    </span>
+                                <div className="flex gap-2 mb-4 flex-wrap">
+                                    {[...new Set(leads.map((lead) => lead.platform))].map((platform) => {
+                                        const key = platform?.toLowerCase();
+                                        const style = PLATFORM_STYLES[key];
+
+                                        if (!style) return null;
+
+                                        return (
+                                            <span
+                                                key={key}
+                                                className="px-3 py-1 text-xs rounded-full border"
+                                                style={{
+                                                    backgroundColor: style.bg,
+                                                    borderColor: style.border,
+                                                    color: style.text,
+                                                }}
+                                            >
+                                                {style.label}
+                                            </span>
+                                        );
+                                    })}
                                 </div>
 
                                 {/* Stats */}
                                 <div className="bg-white rounded-xl px-4 py-3 mb-4 flex justify-between items-center">
                                     <div>
                                         <p className="text-xs text-gray-400">Total Leads</p>
-                                        <p className="text-3xl font-semibold text-[#0A2A55]">45</p>
+                                        <p className="text-3xl font-semibold text-[#0A2A55]">{leads.length}</p>
                                     </div>
                                     <div className="text-right">
                                         <p className="text-xs text-gray-400">Follow-Up Sent</p>
-                                        <p className="text-3xl font-semibold text-[#0A2A55]">02</p>
+                                        <p className="text-3xl font-semibold text-[#0A2A55]">{leads.reduce((a, l) => a + l.emailsSent, 0)}</p>
                                     </div>
                                 </div>
 
                                 {/* Buttons */}
-                                <button className="w-full bg-[#7DA0CA] hover:bg-[#7AA4CE] text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2">
+                                <button className="w-full bg-[#7DA0CA] hover:bg-[#7AA4CE] text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2"
+                                    onClick={() => {
+                                        if (interestedLeadIds.length > 0) return;
+                                        setFollowOpen(true);
+                                    }}
+                                >
                                     <i className="ri-send-plane-line"></i>
                                     Send Follow-Up
                                 </button>
@@ -152,7 +242,7 @@ const DashboardTask = () => {
                             </button>
                             <h1 className="text-3xl font-medium text-[#000000]">{selectedCard} Board</h1>
                         </div>
-                        <p className="text-gray-900 mt-1">Date: 08-01-2026</p>
+                        {/* <p className="text-gray-900 mt-1">Date: 08-01-2026</p> */}
 
                         {/* Jobs Table */}
                         <div className="overflow-auto">
@@ -169,28 +259,23 @@ const DashboardTask = () => {
                                 </thead>
 
                                 <tbody>
-                                    {[
-                                        ["Syed Anas", "Looking for a website dev…", "anas@gmail.com", "Facebook", "9/10/25"],
-                                        ["Mohsin", "Need UI Designer", "Mohsin@gmail.com", "Thread", "9/10/25"],
-                                        ["Sohaib", "Need Shopify store dev…", "Sohaib@gmail.com", "LinkedIn", "9/10/25"],
-                                        ["Basit Karim", "Backend Dev - for deploy…", "basit@gmail.com", "Twitter", "7/10/25"],
-                                        ["Syed Anas", "Looking for figma expert…", "anas.r@gmail.com", "Facebook", "23/09/25"],
-                                        ["Sohaib", "Logo Designer required…", "Sohaib@gmail.com", "Upwork", "20/09/25"],
-                                    ].map((item, i) => (
-                                        <tr key={i} className="border-b text-gray-700">
+                                    {selectedLeads.map((lead, i) => (
+                                        <tr key={lead.email} className="border-b text-gray-700">
 
                                             {/* STATUS */}
-                                            <td className="py-3 px-2">{item[0]}</td>
-                                            <td className="py-3 px-2">{item[1]}</td>
-                                            <td className="py-3 px-2">{item[2]}</td>
-                                            <td className="py-3 px-2">{item[3]}</td>
-                                            <td className="py-3 px-2">{item[4]}</td>
+                                            <td className="py-3 px-2">{lead.name}</td>
+                                            <td className="py-3 px-2">{lead.jobTitle}</td>
+                                            <td className="py-3 px-2">{lead.email}</td>
+                                            <td className="py-3 px-2">{lead.platform}</td>
+                                            <td className="py-3 px-2">
+                                                {toUTCString(lead.createdAt)}
+                                            </td>
                                             <td className="py-3 px-2">
                                                 <div className="flex items-center gap-2">
 
                                                     {/* EMAIL ICON */}
                                                     <button
-                                                        onClick={() => openComposeWithEmail(item[2])}
+                                                        // onClick={() => openComposeWithEmail(item[2])}
                                                         className="hover:text-blue-700"
                                                     >
                                                         <i className="ri-mail-line text-lg text-[#052659]"></i>
@@ -198,18 +283,20 @@ const DashboardTask = () => {
 
                                                     {/* STATUS DROPDOWN */}
                                                     <select
-                                                        value={leadStatus[i]}
-                                                        onChange={(e) => updateStatus(i, e.target.value)}
-                                                        className={`bg-white text-xs px-2 py-1 rounded-lg border cursor-pointer outline-none
-    ${leadStatus[i] === "interested"
-                                                                ? "bg-green-200 text-green-700 border-green-300 focus:bg-white"
-                                                                : "bg-red-200 text-red-700 border-red-300 focus:bg-White"
-                                                            }
-  `}
+                                                        value={lead.interest || "interested"}
+                                                        onChange={(e) =>
+                                                            handleStatusChange(i, lead._id, e.target.value)
+                                                        }
+                                                        className={`text-xs px-2 py-1 rounded-lg border cursor-pointer outline-none
+        ${lead.interest === "interested"
+                                                                ? "bg-green-200 text-green-700 border-green-300"
+                                                                : "bg-red-200 text-red-700 border-red-300"
+                                                            }`}
                                                     >
                                                         <option value="interested">Interested</option>
                                                         <option value="not_interested">Not Interested</option>
                                                     </select>
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -223,8 +310,16 @@ const DashboardTask = () => {
             )}
 
 
+            {followOpen && (
+                <FollowTrackModal
+                    leadIds={interestedLeadIds}
+                    onClose={() => setFollowOpen(false)}
+                />
+            )}
+
+
         </div>
     )
 }
 
-export default DashboardTask
+export default DashboardTask;

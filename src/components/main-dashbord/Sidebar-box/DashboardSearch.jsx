@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import SearchLeadsModal from '../../modal/searchLeadsModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { JobLeads, searchLeads, sendEmails } from '../../../Redux/Features/UserDetailSlice';
 import { toast } from 'react-toastify';
+import { SearchLeadsModal } from '../../modal/searchLeadsModal';
 
 const DashboardSearch = () => {
   const dispatch = useDispatch();
