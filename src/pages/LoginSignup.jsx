@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
 import Login from "../assets/Images/Login.png";
@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 
 export default function AuthPages() {
+  const navigate = useNavigate();
   const [mode, setMode] = useState("login");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" }); // success or error
@@ -64,7 +65,7 @@ export default function AuthPages() {
       toast.success("Login successful! Redirecting...", "success");
       // Redirect to dashboard after 1s
       setTimeout(() => {
-        window.location.href = "/dashboard"; // Change to your protected route
+        navigate("/dashboard"); // Change to your protected route
       }, 1000);
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed", "error");
@@ -115,7 +116,7 @@ export default function AuthPages() {
       localStorage.setItem("user", JSON.stringify(data.user));
       toast.success("Account created successfully!", "success");
       setTimeout(() => {
-        window.location.href = "/dashboard";
+        navigate("/dashboard");
       }, 1000);
     }
   };
