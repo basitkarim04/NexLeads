@@ -248,7 +248,7 @@ const Dashboardemail = () => {
                                             }
                                         }}
                                         className={`group px-4 py-3 cursor-pointer md:grid md:grid-cols-12 transition-colors
-                ${selectedMail?.id === mail.id
+                ${selectedMail?.id === mail._id
                                                 ? "bg-[#072A5A] text-white"
                                                 : "bg-[#EEF8FF] hover:bg-[#072A5A] hover:text-white"
                                             }`}
