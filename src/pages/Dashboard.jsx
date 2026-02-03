@@ -106,8 +106,36 @@ const Dashboard = () => {
   };
 
    const handleLogout = () => {
-    localStorage.clear(); 
-    navigate('/');    
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Clear Cookies
+    document.cookie.split(";").forEach((cookie) => {
+      document.cookie = cookie
+        .replace(/^ +/, "")
+        .replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
+    });
+
+    // Clear Cache Storage
+    if ("caches" in window) {
+      caches.keys().then((names) => {
+        names.forEach((name) => caches.delete(name));
+      });
+    }
+
+    // Clear IndexedDB
+    window.indexedDB.databases().then((dbs) => {
+      dbs.forEach((db) => {
+        window.indexedDB.deleteDatabase(db.name);
+      });
+    });
+    // Navigate to home page
+    navigate("/");
+
+    // Prevent navigation back to the protected page
+    setTimeout(() => {
+      window.location.reload(); // Reload the page to clear history
+    }, 1000);
   };
 
   return (

@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { baseurl } from "../../BaseUrl";
 import { toast } from "react-toastify";
 
-const token = localStorage.getItem("token");
-
-
 //create action
 export const createUser = createAsyncThunk(
   "createUser",
@@ -106,6 +103,8 @@ export const userData = createAsyncThunk(
   "userData",
   async (args, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/profile`, {
         method: "GET",
         headers: {
@@ -127,6 +126,8 @@ export const DashboardStats = createAsyncThunk(
   "DashboardStats",
   async (args, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/stats`, {
         method: "GET",
         headers: {
@@ -148,6 +149,8 @@ export const searchLeads = createAsyncThunk(
   "searchLeads",
   async ({ keyword, platforms, dateFrom, dateTo }, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const query = new URLSearchParams({
         keyword,
         platforms: platforms.join(','),
@@ -183,6 +186,8 @@ export const JobLeads = createAsyncThunk(
   "JobLeads",
   async (args, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/get-my-Leads`, {
         method: "GET",
         headers: {
@@ -204,6 +209,8 @@ export const getEmails = createAsyncThunk(
   "getEmails",
   async (folder, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/get-emails?folder=${folder}`, {
         method: "GET",
         headers: {
@@ -226,6 +233,8 @@ export const sendEmails = createAsyncThunk(
   'sendEmails',
   async ({ subject, body, attachments, leadIds }, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const formData = new FormData();
       formData.append('subject', subject);
       formData.append('body', body);
@@ -255,14 +264,15 @@ export const upsetEmail = createAsyncThunk(
   'upsetEmail',
   async (payload, { rejectWithValue }) => {
     try {
-    
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/upset-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload), 
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
@@ -279,7 +289,8 @@ export const moveFolderEmail = createAsyncThunk(
   'moveFolderEmail',
   async (payload, { rejectWithValue }) => {
     try {
-    
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/move/${payload.emailId}`, {
         method: 'PUT',
         headers: {
@@ -304,14 +315,15 @@ export const createProject = createAsyncThunk(
   'createProject',
   async (payload, { rejectWithValue }) => {
     try {
-    
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/create-project`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload), 
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
@@ -329,6 +341,8 @@ export const getProjects = createAsyncThunk(
   "getProjects",
   async (args, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/get-projects`, {
         method: "GET",
         headers: {
@@ -349,6 +363,8 @@ export const updateProject = createAsyncThunk(
   'updateProject',
   async ({ projectId, status }, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/project/${projectId}/status`, {
         method: 'PUT',
         headers: {
@@ -360,7 +376,7 @@ export const updateProject = createAsyncThunk(
 
       const result = await response.json();
       if (!response.ok) return rejectWithValue(result);
-      
+
       toast.success(`Project updated to ${status}`);
       return result;
     } catch (err) {
@@ -372,6 +388,8 @@ export const updateLeadInterest = createAsyncThunk(
   'updateLeadInterest',
   async ({ leadId, interest }, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(`${baseurl}/user/leads-interest/${leadId}`, {
         method: 'PUT',
         headers: {
@@ -383,7 +401,7 @@ export const updateLeadInterest = createAsyncThunk(
 
       const result = await response.json();
       if (!response.ok) return rejectWithValue(result);
-      
+
       toast.success(`Lead Status updated to ${interest}`);
       return result;
     } catch (err) {
