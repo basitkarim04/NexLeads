@@ -43,9 +43,15 @@ const Dashboardemail = () => {
 
 
     const [open, setOpen] = useState(false);
-    const [activeFolder, setActiveFolder] = useState("inbox");
+    const [activeFolder, setActiveFolder] = useState('inbox');
     const [selectedMail, setSelectedMail] = useState(null);
     const [isComposing, setIsComposing] = useState(false);
+
+   const [emailCount, setEmailCount] = useState({
+  inbox: 0,
+  sent: 0,
+  trash: 0,
+});
 
     useEffect(() => {
         localStorage.setItem("activeFolder", activeFolder);
@@ -112,6 +118,27 @@ const Dashboardemail = () => {
         trash: "ri-delete-bin-line",
     };
 
+   useEffect(() => {
+  const fetchCounts = async () => {
+    const results = await Promise.all(
+      foldersList.map((folder) =>
+        dispatch(getEmails(folder))
+          .unwrap()
+          .then((res) => ({ folder, count: res.count }))
+      )
+    );
+
+    const counts = {};
+    results.forEach(({ folder, count }) => {
+      counts[folder] = count;
+    });
+
+    setEmailCount((prev) => ({ ...prev, ...counts }));
+  };
+
+  fetchCounts();
+}, []);
+
     useEffect(() => {
         dispatch(getEmails(activeFolder));
     }, [activeFolder])
@@ -127,7 +154,7 @@ const Dashboardemail = () => {
         setShowReply(false);
     };
     const onDelete = async () => {
-        
+
         const payload = {
             emailId: selectedMail._id,
             folder: 'trash'
@@ -194,9 +221,9 @@ const Dashboardemail = () => {
                                                 <span className="capitalize">{folder}</span>
                                             </div>
 
-                                            {folders[folder]?.length > 0 && (
+                                            {emailCount[folder] > 0 && (
                                                 <span className="bg-white text-[#072A5A] text-xs px-2 rounded-full font-semibold">
-                                                    {folders[folder].length}
+                                                     {emailCount[folder]}
                                                 </span>
                                             )}
                                         </div>
@@ -248,7 +275,7 @@ const Dashboardemail = () => {
                                             }
                                         }}
                                         className={`group px-4 py-3 cursor-pointer md:grid md:grid-cols-12 transition-colors
-                ${selectedMail?.id === mail._id
+                ${selectedMail?._id === mail._id
                                                 ? "bg-[#072A5A] text-white"
                                                 : "bg-[#EEF8FF] hover:bg-[#072A5A] hover:text-white"
                                             }`}
@@ -599,7 +626,7 @@ const Dashboardemail = () => {
 
 
                                         <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
-                                        onClick={onDelete}>
+                                            onClick={onDelete}>
                                             <i className="ri-delete-bin-line"></i> Delete
                                         </button>
 
@@ -1085,7 +1112,7 @@ const Dashboardemail = () => {
 
 
                                         <button className="flex items-center gap-1 bg-[#C1E8FF] px-3 py-1 rounded text-xs"
-                                        onClick={onDelete}
+                                            onClick={onDelete}
                                         >
                                             <i className="ri-delete-bin-line"></i> Delete
                                         </button>

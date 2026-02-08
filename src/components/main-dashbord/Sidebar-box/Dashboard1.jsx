@@ -69,16 +69,28 @@ const Dashboard1 = () => {
                     <h2 className="text-lg md:text-xl font-bold mb-6">Emails Breakdown</h2>
                     <div className="space-y-4">
                         {[
-                            { label: 'Emails Sent', percent: '70%', color: '#1e3a5f' },
-                            { label: 'Emails Opened', percent: '20%', color: '#5a7ba8' },
-                            { label: 'Emails Responded', percent: '10%', color: '#a8c8e8' }
+                            {
+                                label: 'Emails Sent',
+                                percent: dashboardStats?.emailBreakdown?.sent ?? 0,
+                                color: '#1e3a5f',
+                            },
+                            {
+                                label: 'Emails Opened',
+                                percent: dashboardStats?.emailBreakdown?.opened ?? 0,
+                                color: '#5a7ba8',
+                            },
+                            {
+                                label: 'Emails Responded',
+                                percent: dashboardStats?.emailBreakdown?.responded ?? 0,
+                                color: '#a8c8e8',
+                            },
                         ].map((item, i) => (
                             <div key={i} className="flex items-center justify-between">
                                 <div className="flex items-center">
                                     <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: item.color }}></div>
                                     <span className="text-sm">{item.label}</span>
                                 </div>
-                                <span className="text-sm font-bold">{item.percent}</span>
+                                <span className="text-sm font-bold">{item.percent}%</span>
                             </div>
                         ))}
                         <div className="flex h-3 rounded-full overflow-hidden">
