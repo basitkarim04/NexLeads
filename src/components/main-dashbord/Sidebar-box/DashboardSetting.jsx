@@ -17,6 +17,7 @@ import {
     resetPaymentState
 } from '../../../Redux/Features/settingsSlice';
 import { STRIPE_PUBLISHABLE_KEY } from '../../../BaseUrl';
+import { toast } from 'react-toastify';
 
 // Initialize Stripe
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
@@ -305,17 +306,17 @@ const DashboardSetting = () => {
     // Handle password change
     const handleChangePassword = async () => {
         if (!passwordForm.currentPassword || !passwordForm.newPassword || !passwordForm.confirmPassword) {
-            alert('All password fields are required');
+            toast.error('All password fields are required');
             return;
         }
 
         if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-            alert('New passwords do not match');
+            toast.error('New passwords do not match');
             return;
         }
 
         if (passwordForm.newPassword.length < 8) {
-            alert('Password must be at least 8 characters long');
+            toast.error('Password must be at least 8 characters long');
             return;
         }
 
@@ -379,7 +380,7 @@ const DashboardSetting = () => {
                         <div className="px-8 pb-8 flex items-center gap-6 border-b">
                             <div className="w-50 h-50 rounded-full overflow-hidden">
                                 <img
-                                    src={userDetails?.profilePicture || profileImage}
+                                    src={userDetails?.profilePicture ?? profileImage}
                                     alt="avatar"
                                     className="w-full h-full object-cover"
                                 />
