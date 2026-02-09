@@ -410,6 +410,32 @@ export const updateLeadInterest = createAsyncThunk(
   }
 );
 
+export const aiEmailAssist = createAsyncThunk(
+  "aiEmailAssist",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`${baseurl}/user/ai-assist`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!res.ok) return rejectWithValue(data);
+
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+
 export const userDetail = createSlice({
   name: "userDetail",
   initialState: {
