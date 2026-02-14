@@ -72,7 +72,7 @@ const handleLogout = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-<div className="bg-[#052659] px-4 py-3">
+<div className="bg-[#052659] px-4">
   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
     {/* Left: Logo + Title */}
@@ -90,7 +90,7 @@ const handleLogout = () => {
     {/* Right: Logout Button */}
     <button
       onClick={handleLogout}
-      className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition duration-200"
+      className="mb-5 sm:mb-0 bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition duration-200"
     >
       Logout
     </button>
@@ -128,7 +128,7 @@ const handleLogout = () => {
         <input
           type="text"
           placeholder="Search by name or email..."
-          className="w-full md:w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full md:w-1/3 px-4 py-2 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
