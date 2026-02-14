@@ -372,6 +372,7 @@ const DashboardSearch = () => {
           aiPrompt={aiPrompt}
           setShowAI={setShowAI}
           setBody={setBody}
+          body={body}
           setSubject={setSubject}
         />
       )}

@@ -265,6 +265,7 @@ export const FollowTrackModal = ({ onClose, leadIds }) => {
           aiPrompt={aiPrompt}
           setShowAI={setShowAI}
           setBody={setBody}
+          body={body}
           setSubject={setSubject}
         />
       )}
@@ -274,7 +275,7 @@ export const FollowTrackModal = ({ onClose, leadIds }) => {
 };
 
 
-export const Ai_Assists = ({ aiMode, setAiMode, setAiPrompt, aiPrompt, setBody, setSubject, setShowAI }) => {
+export const Ai_Assists = ({ aiMode, setAiMode, setAiPrompt, aiPrompt, setBody, setSubject, setShowAI, body }) => {
   const dispatch = useDispatch();
 
   return (

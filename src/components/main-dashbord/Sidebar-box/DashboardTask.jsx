@@ -11,6 +11,8 @@ const DashboardTask = () => {
     const [selectedCard, setSelectedCard] = useState(null);
     const [followOpen, setFollowOpen] = useState(false);
     const [leadStatus, setLeadStatus] = useState("interested");
+    const [followLeadIds, setFollowLeadIds] = React.useState([]);
+
 
 
     const { userLeads, loading, error } = useSelector(
@@ -217,6 +219,7 @@ const DashboardTask = () => {
                                 <button className="w-full bg-[#7DA0CA] hover:bg-[#7AA4CE] text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2"
                                     onClick={() => {
                                         if (interestedLeadIds.length > 0) return;
+                                        setFollowLeadIds(interestedLeadIds); 
                                         setFollowOpen(true);
                                     }}
                                 >
@@ -275,7 +278,11 @@ const DashboardTask = () => {
 
                                                     {/* EMAIL ICON */}
                                                     <button
-                                                        // onClick={() => openComposeWithEmail(item[2])}
+                                                        onClick={() => {
+                                                            // if (interestedLeadIds.length > 0) return;
+                                                            setFollowLeadIds([lead._id]); 
+                                                            setFollowOpen(true);
+                                                        }}
                                                         className="hover:text-blue-700"
                                                     >
                                                         <i className="ri-mail-line text-lg text-[#052659]"></i>
@@ -312,7 +319,7 @@ const DashboardTask = () => {
 
             {followOpen && (
                 <FollowTrackModal
-                    leadIds={interestedLeadIds}
+                    leadIds={followLeadIds}
                     onClose={() => setFollowOpen(false)}
                 />
             )}
