@@ -3,6 +3,7 @@ import { useRoutes } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import Landing from "../pages/Landing";
 import AuthPages from "../pages/LoginSignup";
+import AdminPanel from "../pages/admin";
 
 const AppRoutes = () => {
   const routes = [
@@ -17,6 +18,10 @@ const AppRoutes = () => {
     {
       path: "/dashboard",
       element: <Dashboard />,
+    },
+    {
+      path: "/admin-dashboard",
+      element: <AdminPanel />,
     },
   ];
 
