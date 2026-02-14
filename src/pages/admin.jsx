@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import nexLeadlogo from "../assets/Images/nexLeadLogo.png";
 
 export default function AdminPanel() {
   const [search, setSearch] = useState("");
@@ -34,7 +35,15 @@ export default function AdminPanel() {
       blocked: false,
     },
   ]);
+const handleLogout = () => {
+  alert("Logged out successfully");
 
+  // Example if using token
+  localStorage.removeItem("token");
+
+  // If using React Router, uncomment below:
+  // navigate("/login");
+}; 
   // Dashboard calculations
   const totalUsers = users.length;
   const totalLeads = users.reduce((acc, user) => acc + user.leads, 0);
@@ -62,37 +71,60 @@ export default function AdminPanel() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
-      <h1 className="text-2xl md:text-3xl font-bold mb-6">
+    <div className="min-h-screen bg-gray-100">
+<div className="bg-[#052659] px-4 py-3">
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+    {/* Left: Logo + Title */}
+    <div className="flex items-center gap-3">
+      <img
+        src={nexLeadlogo}
+        alt="Logo"
+        className="w-24 md:w-32 object-contain"
+      />
+      <h1 className="text-xl md:text-3xl font-bold text-[#F2FAFF]">
         Admin Dashboard
       </h1>
+    </div>
+
+    {/* Right: Logout Button */}
+    <button
+      onClick={handleLogout}
+      className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm font-medium transition duration-200"
+    >
+      Logout
+    </button>
+
+  </div>
+</div>
+
 
       {/* Dashboard Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 p-4">
         <div className="bg-white shadow-md rounded-xl p-6">
           <h2 className="text-gray-500 text-sm">Total Users</h2>
-          <p className="text-3xl font-bold text-blue-600 mt-2">
+          <p className="text-3xl font-bold text-[#052659] mt-2">
             {totalUsers}
           </p>
         </div>
 
         <div className="bg-white shadow-md rounded-xl p-6">
           <h2 className="text-gray-500 text-sm">Total Leads</h2>
-          <p className="text-3xl font-bold text-green-600 mt-2">
+          <p className="text-3xl font-bold text-[#052659] mt-2">
             {totalLeads}
           </p>
         </div>
 
         <div className="bg-white shadow-md rounded-xl p-6">
           <h2 className="text-gray-500 text-sm">Total Platform Earning</h2>
-          <p className="text-3xl font-bold text-purple-600 mt-2">
+          <p className="text-3xl font-bold text-[#052659] mt-2">
             ${totalEarning}
           </p>
         </div>
       </div>
 
       {/* Search */}
-      <div className="mb-6">
+      <div className="mb-6 p-4">
         <input
           type="text"
           placeholder="Search by name or email..."
@@ -103,9 +135,9 @@ export default function AdminPanel() {
       </div>
 
       {/* Table */}
-      <div className="bg-white shadow-md rounded-xl overflow-x-auto">
+      <div className="bg-white shadow-md rounded-xl overflow-x-auto m-4">
         <table className="min-w-full text-sm text-left">
-          <thead className="bg-gray-200 text-gray-600 uppercase text-xs">
+          <thead className="bg-[#5483B3] text-white uppercase text-xs">
             <tr>
               <th className="px-6 py-3">Name</th>
               <th className="px-6 py-3">Email</th>
