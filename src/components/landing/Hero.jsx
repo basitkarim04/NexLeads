@@ -56,9 +56,27 @@ export default function Hero() {
           all in one platform
         </p>
 
-        <div className="hero__cta">
-          <button className="btn btn-primary">Get Started</button>
-        </div>
+<div className="flex items-center justify-center md:justify-start mt-5 sm:mt-5">
+  <button
+    className="
+      border border-white
+      text-white
+      bg-transparent
+      rounded-full
+      px-5 py-3
+      font-bold
+      tracking-wide
+      transition
+      hover:bg-white hover:text-black
+      w-full sm:w-auto
+      sm:mr-10 
+    "
+  >
+    Get Started
+  </button>
+</div>
+
+
       </motion.div>
 
       {/* Image */}
@@ -75,3 +93,12 @@ export default function Hero() {
     </section>
   );
 }
+
+
+
+
+
+
+
+
+

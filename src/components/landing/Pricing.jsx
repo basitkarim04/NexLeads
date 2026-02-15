@@ -59,37 +59,82 @@ export default function Pricing() {
           Flexible Plans for Every Business
         </motion.p>
 
-        {/* Toggle */}
-        <motion.div
-          className="billing-toggle"
-          initial={{ opacity: 0, y: -15 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -15 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-        >
-          <label className={billing === "monthly" ? "active" : ""}>
-            <input
-              type="radio"
-              name="billing"
-              value="monthly"
-              checked={billing === "monthly"}
-              onChange={() => setBilling("monthly")}
-            />
-            <span>Monthly</span>
-          </label>
+{/* Billing Toggle */}
+<motion.div
+  initial={{ opacity: 0, y: -15 }}
+  animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -15 }}
+  transition={{ duration: 0.6, delay: 0.4 }}
+  className="
+    flex flex-col
+    sm:inline-flex sm:flex-row
+    items-stretch sm:items-center
+    gap-2
+    bg-[#C1E8FF]
+    rounded-2xl sm:rounded-full
+    p-2 sm:p-1
+    mb-12
+    w-full sm:w-auto
+    max-w-sm sm:max-w-none
+    mx-auto
+  "
+>
+  {/* Monthly */}
+  <label
+    className={`flex items-center justify-center gap-2
+      w-full sm:w-auto
+      px-4 py-2
+      rounded-xl sm:rounded-full
+      cursor-pointer
+      transition
+      ${
+        billing === "monthly"
+          ? "bg-white text-black"
+          : "text-black/80"
+      }`}
+  >
+    <input
+      type="radio"
+      name="billing"
+      value="monthly"
+      checked={billing === "monthly"}
+      onChange={() => setBilling("monthly")}
+      className="accent-[#052659] w-4 h-4"
+    />
+    <span className="text-sm font-medium">Monthly</span>
+  </label>
 
-          <label className={billing === "annually" ? "active" : ""}>
-            <input
-              type="radio"
-              name="billing"
-              value="annually"
-              checked={billing === "annually"}
-              onChange={() => setBilling("annually")}
-            />
-            <span>
-              Annually <span className="save">Save 15%</span>
-            </span>
-          </label>
-        </motion.div>
+  {/* Annually */}
+  <label
+    className={`flex items-center justify-center gap-2
+      w-full sm:w-auto
+      px-4 py-2
+      rounded-xl sm:rounded-full
+      cursor-pointer
+      transition
+      ${
+        billing === "annually"
+          ? "bg-white text-black"
+          : "text-black/80"
+      }`}
+  >
+    <input
+      type="radio"
+      name="billing"
+      value="annually"
+      checked={billing === "annually"}
+      onChange={() => setBilling("annually")}
+      className="accent-[#052659] w-4 h-4"
+    />
+    <span className="text-sm font-medium">
+      Annually
+      <span className="ml-1 text-xs text-[#2C2C2C]">
+        Save 15%
+      </span>
+    </span>
+  </label>
+</motion.div>
+
+
 
         {/* Cards */}
         <div className="pricing__grid">

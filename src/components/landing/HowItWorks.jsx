@@ -32,7 +32,7 @@ const HowItWorks = () => {
   });
 
   return (
-    <div className="how-it-works" id="how-It-Works" ref={ref}>
+    <div className="how-it-works mt-10" id="how-It-Works" ref={ref}>
       <div className="text-section">
         {/* Title */}
         <motion.h2
@@ -80,7 +80,7 @@ const HowItWorks = () => {
 
       {/* Image Section */}
       <motion.div
-        className="image-section"
+        className="image-section mt-5 sm:mt-5"
         initial={{ opacity: 0, x: 60 }}
         animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 60 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
