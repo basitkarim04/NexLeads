@@ -17,8 +17,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userDetails, loading, error } = useSelector(
-  (state) => state.userDetail
-);
+    (state) => state.userDetail
+  );
 
 
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -61,7 +61,7 @@ const Dashboard = () => {
     dispatch(JobLeads());
     dispatch(getProjects());
 
-    
+
     localStorage.setItem("activePage", activePage);
   }, [activePage]);
 
@@ -105,7 +105,7 @@ const Dashboard = () => {
     }
   };
 
-   const handleLogout = () => {
+  const handleLogout = () => {
     localStorage.clear();
     sessionStorage.clear();
 
@@ -181,7 +181,7 @@ const Dashboard = () => {
         {/* Bottom icons */}
         <div className="flex flex-col items-center space-y-3 mt-auto">
           <button className="p-3 text-white hover:bg-white/20 rounded-xl transition" onClick={handleLogout} >
-              <LogOut size={24} />
+            <LogOut size={24} />
           </button>
           <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center">
             <User size={24} className="text-blue-900" />
@@ -227,8 +227,10 @@ const Dashboard = () => {
 
             {/* USER */}
             <div className="flex items-center space-x-2">
+
               <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-300 flex items-center justify-center">
-                <User size={20} className="text-blue-900" />
+                <img src={userDetails?.profilePicture ?? <User size={20} className="text-blue-900" />} alt=""  className='object-cover  rounded-full'/>
+                {/* <User size={20} className="text-blue-900" /> */}
               </div>
 
               <div className="hidden md:block">

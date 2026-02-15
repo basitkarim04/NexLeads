@@ -165,7 +165,7 @@ export const FollowTrackModal = ({ onClose, leadIds }) => {
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+        <div className="w-full max-w-lg max-h-[90vh] rounded-2xl bg-white p-6 shadow-xl overflow-auto">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">COMPOSE MAIL</h2>
             <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✕</button>
@@ -183,6 +183,7 @@ export const FollowTrackModal = ({ onClose, leadIds }) => {
             <div
               ref={editorRef}
               contentEditable
+              // dangerouslySetInnerHTML={{ __html: body }}
               suppressContentEditableWarning
               className="w-full px-4 py-3 bg-[#EEF8FF] rounded-xl outline-none resize-none min-h-[180px]"
               onInput={(e) => setBody(e.currentTarget.innerHTML)}
@@ -260,6 +261,7 @@ export const FollowTrackModal = ({ onClose, leadIds }) => {
       {showAI && (
         <Ai_Assists
           aiMode={aiMode}
+          editorRef={editorRef}
           setAiMode={setAiMode}
           setAiPrompt={setAiPrompt}
           aiPrompt={aiPrompt}
@@ -275,7 +277,7 @@ export const FollowTrackModal = ({ onClose, leadIds }) => {
 };
 
 
-export const Ai_Assists = ({ aiMode, setAiMode, setAiPrompt, aiPrompt, setBody, setSubject, setShowAI, body }) => {
+export const Ai_Assists = ({ aiMode, setAiMode, setAiPrompt, aiPrompt, setBody, setSubject, setShowAI, body, editorRef  }) => {
   const dispatch = useDispatch();
 
   return (

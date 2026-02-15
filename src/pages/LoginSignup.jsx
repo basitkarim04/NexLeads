@@ -65,7 +65,7 @@ export default function AuthPages() {
       toast.success("Login successful! Redirecting...", "success");
       // Redirect to dashboard after 1s
       setTimeout(() => {
-        navigate("/dashboard"); // Change to your protected route
+        navigate(`${res.data.user.type === "Admin" ? "/admin-dashboard" : "/dashboard"}`); // Change to your protected route
       }, 1000);
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed", "error");

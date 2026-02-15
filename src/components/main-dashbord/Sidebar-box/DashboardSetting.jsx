@@ -18,6 +18,7 @@ import {
 } from '../../../Redux/Features/settingsSlice';
 import { STRIPE_PUBLISHABLE_KEY } from '../../../BaseUrl';
 import { toast } from 'react-toastify';
+import { userData } from '../../../Redux/Features/UserDetailSlice';
 
 // Initialize Stripe
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
@@ -288,6 +289,7 @@ const DashboardSetting = () => {
                 return;
             }
             await dispatch(uploadProfilePicture(file));
+            await dispatch(userData());
         }
     };
 
