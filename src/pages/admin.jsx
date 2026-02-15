@@ -21,7 +21,6 @@ export default function AdminPanel() {
     (state) => state.admin
   );
 
-  // Fetch initial data on component mount
   useEffect(() => {
     dispatch(fetchDashboardStats());
     dispatch(fetchAllUsers());
@@ -196,9 +195,8 @@ export default function AdminPanel() {
               users.map((user) => (
                 <tr
                   key={user.id}
-                  className={`border-b ${
-                    user.blocked ? "bg-red-50 opacity-70" : ""
-                  }`}
+                  className={`border-b ${user.blocked ? "bg-red-50 opacity-70" : ""
+                    }`}
                 >
                   <td className="px-6 py-4 font-medium">{user.name}</td>
                   <td className="px-6 py-4">{user.email}</td>
@@ -211,11 +209,10 @@ export default function AdminPanel() {
                     <button
                       onClick={() => handleToggleBlock(user.id)}
                       disabled={loading}
-                      className={`px-4 py-2 rounded-lg text-white text-xs ${
-                        user.blocked
+                      className={`px-4 py-2 rounded-lg text-white text-xs ${user.blocked
                           ? "bg-green-500 hover:bg-green-600"
                           : "bg-red-500 hover:bg-red-600"
-                      } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                        } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {loading ? "..." : user.blocked ? "Unblock" : "Block"}
                     </button>

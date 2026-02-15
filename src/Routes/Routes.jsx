@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard";
 import Landing from "../pages/Landing";
 import AuthPages from "../pages/LoginSignup";
 import AdminPanel from "../pages/admin";
+import { AdminRoute, UserRoute } from "./ProtectedRoutes";
 
 const AppRoutes = () => {
   const routes = [
@@ -16,13 +17,24 @@ const AppRoutes = () => {
       element: <Landing />,
     },
     {
-      path: "/dashboard",
-      element: <Dashboard />,
+      element: <UserRoute />,
+      children: [
+        {
+          path: "/dashboard",
+          element: <Dashboard />,
+        }
+      ]
+
     },
     {
-      path: "/admin-dashboard",
-      element: <AdminPanel />,
-    },
+      element: <AdminRoute />,
+      children: [
+        {
+          path: "/admin-dashboard",
+          element: <AdminPanel />,
+        }
+      ]
+    }
   ];
 
   return useRoutes(routes);

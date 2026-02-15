@@ -51,11 +51,6 @@ const Dashboard = () => {
   }, [sidebarOpen]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-      return;
-    }
     dispatch(userData());
     dispatch(DashboardStats());
     dispatch(JobLeads());

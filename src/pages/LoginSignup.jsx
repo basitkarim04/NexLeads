@@ -38,7 +38,7 @@ export default function AuthPages() {
   const isReset = mode === "reset";
   const isLoginLike = isLogin || isForgot;
   const [showPassword, setShowPassword] = useState(false);
-const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
   // Check URL for reset token on mount
@@ -90,7 +90,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
         password: signupData.password,
         confirmPassword: signupData.confirmPassword,
       });
-      const { data } = res; 
+      const { data } = res;
 
       if (data.success) {
         setShowOtpPopup(true);
@@ -217,26 +217,26 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
                   }
                   required
                 />
-<div className="relative">
-  <input
-    type={showPassword ? "text" : "password"}
-    placeholder="Password *"
-    className="auth-input pr-12"
-    value={signupData.password}
-    onChange={(e) =>
-      setSignupData({ ...signupData, password: e.target.value })
-    }
-    required
-  />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password *"
+                    className="auth-input pr-12"
+                    value={loginData.password}
+                    onChange={(e) =>
+                      setLoginData({ ...loginData, password: e.target.value })
+                    }
+                    required
+                  />
 
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
-  >
-    <i className={showPassword ? "ri-eye-off-line" : "ri-eye-line"}></i>
-  </button>
-</div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
+                  >
+                    <i className={showPassword ? "ri-eye-off-line" : "ri-eye-line"}></i>
+                  </button>
+                </div>
 
                 <label className="flex items-center gap-2 text-sm">
                   <input type="checkbox" className="accent-white" />
@@ -313,59 +313,59 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
                 {/* Password Field */}
-<div className="relative">
-  <input
-    type={showPassword ? "text" : "password"}
-    placeholder="Password *"
-    className="auth-input pr-12"
-    value={signupData.password}
-    onChange={(e) =>
-      setSignupData({ ...signupData, password: e.target.value })
-    }
-    required
-  />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password *"
+                    className="auth-input pr-12"
+                    value={signupData.password}
+                    onChange={(e) =>
+                      setSignupData({ ...signupData, password: e.target.value })
+                    }
+                    required
+                  />
 
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
-  >
-    <i className={showPassword ? "ri-eye-off-line" : "ri-eye-line"}></i>
-  </button>
-</div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
+                  >
+                    <i className={showPassword ? "ri-eye-off-line" : "ri-eye-line"}></i>
+                  </button>
+                </div>
 
-{/* Confirm Password Field */}
-<div className="relative mt-4">
-  <input
-    type={showConfirmPassword ? "text" : "password"}
-    placeholder="Confirm Password *"
-    className="auth-input pr-12"
-    value={signupData.confirmPassword}
-    onChange={(e) =>
-      setSignupData({
-        ...signupData,
-        confirmPassword: e.target.value,
-      })
-    }
-    required
-  />
+                {/* Confirm Password Field */}
+                <div className="relative mt-4">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password *"
+                    className="auth-input pr-12"
+                    value={signupData.confirmPassword}
+                    onChange={(e) =>
+                      setSignupData({
+                        ...signupData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
+                    required
+                  />
 
-  <button
-    type="button"
-    onClick={() =>
-      setShowConfirmPassword(!showConfirmPassword)
-    }
-    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
-  >
-    <i
-      className={
-        showConfirmPassword
-          ? "ri-eye-off-line"
-          : "ri-eye-line"
-      }
-    ></i>
-  </button>
-</div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
+                    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
+                  >
+                    <i
+                      className={
+                        showConfirmPassword
+                          ? "ri-eye-off-line"
+                          : "ri-eye-line"
+                      }
+                    ></i>
+                  </button>
+                </div>
 
 
                 <button
@@ -438,60 +438,60 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
                 <p className="text-white mb-6 text-sm">
                   Enter your new password below.
                 </p>
-{/* New Password */}
-<div className="relative">
-  <input
-    type={showPassword ? "text" : "password"}
-    placeholder="New Password *"
-    className="auth-input pr-12"
-    value={resetData.password}
-    onChange={(e) =>
-      setResetData({ ...resetData, password: e.target.value })
-    }
-    required
-  />
+                {/* New Password */}
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="New Password *"
+                    className="auth-input pr-12"
+                    value={resetData.password}
+                    onChange={(e) =>
+                      setResetData({ ...resetData, password: e.target.value })
+                    }
+                    required
+                  />
 
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
-  >
-    <i className={showPassword ? "ri-eye-off-line" : "ri-eye-line"}></i>
-  </button>
-</div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
+                  >
+                    <i className={showPassword ? "ri-eye-off-line" : "ri-eye-line"}></i>
+                  </button>
+                </div>
 
-{/* Confirm New Password */}
-<div className="relative mt-4">
-  <input
-    type={showConfirmPassword ? "text" : "password"}
-    placeholder="Confirm New Password *"
-    className="auth-input pr-12"
-    value={resetData.confirmPassword}
-    onChange={(e) =>
-      setResetData({
-        ...resetData,
-        confirmPassword: e.target.value,
-      })
-    }
-    required
-  />
+                {/* Confirm New Password */}
+                <div className="relative mt-4">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm New Password *"
+                    className="auth-input pr-12"
+                    value={resetData.confirmPassword}
+                    onChange={(e) =>
+                      setResetData({
+                        ...resetData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
+                    required
+                  />
 
-  <button
-    type="button"
-    onClick={() =>
-      setShowConfirmPassword(!showConfirmPassword)
-    }
-    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
-  >
-    <i
-      className={
-        showConfirmPassword
-          ? "ri-eye-off-line"
-          : "ri-eye-line"
-      }
-    ></i>
-  </button>
-</div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
+                    className="absolute right-3 top-8 -translate-y-1/2 text-gray-500 hover:text-black"
+                  >
+                    <i
+                      className={
+                        showConfirmPassword
+                          ? "ri-eye-off-line"
+                          : "ri-eye-line"
+                      }
+                    ></i>
+                  </button>
+                </div>
 
 
                 <button
