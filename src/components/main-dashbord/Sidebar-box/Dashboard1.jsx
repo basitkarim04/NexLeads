@@ -5,7 +5,56 @@ import { Search, Mail, Clock, Folder, Moon, LogOut, Settings, Bell, Grid, ArrowU
 import { toUTCString } from '../../../utils/helpers';
 
 const Dashboard1 = () => {
-
+  const steps = [
+    {
+      label: "Leads",
+      icon: <Search size={28} className="text-white" />,
+      color: "bg-[#1f3b63]",
+    },
+    {
+      label: "Emails",
+      icon: <Mail size={28} className="text-white" />,
+      color: "bg-[#254a7a]",
+    },
+    {
+      label: "Response",
+      icon: (
+        <svg
+          className="w-7 h-7 text-white"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+          />
+        </svg>
+      ),
+      color: "bg-[#2e5a8c]",
+    },
+    {
+      label: "Project",
+      icon: (
+        <svg
+          className="w-7 h-7 text-white"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4 7l8-4 8 4-8 4-8-4zm0 6l8 4 8-4m-16 0l8 4 8-4"
+          />
+        </svg>
+      ),
+      color: "bg-[#3c6aa0]",
+    },
+  ];
     const { dashboardStats, loading, error } = useSelector(
         (state) => state.userDetail
     );
@@ -122,7 +171,7 @@ const Dashboard1 = () => {
                     </div>
                 </div>
 
-                <div className="bg-white p-4 md:p-6 rounded-2xl lg:col-span-2">
+                {/* <div className="bg-white p-4 md:p-6 rounded-2xl lg:col-span-2">
                     <h2 className="text-lg md:text-xl font-bold mb-6">Funnel Lead Chart</h2>
                     <div className="flex items-center justify-between overflow-x-auto pb-2">
                         {[
@@ -150,11 +199,44 @@ const Dashboard1 = () => {
                                     </div>
                                     <span className="text-xs font-semibold">{step.label}</span>
                                 </div>
-                                {i < 3 && <ArrowUpRight className="text-gray-400 mx-2 flex-shrink-0" size={16} />}
+                                {i < 3 && <ArrowUpRight className="text-gray-400 mx-2 flex-shrink-0" size={20} />}
                             </React.Fragment>
                         ))}
                     </div>
-                </div>
+                </div> */}
+                <div className="bg-white p-4 md:p-6 rounded-2xl lg:col-span-2">
+      {/* Title */}
+      <h2 className="text-2xl font-bold text-gray-800">
+        Funnel Lead Chart
+      </h2>
+
+      {/* Divider */}
+      <div className="border-t border-gray-200 my-6"></div>
+
+      {/* Funnel Steps */}
+      <div className="flex items-center justify-between overflow-x-auto">
+        {steps.map((step, index) => (
+          <React.Fragment key={index}>
+            {/* Step */}
+            <div className="flex flex-col items-center min-w-[120px]">
+              <div
+                className={`w-24 h-24 rounded-full flex items-center justify-center shadow-md`} style={{ background: 'linear-gradient(90deg, #021024 0%, #1F4682 100%)' }}
+              >
+                {step.icon}
+              </div>
+              <span className="mt-4 text-base font-semibold text-gray-700">
+                {step.label}
+              </span>
+            </div>
+
+            {/* Arrow */}
+            {index < steps.length - 1 && (
+              <div className="mx-6 text-gray-900 text-3xl">→</div>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
             </div>
         </>
     )

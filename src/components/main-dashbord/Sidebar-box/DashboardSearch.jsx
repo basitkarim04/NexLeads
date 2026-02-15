@@ -314,7 +314,6 @@ const DashboardSearch = () => {
             </button>
             <i className="ri-list-unordered"></i>
             <i className="ri-list-ordered"></i>
-            <span className=" text-gray-700">Cc Bcc</span>
             <button
               type="button"
               onClick={() => setShowAI(true)}
