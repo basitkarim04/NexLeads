@@ -353,161 +353,216 @@ const DashboardSetting = () => {
                 </div>
 
                 {/* TABS */}
-                <div className="px-8 py-6 flex gap-3">
-                    <button
-                        onClick={() => setActiveTab("profile")}
-                        className={`${activeTab === "profile" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
-                    >
-                        Profile Management
-                    </button>
-                    <button
-                        onClick={() => setActiveTab("billing")}
-                        className={`${activeTab === "billing" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
-                    >
-                        Plan & Billing
-                    </button>
-                    <button
-                        onClick={() => setActiveTab("security")}
-                        className={`${activeTab === "security" ? "bg-[#062D5E] text-[#B2DFFF]" : "bg-[#BFE4FF] text-[#062D5E]"} px-6 py-2 rounded-full text-sm font-medium`}
-                    >
-                        Security
-                    </button>
-                </div>
+<div className="px-4 py-4 overflow-x-auto">
+  <div className="flex gap-3 flex-nowrap">
+    <button
+      onClick={() => setActiveTab("profile")}
+      className={`${
+        activeTab === "profile"
+          ? "bg-[#062D5E] text-[#B2DFFF]"
+          : "bg-[#BFE4FF] text-[#062D5E]"
+      } px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap`}
+    >
+      Profile Management
+    </button>
+
+    <button
+      onClick={() => setActiveTab("billing")}
+      className={`${
+        activeTab === "billing"
+          ? "bg-[#062D5E] text-[#B2DFFF]"
+          : "bg-[#BFE4FF] text-[#062D5E]"
+      } px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap`}
+    >
+      Plan & Billing
+    </button>
+
+    <button
+      onClick={() => setActiveTab("security")}
+      className={`${
+        activeTab === "security"
+          ? "bg-[#062D5E] text-[#B2DFFF]"
+          : "bg-[#BFE4FF] text-[#062D5E]"
+      } px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap`}
+    >
+      Security
+    </button>
+  </div>
+</div>
+
 
                 {/* PROFILE MANAGEMENT TAB */}
                 {activeTab === "profile" && (
                     <>
-                        <div className="px-8 pb-8 flex items-center gap-6 border-b">
-                            <div className="w-50 h-50 rounded-full overflow-hidden">
-                                <img
-                                    src={userDetails?.profilePicture ?? profileImage}
-                                    alt="avatar"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
+                       {/* PROFILE SECTION */}
+<div className="bg-white rounded-2xl shadow-sm overflow-hidden">
 
-                            <div>
-                                <button 
-                                    onClick={() => fileInputRef.current?.click()}
-                                    disabled={profileLoading}
-                                    className="border border-gray-300 rounded-full px-6 py-2 text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
-                                >
-                                    {profileLoading ? 'Uploading...' : 'Upload new photo'}
-                                </button>
-                                <input 
-                                    type="file" 
-                                    ref={fileInputRef}
-                                    onChange={handleProfilePictureChange}
-                                    accept="image/jpeg,image/jpg,image/png"
-                                    className="hidden"
-                                />
-                                <p className="text-xs text-gray-400 mt-2">
-                                    At least 800 × 800 px recommended. <br /> JPG or PNG is Allowed
-                                </p>
-                            </div>
-                        </div>
+  {/* ================= HEADER ================= */}
+  <div className="px-4 sm:px-8 pb-8 pt-8 border-b">
+    <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+      
+      {/* Avatar */}
+      <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden shrink-0 mx-auto sm:mx-0">
+        <img
+          src={userDetails?.profilePicture ?? profileImage}
+          alt="avatar"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-                        <div className="px-8 py-8 space-y-6">
-                            <div className="border rounded-2xl p-6">
-                                <div className="flex justify-between items-center mb-6">
-                                    <h2 className="font-semibold text-lg">Personal Info</h2>
-                                    <button
-                                        onClick={() => setIsEditOpen(true)}
-                                        className="flex items-center gap-2 border rounded-full px-4 py-1 text-sm hover:bg-gray-50"
-                                    >
-                                        <i className="ri-edit-line"></i>
-                                        Edit
-                                    </button>
-                                </div>
+      {/* Upload Section */}
+      <div className="flex flex-col items-center sm:items-start text-center sm:text-left w-full">
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          disabled={profileLoading}
+          className="border border-gray-300 rounded-full px-6 py-2 text-sm font-medium hover:bg-gray-50 transition disabled:opacity-50"
+        >
+          {profileLoading ? "Uploading..." : "Upload new photo"}
+        </button>
 
-                                {/* EDIT MODAL */}
-                                {isEditOpen && (
-                                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                                        <div className="bg-white rounded-2xl w-full max-w-lg p-6 relative">
-                                            <div className="flex justify-between items-center mb-6">
-                                                <h2 className="text-lg font-semibold">Edit Profile</h2>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setIsEditOpen(false)}
-                                                    className="text-gray-500 hover:text-black"
-                                                >
-                                                    <i className="ri-close-line text-xl"></i>
-                                                </button>
-                                            </div>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleProfilePictureChange}
+          accept="image/jpeg,image/jpg,image/png"
+          className="hidden"
+        />
 
-                                            <div className="space-y-4">
-                                                <div>
-                                                    <label className="block text-sm font-semibold mb-1">
-                                                        Full Name
-                                                    </label>
-                                                    <input
-                                                        type="text"
-                                                        value={profileForm.name}
-                                                        onChange={(e) => setProfileForm({...profileForm, name: e.target.value})}
-                                                        className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
-                                                        placeholder="Full Name"
-                                                    />
-                                                </div>
-                                                
-                                                <div>
-                                                    <label className="block text-sm font-semibold mb-1">
-                                                        Bio
-                                                    </label>
-                                                    <textarea
-                                                        rows="4"
-                                                        value={profileForm.bio}
-                                                        onChange={(e) => setProfileForm({...profileForm, bio: e.target.value})}
-                                                        className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:border-[#062D5E]"
-                                                        placeholder="Write something about yourself..."
-                                                    />
-                                                </div>
-                                            </div>
+        <p className="text-xs text-gray-400 mt-3 max-w-xs leading-relaxed">
+          At least 800 × 800 px recommended. JPG or PNG is allowed.
+        </p>
+      </div>
+    </div>
+  </div>
 
-                                            <div className="flex justify-end gap-3 mt-6">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setIsEditOpen(false)}
-                                                    className="px-5 py-2 rounded-xl border text-sm"
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    onClick={handleUpdateProfile}
-                                                    disabled={profileLoading}
-                                                    className="px-6 py-2 rounded-xl bg-[#062D5E] text-white text-sm font-semibold disabled:opacity-50"
-                                                >
-                                                    {profileLoading ? 'Saving...' : 'Save'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div>
-                                        <p className="text-sm font-semibold">Full Name</p>
-                                        <p className="text-gray-800">{userDetails?.name}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-semibold">Platform Email</p>
-                                        <p className="text-gray-800">{userDetails?.nexleadsEmail}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-semibold">Registered Email</p>
-                                        <p className="text-gray-800">{userDetails?.email}</p>
-                                    </div>
-                                </div>
+  {/* ================= PERSONAL INFO ================= */}
+  <div className="px-4 sm:px-8 py-8">
+    <div className="border rounded-2xl p-5 sm:p-6">
 
-                                <div className="flex justify-between items-center mb-4 mt-6">
-                                    <h2 className="font-semibold text-lg">Bio</h2>
-                                </div>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <h2 className="font-semibold text-lg">Personal Info</h2>
 
-                                <p className="text-gray-700 leading-relaxed text-sm">
-                                    {`Hi, I'm ${userDetails?.name}. 👋`} <br />
-                                    {userDetails?.bio}
-                                </p>
-                            </div>
-                        </div>
+        <button
+          onClick={() => setIsEditOpen(true)}
+          className="flex items-center justify-center gap-2 border rounded-full px-4 py-1 text-sm hover:bg-gray-50 transition w-full sm:w-auto"
+        >
+          <i className="ri-edit-line"></i>
+          Edit
+        </button>
+      </div>
+
+      {/* Info Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div className="break-words">
+          <p className="text-sm font-semibold">Full Name</p>
+          <p className="text-gray-800 break-words">
+            {userDetails?.name}
+          </p>
+        </div>
+
+        <div className="break-words">
+          <p className="text-sm font-semibold">Platform Email</p>
+          <p className="text-gray-800 break-all">
+            {userDetails?.nexleadsEmail}
+          </p>
+        </div>
+
+        <div className="break-words">
+          <p className="text-sm font-semibold">Registered Email</p>
+          <p className="text-gray-800 break-all">
+            {userDetails?.email}
+          </p>
+        </div>
+      </div>
+
+      {/* Bio */}
+      <div className="mt-8">
+        <h2 className="font-semibold text-lg mb-3">Bio</h2>
+
+        <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-line break-words">
+          {`Hi, I'm ${userDetails?.name}. 👋`}
+          {"\n"}
+          {userDetails?.bio}
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  {/* ================= EDIT MODAL ================= */}
+  {isEditOpen && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 relative">
+
+        {/* Modal Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-lg font-semibold">Edit Profile</h2>
+          <button
+            type="button"
+            onClick={() => setIsEditOpen(false)}
+            className="text-gray-500 hover:text-black transition"
+          >
+            <i className="ri-close-line text-xl"></i>
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              value={profileForm.name}
+              onChange={(e) =>
+                setProfileForm({ ...profileForm, name: e.target.value })
+              }
+              className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#062D5E]"
+              placeholder="Full Name"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold mb-1">
+              Bio
+            </label>
+            <textarea
+              rows="4"
+              value={profileForm.bio}
+              onChange={(e) =>
+                setProfileForm({ ...profileForm, bio: e.target.value })
+              }
+              className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#062D5E]"
+              placeholder="Write something about yourself..."
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
+          <button
+            type="button"
+            onClick={() => setIsEditOpen(false)}
+            className="px-5 py-2 rounded-xl border text-sm w-full sm:w-auto"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleUpdateProfile}
+            disabled={profileLoading}
+            className="px-6 py-2 rounded-xl bg-[#062D5E] text-white text-sm font-semibold disabled:opacity-50 w-full sm:w-auto"
+          >
+            {profileLoading ? "Saving..." : "Save"}
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+
+</div>
+
                     </>
                 )}
 
@@ -538,37 +593,83 @@ const DashboardSetting = () => {
                             </div>
                         </div>
 
-                        <div className="px-8 py-6">
-                            <div className="flex items-center gap-6 bg-[#C1E8FF] rounded-full px-6 py-3 w-fit">
-                                <label
-                                    className="flex items-center gap-3 cursor-pointer"
-                                    onClick={() => setBillingCycle("monthly")}
-                                >
-                                    <div className="w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center">
-                                        {billingCycle === "monthly" && (
-                                            <div className="w-4 h-4 rounded-full bg-[#062D5E]" />
-                                        )}
-                                    </div>
-                                    <span className="text-xl font-medium text-black">Monthly</span>
-                                </label>
 
-                                <label
-                                    className="flex items-center gap-3 cursor-pointer"
-                                    onClick={() => setBillingCycle("annually")}
-                                >
-                                    <div className="w-6 h-6 rounded-full border-[3px] border-black flex items-center justify-center">
-                                        {billingCycle === "annually" && (
-                                            <div className="w-4 h-4 rounded-full bg-[#062D5E]" />
-                                        )}
-                                    </div>
-                                    <span className="text-xl font-medium text-black">Annually</span>
-                                </label>
+                       <div className="px-4 sm:px-8 py-6">
+  <div
+    className="
+      flex flex-col sm:flex-row
+      items-stretch sm:items-center
+      gap-2
+      bg-[#C1E8FF]
+      rounded-2xl sm:rounded-full
+      p-2 sm:p-1
+      w-full sm:w-fit
+      max-w-sm sm:max-w-none
+      mx-auto
+    "
+  >
+    {/* Monthly */}
+    <label
+      onClick={() => setBillingCycle("monthly")}
+      className={`
+        flex items-center gap-3
+        w-full sm:w-auto
+        px-4 py-2
+        rounded-xl sm:rounded-full
+        cursor-pointer
+        transition-all duration-200
+        ${
+          billingCycle === "monthly"
+            ? "bg-white shadow-sm"
+            : "text-black/80"
+        }
+      `}
+    >
+      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-[3px] border-black flex items-center justify-center">
+        {billingCycle === "monthly" && (
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-[#062D5E]" />
+        )}
+      </div>
 
-                                <span className="text-l text-[#2C2C2C] font-medium ml-2">
-                                    Save 15%
-                                </span>
-                            </div>
-                        </div>
+      <span className="text-base sm:text-lg font-medium text-black">
+        Monthly
+      </span>
+    </label>
+
+    {/* Annually */}
+    <label
+      onClick={() => setBillingCycle("annually")}
+      className={`
+        flex items-center gap-3
+        w-full sm:w-auto
+        px-4 py-2
+        rounded-xl sm:rounded-full
+        cursor-pointer
+        transition-all duration-200
+        ${
+          billingCycle === "annually"
+            ? "bg-white shadow-sm"
+            : "text-black/80"
+        }
+      `}
+    >
+      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-[3px] border-black flex items-center justify-center">
+        {billingCycle === "annually" && (
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-[#062D5E]" />
+        )}
+      </div>
+
+      <span className="text-base sm:text-lg font-medium text-black">
+        Annually
+        <span className="ml-2 text-sm text-[#2C2C2C] font-medium">
+          Save 15%
+        </span>
+      </span>
+    </label>
+  </div>
+</div>
+
+
 
                         {/* PRICING CARDS */}
                         <div className="px-8 pb-8">
