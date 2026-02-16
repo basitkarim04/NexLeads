@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toUTCString } from '../../../utils/helpers';
 import { JobLeads, updateLeadInterest } from '../../../Redux/Features/UserDetailSlice';
@@ -8,17 +8,36 @@ const DashboardTask = () => {
     const dispatch = useDispatch();
 
     const [platformOpen, setPlatformOpen] = useState(false);
+    const [dateOpen, setDateOpen] = useState(false);
+    const [dateFrom, setDateFrom] = useState("");
+    const [dateTo, setDateTo] = useState("");
+    const [selectedPlatform, setSelectedPlatform] = useState("All");
     const [selectedCard, setSelectedCard] = useState(null);
     const [followOpen, setFollowOpen] = useState(false);
     const [leadStatus, setLeadStatus] = useState("interested");
     const [followLeadIds, setFollowLeadIds] = React.useState([]);
 
-
+    const platformRef = useRef(null);
+    const dateRef = useRef(null);
 
     const { userLeads, loading, error } = useSelector(
         (state) => state.userDetail
     );
 
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (platformRef.current && !platformRef.current.contains(event.target)) {
+                setPlatformOpen(false);
+            }
+            if (dateRef.current && !dateRef.current.contains(event.target)) {
+                setDateOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const leadsByJobField = React.useMemo(() => {
         if (!userLeads?.leads) return {};
@@ -115,56 +134,101 @@ const DashboardTask = () => {
 
                     {/* Filters */}
                     <div className="flex flex-wrap items-center gap-3 mb-6">
-                        <div className="flex items-center gap-2 bg-[#EAF6FF] px-4 py-2 rounded-xl text-sm text-gray-500">
-                            <i className="ri-calendar-line"></i>
-                            Date: From - To
-                            <i className="ri-arrow-down-s-line"></i>
-                        </div>
-                        <div className="w-full xl:w-1/4 relative">
+                        {/* Date Filter */}
+                        <div className="w-full xl:w-1/4 relative" ref={dateRef}>
                             <button
-                                onClick={() => setPlatformOpen(!platformOpen)}
-                                className="w-full flex justify-between items-center px-4 py-1 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl text-gray-500 text-sm"
+                                onClick={() => setDateOpen(!dateOpen)}
+                                className="w-full flex justify-between items-center px-4 py-3 bg-[#EAF6FF] border border-[#EAF6FF] rounded-xl text-gray-500 text-sm"
                             >
                                 <span className="flex items-center gap-2">
-                                    <i className="ri-apps-2-line text-lg text-gray-500 font-bold"></i>
-                                    Platforms
+                                    <i className="ri-calendar-line"></i>
+                                    {dateFrom && dateTo 
+                                        ? `${dateFrom} - ${dateTo}` 
+                                        : "Date: From - To"}
                                 </span>
                                 <i
-                                    className={`ri-arrow-down-s-line text-xl text-gray-500 transition-transform ${platformOpen ? "rotate-180" : ""
-                                        }`}
+                                    className={`ri-arrow-down-s-line text-xl transition-transform ${
+                                        dateOpen ? "rotate-180" : ""
+                                    }`}
                                 ></i>
                             </button>
-                            {platformOpen && (
-                                <div className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden">
-                                    <button
-                                        onClick={() => {
-                                            setPlatformOpen(false);
-                                            // handle facebook selection
-                                        }}
-                                        className="w-full text-left px-4 py-3 text-sm hover:bg-[#EEF8FF] flex items-center gap-2"
-                                    >
-                                        <i className="ri-facebook-fill text-blue-600"></i>
-                                        Facebook
-                                    </button>
-
-                                    <button
-                                        onClick={() => {
-                                            setPlatformOpen(false);
-                                            // handle twitter selection
-                                        }}
-                                        className="w-full text-left px-4 py-3 text-sm hover:bg-[#EEF8FF] flex items-center gap-2"
-                                    >
-                                        <i className="ri-twitter-x-fill text-black"></i>
-                                        Twitter
-                                    </button>
+                            {dateOpen && (
+                                <div className="absolute z-50 mt-2 right-0 xl:left-0 w-full xl:w-[320px] bg-white border border-gray-200 rounded-xl shadow-md p-4 animate-in fade-in zoom-in duration-200">
+                                    <div className="flex gap-4">
+                                        <div className="flex-1 min-w-0">
+                                            <label className="block text-xs font-medium text-gray-600 mb-1">FROM DATE</label>
+                                            <input 
+                                                type="date" 
+                                                value={dateFrom} 
+                                                onChange={(e) => setDateFrom(e.target.value)} 
+                                                className="w-full border rounded-lg p-2 text-sm text-gray-700 outline-none focus:border-blue-400 max-w-full"
+                                            />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <label className="block text-xs font-medium text-gray-600 mb-1">TO DATE</label>
+                                            <input 
+                                                type="date" 
+                                                value={dateTo} 
+                                                onChange={(e) => setDateTo(e.target.value)} 
+                                                className="w-full border rounded-lg p-2 text-sm text-gray-700 outline-none focus:border-blue-400 max-w-full"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 flex justify-between items-center">
+                                        <button 
+                                            onClick={() => { setDateFrom(""); setDateTo(""); }} 
+                                            className="text-sm text-gray-500 hover:text-red-500"
+                                        >
+                                            Clear
+                                        </button>
+                                        <button 
+                                            onClick={() => setDateOpen(false)} 
+                                            className="text-sm bg-[#052659] text-white px-4 py-1.5 rounded-lg hover:bg-blue-800"
+                                        >
+                                            Done
+                                        </button>
+                                    </div>
                                 </div>
                             )}
                         </div>
 
-                        <button className="ml-auto flex items-center gap-2 bg-[#EAF6FF] px-5 py-2 rounded-xl text-sm text-[#0A2A55]">
-                            <i className="ri-equalizer-line"></i>
-                            Filter
-                        </button>
+                        {/* Platform Filter */}
+                        <div className="w-full xl:w-1/4 relative" ref={platformRef}>
+                            <button
+                                onClick={() => setPlatformOpen(!platformOpen)}
+                                className={`w-full flex justify-between items-center px-4 py-3 bg-[#EEF8FF] border border-[#EEF8FF] rounded-xl text-sm transition-colors ${
+                                    selectedPlatform !== "All" ? "text-blue-700 font-medium bg-blue-50 border-blue-200" : "text-gray-700"
+                                }`}
+                            >
+                                <span className="flex items-center gap-2 truncate">
+                                    <i className="ri-apps-2-line text-lg text-gray-900 font-bold"></i>
+                                    {selectedPlatform === "All" ? "Platforms" : selectedPlatform}
+                                </span>
+                                <i className={`ri-arrow-down-s-line text-xl text-gray-500 transition-transform ${platformOpen ? "rotate-180" : ""}`}></i>
+                            </button>
+                            
+                            {platformOpen && (
+                                <div className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden animate-in fade-in zoom-in duration-200">
+                                    {['All', 'Facebook', 'Twitter', 'LinkedIn', 'Upwork'].map((p) => (
+                                        <button
+                                            key={p}
+                                            onClick={() => { setSelectedPlatform(p); setPlatformOpen(false); }}
+                                            className="w-full text-left px-4 py-3 text-sm hover:bg-[#EEF8FF] flex items-center justify-between"
+                                        >
+                                            <span className="flex items-center gap-2">
+                                                {p === 'All' && <i className="ri-global-line text-gray-500"></i>}
+                                                {p === 'Facebook' && <i className="ri-facebook-fill text-blue-600"></i>}
+                                                {p === 'Twitter' && <i className="ri-twitter-x-fill text-black"></i>}
+                                                {p === 'LinkedIn' && <i className="ri-linkedin-fill text-blue-700"></i>}
+                                                {p === 'Upwork' && <i className="ri-briefcase-line text-green-600"></i>}
+                                                {p === 'All' ? 'All Platforms' : p}
+                                            </span>
+                                            {selectedPlatform === p && <i className="ri-check-line text-blue-600 font-bold"></i>}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <hr className="mb-6 border-t border-[#C3C3C3]" />
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
