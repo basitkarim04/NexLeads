@@ -27,7 +27,7 @@ export default function Pricing() {
       price: billing === "monthly" ? 99 : 1010,
       description: "Complete Collaboration of tools",
       button: "Start Free Trial",
-      features: ["Unlimited leads","API access", "Team collaboration", "Dedicated account manager"],
+      features: ["Unlimited leads","API access", "Team collaboration"],
       color: "#021024", // green
     },
   ];

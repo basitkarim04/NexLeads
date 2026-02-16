@@ -52,8 +52,7 @@ export default function Hero() {
 
         <p className="lead">
           NexLeads helps you discover potential clients on social media,
-          extract their contact details, and send personalized outreach —
-          all in one platform
+          extract their contact details, and send personalized outreach, all in one platform
         </p>
 
 <div className="flex items-center justify-center md:justify-start mt-5 sm:mt-5">
