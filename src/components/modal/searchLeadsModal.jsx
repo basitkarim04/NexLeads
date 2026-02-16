@@ -280,6 +280,35 @@ export const FollowTrackModal = ({ onClose, leadIds }) => {
 export const Ai_Assists = ({ aiMode, setAiMode, setAiPrompt, aiPrompt, setBody, setSubject, setShowAI, body, editorRef }) => {
   const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(false);
+
+  const handleGenerate = async () => {
+    try {
+      setLoading(true);
+
+      const res = await dispatch(
+        aiEmailAssist({
+          mode: aiMode,
+          body,
+          prompt: aiPrompt,
+        })
+      ).unwrap();
+
+      if (res.subject) setSubject(res.subject);
+
+      if (res.body && editorRef.current) {
+        editorRef.current.innerHTML = res.body;
+        setBody(res.body);
+      }
+
+      setShowAI(false);
+    } catch (error) {
+      console.error("AI generation failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
 
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -306,26 +335,28 @@ export const Ai_Assists = ({ aiMode, setAiMode, setAiPrompt, aiPrompt, setBody, 
           />
 
           <button
-            onClick={async () => {
-              const res = await dispatch(
-                aiEmailAssist({
-                  mode: aiMode,
-                  body,
-                  prompt: aiPrompt,
-                })
-              ).unwrap();
+            // onClick={async () => {
+            //   const res = await dispatch(
+            //     aiEmailAssist({
+            //       mode: aiMode,
+            //       body,
+            //       prompt: aiPrompt,
+            //     })
+            //   ).unwrap();
 
-              if (res.subject) setSubject(res.subject);
-              if (res.body && editorRef.current) {
-                editorRef.current.innerHTML = res.body;
-                setBody(res.body);
-              }
+            //   if (res.subject) setSubject(res.subject);
+            //   if (res.body && editorRef.current) {
+            //     editorRef.current.innerHTML = res.body;
+            //     setBody(res.body);
+            //   }
 
-              setShowAI(false);
-            }}
+            //   setShowAI(false);
+            // }}
+            onClick={handleGenerate}
+            disabled={loading}
             className="w-full bg-[#052659] text-white py-2 rounded"
           >
-            Generate
+            {loading ? "Generating..." : "Generate"}
           </button>
         </div>
       </div>

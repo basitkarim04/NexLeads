@@ -365,6 +365,7 @@ const DashboardSearch = () => {
 
       {showAI && (
         <Ai_Assists
+          editorRef={editorRef}
           aiMode={aiMode}
           setAiMode={setAiMode}
           setAiPrompt={setAiPrompt}
