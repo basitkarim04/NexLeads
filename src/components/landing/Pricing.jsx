@@ -11,23 +11,23 @@ export default function Pricing() {
       price: billing === "monthly" ? 0 : 0,
       description: "Basic Pricing Plan",
       button: "Sign Up Now",
-      features: ["50 leads/month", "Basic email templates", "Limited follow-up tracking"],
+      features: ["30 leads/month", "Basic email templates", "Limited follow-up tracking"],
       color: "#021024", // blue
     },
     {
       name: "Pro",
-      price: billing === "monthly" ? 19 : 190, // annual = save ~15%
+      price: billing === "monthly" ? 29 : 296, // annual = save ~15%
       description: "Advanced tools for Growing",
       button: "Start Free Trial",
-      features: ["Unlimited leads", "Custom email sequences", "Advanced analytics"],
+      features: ["100 leads/month", "Custom email sequences", "Advanced analytics"],
       color: "#052659", // purple
     },
     {
-      name: "Enterprise",
-      price: billing === "monthly" ? 49 : 490,
+      name: "Platinum",
+      price: billing === "monthly" ? 99 : 1010,
       description: "Complete Collaboration of tools",
       button: "Start Free Trial",
-      features: ["API access", "Team collaboration", "Dedicated account manager"],
+      features: ["Unlimited leads","API access", "Team collaboration", "Dedicated account manager"],
       color: "#021024", // green
     },
   ];
