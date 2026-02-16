@@ -103,7 +103,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed left-0 w-full z-[100000]">
-      <div className="max-w-8xl sm:max-w-7xl mx-auto flex items-center justify-between px-6 rounded-full">
+      <div className="max-w-8xl mx-auto flex items-center justify-between px-6 rounded-full">
 
 
         {/* Brand */}
