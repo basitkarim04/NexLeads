@@ -13,17 +13,17 @@ import { useNavigate } from 'react-router-dom'
 const Landing = () => {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            toast.success("Auto Redirecting to dashboard...")
-            setTimeout(() => {
-                 navigate("/dashboard");
-            }, 2000);
-          return;
-        }
+    // useEffect(() => {
+    //     const token = localStorage.getItem("token");
+    //     if (token) {
+    //         toast.success("Auto Redirecting to dashboard...")
+    //         setTimeout(() => {
+    //              navigate("/dashboard");
+    //         }, 2000);
+    //       return;
+    //     }
         
-      }, []);
+    //   }, []);
 
     return (
         <>
