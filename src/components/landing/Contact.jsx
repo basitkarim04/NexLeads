@@ -229,7 +229,7 @@ export default function Contact() {
     <section
       id="contact"
       ref={ref}
-      className="py-20 px-5 md:px-10 text-white"
+      className="px-5 md:px-10 text-white"
     >
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
 
@@ -251,6 +251,7 @@ export default function Contact() {
             animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="w-full max-w-[500px] -mt-10 md:-mt-24"
+
           />
 
           <motion.div
@@ -284,7 +285,7 @@ export default function Contact() {
           initial={{ opacity: 0, x: 50 }}
           animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
-          className="bg-[#021024b4] p-6 md:p-8 rounded-2xl w-full md:w-[90%] md:ml-10"
+          className="bg-[#021024b4] p-6 md:p-8 rounded-2xl w-full md:w-[100%] md:ml-10"
         >
           <form onSubmit={handleSubmit}>
             {/* Status Message */}
