@@ -3,8 +3,11 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import hero_img from "../../assets/Images/hero_img.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.2,
@@ -57,6 +60,7 @@ export default function Hero() {
 
 <div className="flex items-center justify-center md:justify-start mt-5 sm:mt-5">
   <button
+  onClick={() => {navigate('/login')}}
     className="
       border border-white
       text-white
