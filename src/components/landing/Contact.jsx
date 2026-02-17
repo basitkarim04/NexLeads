@@ -279,7 +279,6 @@ export default function Contact() {
             </div>
           </motion.div>
         </motion.div>
-
         {/* RIGHT SIDE (FORM) */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
