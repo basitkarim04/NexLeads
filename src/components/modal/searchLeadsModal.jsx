@@ -53,7 +53,7 @@ export const SearchLeadsModal = ({ isOpen, onClose, onSubmit }) => {
           <div>
             <label className="mb-2 block text-sm font-medium">Platforms</label>
             <div className="flex gap-3">
-              {['LinkedIn', 'Upwork', 'Twitter', 'Facebook'].map((platform) => (
+              {[ 'Google', 'LinkedIn', 'Upwork', 'Twitter', 'Facebook'].map((platform) => (
                 <button
                   type="button"
                   key={platform}
