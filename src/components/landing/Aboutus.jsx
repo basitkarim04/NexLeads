@@ -393,7 +393,7 @@ const AboutUs = () => {
       "
     >
       {/* LEFT SECTION */}
-      <div className="flex-1 text-center lg:text-left lg:pl-[10px] w-full">
+      <div className="flex-1 text-center lg:text-left lg:mt-10 lg:pl-[10px] w-full">
         <motion.p
           className="text-base sm:text-lg text-[#C1E8FF] font-semibold"
           initial={{ opacity: 0, x: -30 }}
@@ -500,7 +500,7 @@ const AboutUs = () => {
             <img
               src={member.img}
               alt={member.name}
-              className="w-full h-[180px] xl:h-[250px] object-cover"
+              className="w-full h-[150px] xl:h-[180px] object-cover"
             />
             <div className="flex items-center justify-center gap-2 px-[5px] py-1 min-w-0">
               <p className="text-sm sm:text-base font-semibold my-[10px] truncate">

@@ -325,7 +325,7 @@ const HowItWorks = () => {
         <img
           src={HIW}
           alt="VR person"
-          className="mt-0 lg:-mt-20 w-[70%] sm:w-full lg:max-w-[85%] rounded-xl"
+          className="mt-0 lg:-mt-20 w-[70%] sm:w-full lg:max-w-[75%] rounded-xl"
         />
       </motion.div>
     </div>

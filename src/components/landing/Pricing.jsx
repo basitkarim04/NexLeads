@@ -388,7 +388,7 @@ export default function Pricing() {
       name: "Pro",
       price: billing === "monthly" ? 29 : 296, // annual = save ~15%
       description: "Advanced tools for Growing",
-      button: "Start Free Trial",
+      button: "Start Now",
       features: ["100 leads/month", "Custom email sequences", "Advanced analytics"],
       color: "#052659", // purple
     },
@@ -396,7 +396,7 @@ export default function Pricing() {
       name: "Platinum",
       price: billing === "monthly" ? 99 : 1010,
       description: "Complete Collaboration of tools",
-      button: "Start Free Trial",
+      button: "Start Now",
       features: ["Unlimited leads","API access", "Team collaboration"],
       color: "#021024", // green
     },
@@ -533,7 +533,7 @@ export default function Pricing() {
               <p className="text-left text-sm sm:text-base mb-[10px]">
                 {plan.description}
               </p>
-              <button className="w-full sm:w-auto max-w-full bg-white text-[#111] border-none px-8 sm:px-[60px] md:px-[90px] lg:px-[85px] py-[10px] rounded-lg text-sm sm:text-base cursor-pointer my-[10px] transition hover:rounded-[45px] hover:bg-[#e6e6e6]">
+              <button className="w-full max-w-full bg-white text-[#111] border-none px-8 sm:px-[60px] md:px-[90px] lg:px-[85px] py-[10px] rounded-lg text-sm sm:text-base cursor-pointer my-[10px] transition hover:rounded-[45px] hover:bg-[#e6e6e6]">
                 {plan.button}
               </button>
               <p className="text-sm sm:text-base m-0 p-0">
