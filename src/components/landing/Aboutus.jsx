@@ -539,7 +539,7 @@ const AboutUs = () => {
                   grid grid-cols-1 sm:grid-cols-2
                   gap-x-[22px] gap-y-[28px]
                   w-full
-                  max-w-[600px]
+                  max-w-[800px]
                   justify-items-center
                 "
               >
