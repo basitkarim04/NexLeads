@@ -384,7 +384,6 @@ const AboutUs = () => {
       ref={ref}
       className="
         flex flex-col lg:flex-row
-        items-center lg:items-start
         justify-between
         gap-[50px] lg:gap-0
         px-5 sm:px-10 lg:px-[60px]
@@ -395,7 +394,7 @@ const AboutUs = () => {
       {/* LEFT SECTION */}
       <div className="flex-1 text-center lg:text-left lg:mt-10 lg:pl-[10px] w-full">
         <motion.p
-          className="text-base sm:text-lg text-[#C1E8FF] font-semibold"
+          className="text-base sm:text-lg font-semibold"
           initial={{ opacity: 0, x: -30 }}
           animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
           transition={{ duration: 0.6 }}
@@ -443,7 +442,7 @@ const AboutUs = () => {
             gap-[10px] sm:gap-5 lg:gap-[30px]
             w-full lg:w-[500px]
             min-w-0
-            text-left sm:text-left
+            text-left sm:text-left mt-5
           "
         >
           {["5.03k", "2k+", "10k+", "95%"].map((stat, i) => (
@@ -460,16 +459,16 @@ const AboutUs = () => {
                 {i === 3 && "Client Satisfaction ."}
               </p>
               <hr className="border-white/40" />
-              <h3 className="text-2xl sm:text-3xl font-extrabold mt-1">
-                {stat}
-              </h3>
+<h3 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold mt-1">
+  {stat}
+</h3>
             </motion.div>
           ))}
         </div>
       </div>
 
       {/* RIGHT SECTION */}
-      <div
+      {/* <div
         className="
           flex-1
           grid grid-cols-1 md:grid-cols-2
@@ -525,7 +524,132 @@ const AboutUs = () => {
             </div>
           </motion.div>
         ))}
-      </div>
+      </div> */}
+            <div
+              className="
+                flex-1
+                w-full
+                flex xl:ml-5
+                lg:mt-10
+                min-w-0
+              "
+            >
+              <div
+                className="
+                  grid grid-cols-1 sm:grid-cols-2
+                  gap-x-[22px] gap-y-[28px]
+                  w-full
+                  max-w-[600px]
+                  justify-items-center
+                "
+              >
+                {team.map((member, index) => (
+                  <motion.div
+                    key={index}
+                    className="
+                      relative
+                      w-[300px] sm:w-full xl:w-[100%] l:w-[280px]
+                      h-[260px]
+                      bg-white
+                      border-[6px] border-white
+                      rounded-[34px]
+                      overflow-hidden
+                      cursor-pointer
+                    "
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                    transition={{ duration: 0.2}}
+                    whileHover={{ y: -8, scale: 1.02 }}
+                  >
+                    <img
+                      src={member.img}
+                      alt={member.name}
+                      className="
+                        w-full
+                        h-full
+                        object-cover
+                        object-center
+                      "
+                    />
+      
+                    <div
+                      className="
+                        absolute
+                        left-[13px]
+                        right-[13px]
+                        bottom-[12px]
+                        min-h-[58px]
+                        bg-white
+                        rounded-[25px]
+                        px-[14px]
+                        py-[9px]
+                        flex
+                        items-center
+                        justify-between
+                        gap-2
+                      "
+                    >
+                      <h3
+                        className="
+                          text-black
+                          text-[14px] sm:text-[15px]
+                          font-extrabold
+                          leading-[0.95]
+                          text-left
+                          max-w-[150px]
+                        "
+                      >
+                        {member.name}
+                      </h3>
+      
+                      <div className="flex items-center gap-[7px] shrink-0">
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="
+                            w-[31px]
+                            h-[31px]
+                            rounded-full
+                            flex
+                            items-center
+                            justify-center
+                            overflow-hidden
+                          "
+                        >
+                          <img
+                            src={linkedin}
+                            alt="LinkedIn"
+                            className="w-full h-full object-contain"
+                          />
+                        </a>
+      
+                        <a
+                          href={member.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="
+                            w-[31px]
+                            h-[31px]
+                            rounded-full
+                            flex
+                            items-center
+                            justify-center
+                            overflow-hidden
+                          "
+                        >
+                          <img
+                            src={github}
+                            alt="GitHub"
+                            className="w-full h-full object-contain"
+                          />
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
     </div>
   );
 };

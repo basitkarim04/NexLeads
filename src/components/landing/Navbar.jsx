@@ -240,7 +240,7 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop Button */}
-        <div className="hidden md:flex">
+        <div className="hidden md:flex mr-5">
           <Link to="/login">
             <button className="border border-white text-white px-5 py-2 rounded-full font-semibold hover:bg-white hover:text-[#052659] transition">
               Login

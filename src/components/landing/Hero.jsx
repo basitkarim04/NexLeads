@@ -407,13 +407,13 @@ export default function Hero() {
     <section
       id="home"
       className="
-        grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]
+        grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]
         gap-8
         items-center
         relative
         px-5 sm:px-[30px]
-        pt-[110px] sm:pt-[120px]
-        pb-[60px] sm:pb-[100px]
+        pt-[110px] sm:pt-[80px]
+        pb-[60px] sm:pb-[100px]   
       "
     >
       {/* Text */}
@@ -424,14 +424,13 @@ export default function Hero() {
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <h1 className="text-[1.8rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] leading-[1.08] mt-10 sm:mt-20 mb-4 text-[#F2FAFF] font-bold">
+        <h1 className="text-[2.5rem] sm:text-[2.5rem] lg:text-[3rem] xl:text-[4rem] leading-[1.08] mt-10 mb-4 text-[#F2FAFF] font-bold">
           Find. Connect. Convert.<br />
           <span className="text-[#F2FAFF]">Smarter, Faster, Easier.</span>
         </h1>
 
-        <p className="text-[#C1E8FF] text-sm sm:text-base lg:text-lg max-w-[48ch] mx-auto lg:mx-0 mb-6">
-          NexLeads helps you discover potential clients on social media,
-          extract their contact details, and send personalized outreach, all in one platform
+        <p className="text-[#C1E8FF] text-sm sm:text-base lg:text-lg mx-auto lg:mx-0 mb-6">
+          NexLeads helps you discover potential clients on social media, extract their contact details, and send personalized outreach, all in one platform
         </p>
 
         <div className="flex items-center justify-center lg:justify-start mt-5">
@@ -464,9 +463,8 @@ export default function Hero() {
           style={{ rotate, opacity, scale }}
           className="
             relative lg:absolute lg:z-0
-            w-full
-            max-w-[280px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[680px] xl:max-w-[780px]
-            lg:-mr-[30px]
+            w-[500px] mt-[50px]
+            max-w-[350px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[680px] xl:max-w-[780px]]
             p-2 lg:p-0
           "
         />
