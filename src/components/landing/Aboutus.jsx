@@ -548,7 +548,7 @@ const AboutUs = () => {
                     key={index}
                     className="
                       relative
-                      w-[300px] sm:w-full xl:w-[100%] l:w-[280px]
+                      w-[800px] sm:w-full xl:w-[100%] l:w-[100%]
                       h-[260px]
                       bg-white
                       border-[6px] border-white
